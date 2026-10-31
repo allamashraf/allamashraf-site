@@ -1,0 +1,76 @@
+---
+title: Bilingual Hotel Lead-Capture Page
+shortTitle: Hotel Lead Capture
+order: 2
+projectStatus: UNRELEASED
+statusLine: Built end-to-end · Not launched · AOG Developments
+org: AOG Developments
+summaryClaim: hotel-summary
+roleClaim: hotel-role
+yearClaim: hotel-year
+toolsClaim: hotel-tools
+coverKind: illustrative
+diagram: hotel
+description: "Case study of a bilingual Arabic/English lead-capture site Allam Ashraf built end-to-end for a boutique hotel project at AOG Developments, with interest-based lead forms and analytics event tracking. It was completed but never launched."
+---
+import Claim from '../../components/Claim.astro';
+import CaseSection from '../../components/CaseSection.astro';
+import Callout from '../../components/Callout.astro';
+import FlowDiagram from '../../components/FlowDiagram.astro';
+
+{/* Every factual sentence goes through <Claim>. Copy outside it must contain no digits.
+    Reviewed by Allam 22 Oct 2026. The project's own name is unannounced: never use it anywhere on the site. */}
+
+<CaseSection n={1}>
+  <p><Claim id="hotel-status" /></p>
+</CaseSection>
+
+<CaseSection n={2}>
+  <p><Claim id="hotel-context" /></p>
+</CaseSection>
+
+<CaseSection n={3}>
+  <p><Claim id="hotel-problem" /></p>
+</CaseSection>
+
+<CaseSection n={4}>
+  <p><Claim id="hotel-role-detail" /></p>
+</CaseSection>
+
+<CaseSection n={5}>
+  <p><Claim id="hotel-constraints" /></p>
+</CaseSection>
+
+<CaseSection n={6}>
+  <FlowDiagram
+    label="Illustrative lead-capture flow"
+    steps={['Visitor lands', 'Chooses Arabic or English', 'Picks an interest', 'Form is validated', 'Tracking event fires (no CRM connected)']}
+  />
+</CaseSection>
+
+<CaseSection n={7}>
+  <p><Claim id="hotel-built" /></p>
+</CaseSection>
+
+<CaseSection n={8}>
+  <p><Claim id="hotel-evidence" /></p>
+</CaseSection>
+
+<CaseSection n={9}>
+  <Callout kind="not-measured">
+    <p>Not measured: the site never launched, so there is no traffic or conversion data.</p>
+  </Callout>
+</CaseSection>
+
+<CaseSection n={10}>
+  <Callout kind="limitations">
+    <ul>
+      <li><Claim id="hotel-limit-crm" /></li>
+      <li><Claim id="hotel-limit-whatsapp" /></li>
+    </ul>
+  </Callout>
+</CaseSection>
+
+<CaseSection n={11}>
+  <p><Claim id="hotel-next" /></p>
+</CaseSection>

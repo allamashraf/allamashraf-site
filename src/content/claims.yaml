@@ -1,0 +1,420 @@
+# Claims ledger. Every factual sentence on the site is rendered from here via <Claim id="...">.
+#
+# status:
+#   VERIFIED            evidence on file and reviewed
+#   USER_REPORTED       stated by Allam (approved decisions or the master plan); publishable,
+#                       but approvedBy stays null until Allam confirms the exact wording
+#   NEEDS_EVIDENCE      missing fact; never rendered by build:prod
+#   NOT_FOR_PUBLICATION never rendered by build:prod
+#
+# evidenceRef is a PUBLIC-SAFE pointer only (this repo becomes public at launch).
+# Private material stays in the git-ignored evidence/ folder or with Allam.
+# copy: PROPOSED means the wording itself still needs Allam's approval.
+
+# ---- Identity -------------------------------------------------------------
+hero-subhead:
+  text: "At AOG Developments, a luxury coastal real estate developer, I was the only person running the website, media buying, and marketing automation, and I designed a tested lead-routing prototype for its lead flow. I'm finishing my CS degree at Egypt University of Informatics in Cairo."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review"
+  copy: APPROVED
+  approvedBy: "Allam"
+  date: "2026-10-22"
+# Phones only (<768px). Restates hero-subhead in fewer words; the desktop subhead is unchanged.
+hero-subhead-mobile:
+  text: "At AOG Developments I ran the website, media buying and marketing automation alone. CS student in Cairo."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the mobile pass review"
+  copy: APPROVED
+  approvedBy: "Allam"
+  date: "2026-10-22"
+bio-short:
+  text: "I started in real-estate sales at Gold Star, working leads from the sales side. At AOG Developments I grew from marketing intern to GTM engineer, building the tools between the ad and the sales call. I study Computer Science at Egypt University of Informatics in Cairo."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review"
+  copy: APPROVED
+  approvedBy: "Allam"
+  date: "2026-10-22"
+
+# ---- Contact --------------------------------------------------------------
+linkedin-url:
+  text: "https://www.linkedin.com/in/allam-ashraf"
+  status: VERIFIED
+  evidenceRef: "Supplied by Allam in the Sprint 1 review, 22 Oct 2026"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+
+# ---- Capabilities ---------------------------------------------------------
+cap-automation-tools:
+  text: "n8n, Telegram Bot API, webhooks"
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review (incl. a personal n8n email-summary workflow to a Telegram bot)"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+cap-frontend-tools:
+  text: "HTML, CSS, JavaScript, Node.js, Chrome kiosk mode, Windows batch scripts"
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam; showroom files held by Allam"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+cap-tracking-tools:
+  text: "Meta Ads Manager"
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam: ran paid campaigns in it, including AOG's media buying"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+
+# ---- Timeline -------------------------------------------------------------
+goldstar-title:
+  text: "Sales Agent, later Social Media Consultant"
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+goldstar-summary:
+  text: "Worked inbound real-estate leads, then generated leads through social media for a six-person sales team."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+aog-title:
+  text: "Digital Marketing Intern → Digital Marketing Specialist → GTM Engineer"
+  status: USER_REPORTED
+  evidenceRef: "AOG employee badge, held by Allam (not published)"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+aog-summary:
+  text: "Joined as a digital marketing intern and ended up running the company's digital marketing alone. Built an offline touch-screen sales showroom used in production, and a bilingual lead-capture site that never launched."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review"
+  copy: APPROVED
+  approvedBy: "Allam"
+  date: "2026-10-22"
+eui-role:
+  text: "Computer Science student, expected 2028"
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+
+# ---- Case: hotel lead-capture page -----------------------------------------
+# Reviewed by Allam on 22 Oct 2026, from a read-only review of the source and its QA notes.
+# The project's own name is unannounced and must never appear on the site (ids use hotel-).
+hotel-summary:
+  text: "Built end-to-end for AOG Developments: a bilingual Arabic/English lead-capture site for a boutique hotel project, with interest-based lead forms and analytics event tracking. Never launched."
+  status: USER_REPORTED
+  evidenceRef: "Source and QA notes reviewed read-only by Allam, 22 Oct 2026"
+  copy: APPROVED
+  approvedBy: "Allam"
+  date: "2026-10-22"
+hotel-role:
+  text: "Solo build · Design and development · Never launched"
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+hotel-year:
+  text: "2026"
+  status: USER_REPORTED
+  evidenceRef: "Source and QA notes, held by Allam"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+hotel-tools:
+  text: "HTML, CSS, JavaScript, dataLayer event tracking"
+  status: USER_REPORTED
+  evidenceRef: "Source reviewed read-only by Allam, 22 Oct 2026"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+hotel-status:
+  text: "Built end-to-end for AOG Developments. Not launched."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+hotel-context:
+  text: "A boutique wellness hotel with serviced suites inside one of AOG Developments' coastal projects. I built a bilingual lead-capture site for it, completed in May 2026 but never launched."
+  status: USER_REPORTED
+  evidenceRef: "Source and QA notes, held by Allam"
+  copy: APPROVED
+  approvedBy: "Allam"
+  date: "2026-10-22"
+hotel-problem:
+  text: "AOG needed a campaign page that could take ad traffic in Arabic or English and turn visitors into leads with a clear interest, instead of generic contact messages."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+hotel-role-detail:
+  text: "I designed and built both versions alone: an English hotel page and an Arabic-first campaign page with an English toggle. I did not connect the forms to a CRM or set up a WhatsApp number."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam; source reviewed read-only by Allam"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+hotel-constraints:
+  text: "Static files only, with no backend or framework. Mobile-first, because campaign traffic comes from phones, and every section had to stay readable if JavaScript was slow or off."
+  status: USER_REPORTED
+  evidenceRef: "Source and QA notes, held by Allam"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+hotel-built:
+  text: "Two static versions in plain HTML, CSS and JavaScript. One toggle switches Arabic and English, flips the text direction and remembers the visitor's choice. Two lead forms with required-field validation and an interest picker: viewing, payment plan, serviced suite, or brochure. Every key action, such as a form submit, a validation error, a language switch or a gallery open, sends a tracking event to the dataLayer, ready for Google Tag Manager. Also gallery and floor-plan dialogs, a sticky mobile call-to-action, lazy-loaded WebP images, and reduced-motion support."
+  status: USER_REPORTED
+  evidenceRef: "Source reviewed read-only by Allam, 22 Oct 2026"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+hotel-evidence:
+  text: "QA notes record checks at seven screen sizes, from 360px phones to 1920px desktops, plus accessibility and motion checks. The source and QA screenshots are kept privately, because the brand and imagery belong to AOG Developments."
+  status: USER_REPORTED
+  evidenceRef: "QA notes and screenshots, held by Allam (not published)"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+hotel-limit-crm:
+  text: "The forms were never connected to a CRM; a submission only fires a tracking event."
+  status: USER_REPORTED
+  evidenceRef: "QA notes, held by Allam"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+hotel-limit-whatsapp:
+  text: "The WhatsApp button never had a verified number, so it points to the form instead."
+  status: USER_REPORTED
+  evidenceRef: "QA notes, held by Allam"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+hotel-next:
+  text: "Connect the form to a CRM or an n8n webhook, add a verified WhatsApp number, and launch it with a measured campaign."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+
+# ---- Case 2: Lead-routing prototype --------------------------------------
+# Reviewed by Allam on 22 Oct 2026. Source code exists locally (held by Allam, not opened here).
+# Section 08 test output stays NEEDS_EVIDENCE until Allam reruns the demo himself.
+proto-summary:
+  text: "A local lead-routing prototype: phone normalization, lead scoring into Hot, Warm and Cold, duplicate detection and round-robin assignment, tested against six scenario payloads."
+  status: USER_REPORTED
+  evidenceRef: "Prototype source folder, held by Allam (not published)"
+  copy: APPROVED
+  approvedBy: "Allam"
+  date: "2026-10-22"
+proto-role:
+  text: "Solo build · Designed for AOG Developments · Never deployed"
+  status: USER_REPORTED
+  evidenceRef: "Prototype files name it for AOG Developments; held by Allam"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+proto-year:
+  text: "2026"
+  status: USER_REPORTED
+  evidenceRef: "Prototype source folder (built May 2026), held by Allam"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+proto-tools:
+  text: "JavaScript, n8n (workflow templates), Airtable (schema), Telegram (message templates)"
+  status: USER_REPORTED
+  evidenceRef: "Prototype source folder, held by Allam (not published)"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+proto-status:
+  text: "Prototype. A local JavaScript demo, tested against six scenario payloads; the integrations were never connected."
+  status: USER_REPORTED
+  evidenceRef: "Prototype production-readiness report, held by Allam"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+proto-origin:
+  text: "I designed it for AOG Developments' lead flow, after seeing leads go cold between the ad form and the sales team."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review"
+  copy: APPROVED
+  approvedBy: "Allam"
+  date: "2026-10-22"
+proto-context:
+  text: "Built in May 2026 as a local JavaScript demo. The matching n8n workflows, Airtable schema and Telegram message templates exist as files but were never connected. Every person in the test data is fictional."
+  status: USER_REPORTED
+  evidenceRef: "Prototype source folder, held by Allam (not published)"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+proto-problem:
+  text: "Leads from ad forms reached the sales team with messy phone numbers, duplicates and no clear priority, so hot leads could go cold before anyone called."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+proto-role-detail:
+  text: "I designed and built it alone for AOG Developments' lead flow. It was never connected to live systems or deployed, and AOG never used it."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+proto-not-done:
+  text: "Airtable, Telegram and n8n were never connected, and no real lead passed through it."
+  status: USER_REPORTED
+  evidenceRef: "Prototype production-readiness report (Phase 1 Ready: NO), held by Allam"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+proto-constraints:
+  text: "Local only: no hosting, and every integration exists as a template or schema, not a live connection."
+  status: USER_REPORTED
+  evidenceRef: "Prototype production-readiness report, held by Allam"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+proto-architecture:
+  text: "Each lead's phone number is normalized, the lead is scored from 0 to 100 into Hot, Warm or Cold, duplicates are caught by the normalized phone, the lead is assigned to a sales rep by round-robin, and Hot leads trigger an SLA alert."
+  status: USER_REPORTED
+  evidenceRef: "Prototype source folder, held by Allam (not published)"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+proto-built:
+  text: "A JavaScript module that normalizes Egyptian phone numbers into one format and scores each lead with simple, readable rules: budget given, price or payment questions, a site-visit request, a valid phone, and urgency words, matched in Arabic and English. The score also sets a follow-up of 1, 2 or 3 days. Around it: an error log for broken payloads and ready-to-send Telegram summaries, plus n8n workflow templates and an Airtable schema for a live version."
+  status: USER_REPORTED
+  evidenceRef: "Scoring code read by Allam, 22 Oct 2026; source held by Allam"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+# Demo summary figures (pipeline value, "AI qualified" counts, any other summary number) are NOT published.
+proto-tests:
+  text: "Re-run on my own machine on 22 October 2026: six test payloads produced five lead records, one of them empty (see Limitations). The duplicate was caught by its normalized phone, and the broken payload was logged as an error. The full demo then assigned the leads across five fictional sales reps by round-robin. The terminal output is kept privately."
+  status: USER_REPORTED
+  evidenceRef: "Demo re-run terminal output, 22 Oct 2026, held by Allam (not published)"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+proto-limit-race:
+  text: "Round-robin assignment was never tested under concurrent requests."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+proto-limit-mocks:
+  text: "Tested only against six hand-written scenarios, never against real lead traffic."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+proto-limit-leads:
+  text: "Airtable, Telegram and n8n were mocked or left as templates, and nothing was ever hosted."
+  status: USER_REPORTED
+  evidenceRef: "Prototype production-readiness report, held by Allam"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+proto-limit-broken:
+  text: "A broken payload is logged as an error but still creates an empty lead record; it should be rejected."
+  status: USER_REPORTED
+  evidenceRef: "Demo re-run, 22 Oct 2026, held by Allam"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+proto-next:
+  text: "Reject broken payloads instead of creating a record, test round-robin under concurrent requests, then connect Airtable and Telegram in a sandbox before any live demo."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+
+# ---- Case 3: Interactive showroom ----------------------------------------
+# Reviewed by Allam on 22 Oct 2026, from a read-only review of the showroom source plus his statements.
+# The source, release packages and QA screenshots stay private (AOG owns the videos, plans and branding).
+show-summary:
+  text: "Built end-to-end for AOG Developments: an offline touch-screen sales showroom on a 75-inch display, used in production until I left."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam; showroom files and data held by Allam"
+  copy: APPROVED
+  approvedBy: "Allam"
+  date: "2026-10-22"
+show-role:
+  text: "Solo build · Design and development · Used in production"
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+show-year:
+  text: "2026"
+  status: USER_REPORTED
+  evidenceRef: "Showroom backups and assets dated July to August 2026, held by Allam"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+show-tools:
+  text: "HTML, CSS, JavaScript, Node.js (local maps server), Chrome kiosk mode, Windows batch scripts"
+  status: USER_REPORTED
+  evidenceRef: "Showroom source folder reviewed read-only by Allam, 22 Oct 2026"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+show-status:
+  text: "Built end-to-end for AOG Developments. Used in production."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam; showroom files held by Allam"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+show-context:
+  text: "A customer-facing, offline HTML5 kiosk app for a 75-inch Hikvision touch display in AOG Developments' sales showroom, built around full-screen video, interactive master plans and project maps."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam; showroom files held by Allam"
+  copy: APPROVED
+  approvedBy: "Allam"
+  date: "2026-10-22"
+show-problem:
+  text: "The sales team needed to present several coastal projects to walk-in visitors on one large touch screen, with videos, master plans and directions, without depending on an internet connection."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+show-role-detail:
+  text: "I designed and built the whole app alone: the screens, the touch interactions, the local maps server and the launch scripts. I did not shoot the videos or create the property renders and master-plan artwork; those were AOG's existing marketing assets."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam; showroom source reviewed read-only by Allam"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+show-constraints:
+  text: "It had to run offline on a single touch display with no backend: full-screen video, idle behaviour, and reliable touch navigation on the showroom floor."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam; showroom files held by Allam"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+show-scope:
+  text: "I built all of it: touch navigation across several destinations and projects, full-screen video playback, an interactive master-plan viewer, a photo gallery with pinch-zoom, idle behaviour, a small local server for maps, and Windows batch scripts that launch Chrome in kiosk mode."
+  status: USER_REPORTED
+  evidenceRef: "Showroom source folder reviewed read-only by Allam, 22 Oct 2026"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+show-built:
+  text: "If no one touches the screen for 90 seconds, it returns to the welcome screen. Each project has a QR code that opens driving directions on the visitor's own phone."
+  status: USER_REPORTED
+  evidenceRef: "Showroom source folder reviewed read-only by Allam, 22 Oct 2026"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+show-evidence:
+  text: "The source code, release packages and visual QA screenshots are kept privately. They are not published, because the videos, plans and branding belong to AOG Developments."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+show-outcome:
+  text: "Not measured: it was used in production, but no usage or sales-impact data was collected."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+show-limit-hardware:
+  text: "It ran on one display with one browser setup and was never tested on other hardware."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+show-limit-content:
+  text: "Updating project content required editing code, not a content editor."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+show-next:
+  text: "Move project content into a separate file that a marketing person can edit, and add simple on-device logging of which projects visitors open, so the sales team can see what interests them."
+  status: USER_REPORTED
+  evidenceRef: "Stated by Allam in the Sprint 1 content review"
+  approvedBy: "Allam"
+  date: "2026-10-22"
+
+# ---- Lab (unpublished until assets exist) --------------------------------
+lab-attendance:
+  text: "An independent attendance system project. It is not adopted by any university."
+  status: NEEDS_EVIDENCE
+  evidenceRef: "Asset checklist item 10"
+lab-gesture:
+  text: "A personal gesture-input experiment."
+  status: NEEDS_EVIDENCE
+  evidenceRef: "Asset checklist item 10"

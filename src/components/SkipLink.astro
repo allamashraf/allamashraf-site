@@ -1,0 +1,20 @@
+<a class="skip-link mono" href="#main">Skip to content</a>
+
+<style>
+  .skip-link {
+    position: fixed;
+    top: var(--s-3);
+    left: var(--s-3);
+    z-index: 100;
+    padding: var(--s-3) var(--s-4);
+    background: var(--accent);
+    color: var(--on-accent);
+    text-decoration: none;
+    transform: translateY(-200%);
+  }
+
+  .skip-link:focus-visible {
+    transform: none;
+    outline-color: var(--text);
+  }
+</style>

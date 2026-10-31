@@ -1,0 +1,96 @@
+---
+import { SITE, emailPublished } from '../config/site';
+import Claim from './Claim.astro';
+---
+
+<footer class="site-footer">
+  <div class="container grid site-footer__inner">
+    <div class="site-footer__id">
+      <p class="site-footer__name">Allam Ashraf</p>
+      <p class="muted">{SITE.location.split(',')[0]}</p>
+    </div>
+    <ul class="site-footer__links" aria-label="Contact links">
+      {
+        emailPublished && (
+          <li>
+            <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+          </li>
+        )
+      }
+      <li>
+        {SITE.linkedinUrl ? <a href={SITE.linkedinUrl} rel="me">LinkedIn</a> : <Claim id="linkedin-url" />}
+      </li>
+      {
+        SITE.githubUrl && (
+          <li>
+            <a href={SITE.githubUrl} rel="me">GitHub</a>
+          </li>
+        )
+      }
+    </ul>
+    <div class="site-footer__meta mono muted">
+      <p>© 2026 Allam Ashraf</p>
+      <p>Built with Astro · Hosted on GitHub Pages</p>
+      <p class="site-footer__privacy">No cookies or analytics. Hosted on GitHub Pages, which logs IP addresses for security.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--hairline);
+    padding-block: var(--s-8) var(--s-7);
+    font-size: var(--fs-small);
+  }
+
+  .site-footer__inner {
+    row-gap: var(--s-6);
+  }
+
+  .site-footer__id,
+  .site-footer__links,
+  .site-footer__meta {
+    grid-column: 1 / -1;
+  }
+
+  .site-footer__name {
+    font-family: var(--ff-display);
+    font-weight: 600;
+    font-size: 1.25rem;
+  }
+
+  .site-footer__links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+
+  .site-footer__links a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .site-footer__meta {
+    display: grid;
+    gap: var(--s-2);
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+
+  .site-footer__privacy {
+    max-width: 44ch;
+  }
+
+  @media (min-width: 1024px) {
+    .site-footer__id {
+      grid-column: 1 / span 3;
+    }
+    .site-footer__links {
+      grid-column: 4 / span 4;
+    }
+    .site-footer__meta {
+      grid-column: 8 / -1;
+    }
+  }
+</style>

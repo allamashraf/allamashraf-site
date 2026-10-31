@@ -1,0 +1,502 @@
+---
+// The Signal Path. The server-rendered HTML IS the complete final diagram (every node and
+// sentence visible): that is what no-JS, reduced-motion, Save-Data, mobile and a failed
+// chunk load all show. On desktop the lazy GSAP scene (src/scripts/signal-path-scene.ts)
+// sets its own pre-animation state only after it has loaded.
+import { MOTION_ENGINE } from 'astro:env/server';
+import { signal } from '../content/copy';
+import MobileLeadDemo from './MobileLeadDemo.astro';
+---
+
+<section class="section signal" id="signal" aria-labelledby="signal-title" data-signal data-motion={MOTION_ENGINE}>
+  <div class="container signal__inner">
+    <p class="coord mono">01 / Signal</p>
+    <div class="grid signal__head">
+      <h2 id="signal-title" class="h2 signal__title"><span class="signal__desktop-title">{signal.title}</span><span class="signal__mobile-title">{signal.title.split(' ').slice(0,-1).join(' ')} <span class="signal__accent">{signal.title.split(' ').at(-1)}</span></span></h2>
+      <p class="lede signal__intro">{signal.intro}</p>
+    </div>
+
+    <MobileLeadDemo />
+    <div class="track-wrap">
+    <div class="signal__wire" aria-hidden="true" data-signal-wire>
+      <span class="signal__wire-base"></span>
+      <span class="signal__wire-hot" data-signal-wire-hot></span>
+    </div>
+    <ol class="track" data-signal-track>
+      {
+        signal.stations.map((s, i) => (
+          <li class:list={['station', `station--${s.id}`]} data-station={s.id}>
+            <span class="station__node" aria-hidden="true">
+              <span class="station__lit" data-station-lit />
+            </span>
+            <h3 class="station__label mono">
+              <span class="station__index">{String(i + 1).padStart(2, '0')}</span>
+              {s.label}
+            </h3>
+            <p class="station__sentence">{s.sentence}</p>
+
+            {s.id === 'qualify' && (
+              <ul class="gate mono" aria-label="Illustrative checks">
+                {signal.gate.map((g) => (
+                  <li>
+                    <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+                      <path d="M2 6.5 4.8 9 10 3" fill="none" stroke="currentColor" stroke-width="1.5" />
+                    </svg>
+                    {g}
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {s.id === 'route' && (
+              <>
+                <svg class="lanes-svg" viewBox="0 0 100 96" preserveAspectRatio="none" aria-hidden="true">
+                  <path class="lane lane--idle" d="M0 48 C 28 48, 34 10, 62 10 L 84 10" />
+                  <path class="lane lane--idle" d="M0 48 C 28 48, 34 86, 62 86 L 84 86" />
+                </svg>
+                <ul class="lanes mono" aria-label="Illustrative routing lanes">
+                  {signal.lanes.map((l, li) => (
+                    <li class:list={['lane-label', { 'lane-label--picked': li === 1 }]}>
+                      {l}
+                      {li === 1 && <span class="visually-hidden"> (picked)</span>}
+                    </li>
+                  ))}
+                </ul>
+                <p class="station__note mono">{signal.illustrative}</p>
+              </>
+            )}
+
+            {s.id === 'respond' && (
+              <>
+                <span class="station__drop" aria-hidden="true" data-signal-drop />
+                <span class="signal__dot" aria-hidden="true" data-signal-dot />
+              </>
+            )}
+          </li>
+        ))
+      }
+    </ol>
+    </div>
+  </div>
+</section>
+
+
+
+<style>
+  .signal__desktop-title { display: contents; }
+  .signal__mobile-title { display: none; }
+  @media (max-width: 767px) {
+    .signal__desktop-title { display: none; }
+    .signal__mobile-title { display: contents; }
+    .signal__head { margin-bottom: 0 !important; }
+    .signal__title { font-family: var(--ff-body); font-size: 36px; font-weight: 500; line-height: 1.08; max-width: 9ch; }
+    .signal__intro { font: 12px/1.7 var(--ff-mono); }
+    .signal__accent { color: var(--accent); }
+    .signal__inner .track-wrap { margin-top: 24px; }
+    .signal__inner .track { display: grid; gap: 0; padding-left: 16px; }
+    .signal__inner .station { padding: 12px 0 12px 20px; min-height: 0; display: grid; grid-template-columns: 75px 1fr; gap: 8px; }
+    .signal__inner .station__label { font-size: 9px; gap: 4px; margin: 0; }
+    .signal__inner .station__sentence { font: 11px/1.6 var(--ff-mono); }
+    .signal__inner .gate, .signal__inner .lanes, .signal__inner .lanes-svg, .signal__inner .station__drop, .signal__inner .signal__dot { display: none; }
+    .signal__inner .station__note { font-size: 9px; margin-top: 8px; }
+    .signal__inner .station__node { top: 14px; width: 10px; height: 10px; left: 3px; }
+    .signal__inner .station.is-mobile-active .station__lit { background: var(--accent); box-shadow: 0 0 16px #c4ff0080; }
+  }
+  .signal__head {
+    row-gap: var(--s-5);
+    margin-bottom: var(--s-8);
+  }
+
+  .signal__title,
+  .signal__intro {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 768px) {
+    .signal__title {
+      grid-column: 1 / span 2;
+    }
+    .signal__intro {
+      grid-column: 3 / span 2;
+      align-self: end;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .signal__title {
+      grid-column: 1 / span 6;
+    }
+    .signal__intro {
+      grid-column: 8 / span 5;
+    }
+  }
+
+  /* ---- Mobile / tablet: vertical line on the left edge ------------------ */
+  .track-wrap {
+    --node: 16px;
+    position: relative;
+  }
+
+  .track {
+    position: relative;
+    display: grid;
+    gap: 0;
+  }
+
+  .station {
+    position: relative;
+    padding-inline-start: calc(var(--node) + var(--s-5));
+    padding-bottom: var(--s-7);
+  }
+
+  .station__node {
+    position: absolute;
+    left: 0;
+    top: 2px;
+    width: var(--node);
+    height: var(--node);
+    border-radius: 50%;
+    border: var(--line-w) solid var(--line-inactive);
+    background: var(--bg);
+    z-index: 1;
+  }
+
+  /* The lit ring sits on top of the inactive ring; the scene fades it in (opacity only). */
+  .station__lit {
+    position: absolute;
+    inset: calc(-1 * var(--line-w));
+    border-radius: 50%;
+    border: var(--line-w) solid var(--accent);
+  }
+
+  /* Segment from this node to the next one. */
+  .station::before {
+    content: '';
+    position: absolute;
+    left: calc(var(--node) / 2 - var(--line-w) / 2);
+    top: calc(var(--node) / 2 + 2px);
+    bottom: -2px;
+    width: var(--line-w);
+    background: var(--accent);
+  }
+
+  .station__label {
+    display: flex;
+    gap: var(--s-3);
+    color: var(--text);
+    font-size: 0.875rem;
+    margin-bottom: var(--s-3);
+  }
+
+  .station__index {
+    color: var(--muted);
+  }
+
+  .station__sentence {
+    font-size: var(--fs-body);
+    max-width: 34ch;
+  }
+
+  .gate {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-4);
+    margin-top: var(--s-4);
+    color: var(--muted);
+    text-transform: lowercase;
+  }
+
+  .gate li {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .gate svg {
+    color: var(--accent);
+  }
+
+  .lanes-svg {
+    display: none;
+  }
+
+  /* Mobile: the three lanes become three short ticks. */
+  .lanes {
+    display: flex;
+    gap: var(--s-4);
+    margin-top: var(--s-4);
+    color: var(--muted);
+  }
+
+  .lane-label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .lane-label::before {
+    content: '';
+    width: 14px;
+    height: var(--line-w);
+    background: var(--line-inactive);
+  }
+
+  .lane-label--picked {
+    color: var(--text);
+  }
+
+  .lane-label--picked::before {
+    background: var(--accent);
+  }
+
+  .station__note {
+    margin-top: var(--s-3);
+    color: var(--muted);
+    text-transform: none;
+    letter-spacing: 0.04em;
+  }
+
+  .station--respond {
+    padding-bottom: 0;
+  }
+
+  /* The line runs on to the bottom edge of the section, toward Selected Work. */
+  .station--respond::before {
+    bottom: calc(-1 * var(--section-pad));
+  }
+
+  /* Mobile pass (approved by Allam): tighter heading gap and station spacing on phones. */
+  @media (max-width: 767px) {
+    .signal__head {
+      margin-bottom: var(--s-6);
+    }
+
+    .station:not(.station--respond) {
+      padding-bottom: var(--s-5);
+    }
+  }
+
+  .signal__dot {
+    position: absolute;
+    left: 3px;
+    top: 5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    z-index: 2;
+  }
+
+  .station__drop,
+  .signal__wire {
+    display: none;
+  }
+
+  /* ---- Desktop: horizontal track, five columns ------------------------- */
+  @media (min-width: 1024px) {
+    .track-wrap {
+      --band: 112px;
+    }
+
+    .track {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    /* Text sits right of the node column so the RESPOND drop never crosses it. */
+    .station {
+      padding: calc(var(--band) + var(--s-5)) var(--s-5) 0 calc(var(--node) + var(--s-4));
+    }
+
+    .station__node {
+      top: calc(var(--band) / 2 - var(--node) / 2);
+    }
+
+    .station::before {
+      left: calc(var(--node) / 2);
+      right: calc(-1 * var(--node) / 2);
+      top: calc(var(--band) / 2 - var(--line-w) / 2);
+      bottom: auto;
+      width: auto;
+      height: var(--line-w);
+    }
+
+    .station--respond::before {
+      display: none;
+    }
+
+    /* RESPOND: the line continues down toward Selected Work. */
+    .station__drop {
+      display: block;
+      position: absolute;
+      left: calc(var(--node) / 2 - var(--line-w) / 2);
+      top: calc(var(--band) / 2);
+      bottom: calc(-1 * var(--s-10));
+      width: var(--line-w);
+      background: var(--accent);
+      transform-origin: top;
+    }
+
+    /* Scene-only wire from CLICK to RESPOND (four columns = 80% of the track). */
+    .signal__wire {
+      position: absolute;
+      left: calc(var(--node) / 2);
+      top: calc(var(--band) / 2 - var(--line-w) / 2);
+      width: 80%;
+      height: var(--line-w);
+    }
+
+    .signal__wire-base,
+    .signal__wire-hot {
+      position: absolute;
+      inset: 0;
+    }
+
+    .signal__wire-base {
+      background: var(--line-inactive);
+    }
+
+    .signal__wire-hot {
+      background: var(--accent);
+      transform-origin: left;
+    }
+
+    /* While the GSAP scene runs, the static segments hand over to the animated wire,
+       and the section becomes one pinned viewport. Exactly one pinned section (§8.1). */
+    .signal:global(.is-scene) {
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      padding-block: calc(var(--header-h) + var(--s-5)) var(--s-7);
+    }
+
+    .signal:global(.is-scene) .signal__inner {
+      width: 100%;
+    }
+
+    .signal:global(.is-scene) .signal__wire {
+      display: block;
+    }
+
+    .signal:global(.is-scene) .station::before {
+      visibility: hidden;
+    }
+
+    .signal__dot {
+      top: calc(var(--band) / 2 - 5px);
+    }
+
+    .lanes-svg {
+      display: block;
+      position: absolute;
+      left: calc(var(--node) / 2);
+      width: calc(100% - var(--node));
+      top: calc(var(--band) / 2 - 48px);
+      height: 96px;
+      overflow: visible;
+    }
+
+    .lane {
+      fill: none;
+      stroke-width: var(--line-w);
+      vector-effect: non-scaling-stroke;
+    }
+
+    .lane--idle {
+      stroke: var(--line-inactive);
+    }
+
+    /* Lane labels sit at the end of each lane. */
+    .lanes {
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: var(--band);
+      margin: 0;
+      pointer-events: none;
+    }
+
+    /* Labels end where each lane ends (84% of the lane box), above A and B, below C,
+       so the RESPOND drop line never crosses them. */
+    .lane-label {
+      position: absolute;
+      right: calc(100% - var(--node) / 2 - 0.84 * (100% - var(--node)));
+      transform: translateY(-50%);
+      white-space: nowrap;
+    }
+
+    .lane-label::before {
+      display: none;
+    }
+
+    .lane-label:nth-child(1) {
+      top: calc(var(--band) / 2 - 52px);
+    }
+
+    .lane-label:nth-child(2) {
+      top: calc(var(--band) / 2 - 14px);
+    }
+
+    .lane-label:nth-child(3) {
+      top: calc(var(--band) / 2 + 52px);
+    }
+  }
+
+  /* ---- CSS-only motion (no JS): mobile/tablet reveals, and the MOTION_ENGINE=css
+     kill-switch on desktop. Scroll-driven, so Firefox and older Safari simply keep the
+     complete static diagram (§8.4). Only transform and opacity are animated. */
+  /* NOTE: animation-timeline lives in a separate, more specific rule (:global(html) …).
+     In one rule the CSS minifier merges it into the `animation` shorthand, which browsers
+     reject as invalid, silently dropping the whole animation. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) and (max-width: 1023px) {
+      .station {
+        animation: station-in linear both;
+      }
+
+      :global(html) .station {
+        animation-timeline: view();
+        animation-range: entry 0% entry 80%;
+      }
+    }
+
+    @media (prefers-reduced-motion: no-preference) and (min-width: 1024px) {
+      .signal[data-motion='css'] .station {
+        animation: station-in linear both;
+      }
+
+      :global(html) .signal[data-motion='css'] .station {
+        animation-timeline: view();
+        animation-range: entry 20% cover 45%;
+      }
+
+      .signal[data-motion='css'] .station::before {
+        transform-origin: left;
+        animation: segment-draw linear both;
+      }
+
+      :global(html) .signal[data-motion='css'] .station::before {
+        animation-timeline: view();
+        animation-range: entry 30% cover 55%;
+      }
+    }
+  }
+
+  @keyframes station-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes segment-draw {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+</style>

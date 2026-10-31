@@ -1,0 +1,224 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import SignalPath from '../components/SignalPath.astro';
+import CaseCard from '../components/CaseCard.astro';
+import CapabilityGroup from '../components/CapabilityGroup.astro';
+import ContactBlock from '../components/ContactBlock.astro';
+import Claim from '../components/Claim.astro';
+import { approach, capabilities, work } from '../content/copy';
+import { SITE } from '../config/site';
+import '../styles/mobile.css';
+
+const cases = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+const [first, ...rest] = cases;
+---
+
+<BaseLayout
+  title="Allam Ashraf"
+  description="Allam Ashraf builds the systems that move leads from first click to the sales team: lead qualification, routing automation and landing experiences. Based in Cairo."
+>
+  <Hero />
+  <SignalPath />
+
+  <section class="section work" id="work" aria-labelledby="work-title">
+    <div class="container">
+      <p class="coord mono">02 / Work</p>
+      <div class="grid work__head">
+        <h2 id="work-title" class="h2 work__title"><span class="desktop-work-title">{work.title}</span><span class="mobile-work-title">{work.title.split(' ').slice(0, -1).join(' ')} <span class="mobile-work-accent">{work.title.split(' ').at(-1)}</span></span></h2>
+        <p class="lede work__intro">{work.intro}</p>
+      </div>
+      <div class="work__list">
+        {first && <CaseCard entry={first} layout="feature" />}
+        <div class="work__pair">
+          {rest.map((c) => <CaseCard entry={c} />)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="capabilities" aria-labelledby="cap-title">
+    <div class="container">
+      <p class="coord mono">03 / Capabilities</p>
+      <h2 id="cap-title" class="h2 caps__title">{capabilities.title}</h2>
+      <div class="caps">
+        {capabilities.groups.map((g) => <CapabilityGroup {...g} />)}
+      </div>
+      <div class="mobile-skills">
+        {capabilities.groups.map(g => <details><summary>{g.title}</summary><p>{g.body}</p>{g.toolsClaim && <p class="mono"><Claim id={g.toolsClaim} /></p>}</details>)}
+        {approach.principles.map(p => <details><summary>{p.title}</summary><p>{p.body}</p></details>)}
+        <a class="btn" href="/about/">{approach.aboutLink}<span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section approach" id="approach" aria-labelledby="approach-title">
+    <div class="container grid approach__grid">
+      <div class="approach__main">
+        <p class="coord mono">04 / Approach</p>
+        <h2 id="approach-title" class="h2">{approach.title}</h2>
+        <ol class="principles">
+          {
+            approach.principles.map((p) => (
+              <li class="principle">
+                <h3 class="principle__title">{p.title}</h3>
+                <p class="muted">{p.body}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+      <aside class="approach__about" aria-label="About Allam">
+        <p class="approach__bio"><Claim id="bio-short" /></p>
+        <a class="btn" href="/about/">{approach.aboutLink} <span class="arrow" aria-hidden="true">→</span></a>
+      </aside>
+    </div>
+  </section>
+
+  <ContactBlock />
+  {SITE.linkedinUrl && <a class="mobile-contact btn btn--primary" data-mobile-contact href={SITE.linkedinUrl} rel="me" hidden>LinkedIn<span aria-hidden="true">↗</span></a>}
+</BaseLayout>
+
+<style>
+  .desktop-work-title { display: contents; }
+  .mobile-work-title { display: none; }
+  .mobile-skills, .mobile-contact { display: none; }
+  .work__head {
+    row-gap: var(--s-5);
+    margin-bottom: var(--s-8);
+  }
+
+  .work__title,
+  .work__intro {
+    grid-column: 1 / -1;
+  }
+
+  .work__list {
+    display: grid;
+    gap: var(--s-9);
+  }
+
+  .work__pair {
+    display: grid;
+    gap: var(--s-9);
+  }
+
+  @media (min-width: 1024px) {
+    .work__title {
+      grid-column: 1 / span 6;
+    }
+    .work__intro {
+      grid-column: 8 / span 5;
+      align-self: end;
+    }
+    .work__pair {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--col-gap);
+    }
+  }
+
+  .caps__title {
+    margin-bottom: var(--s-8);
+  }
+
+  .caps {
+    display: grid;
+    gap: var(--s-7) var(--col-gap);
+  }
+
+  @media (min-width: 768px) {
+    .caps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .approach__grid {
+    row-gap: var(--s-8);
+  }
+
+  .approach__main,
+  .approach__about {
+    grid-column: 1 / -1;
+  }
+
+  .principles {
+    display: grid;
+    gap: var(--s-6);
+    margin-top: var(--s-7);
+  }
+
+  .principle {
+    display: grid;
+    gap: var(--s-2);
+    padding-left: var(--s-5);
+    border-left: var(--line-w) solid var(--line-inactive);
+  }
+
+  .principle__title {
+    font-size: clamp(1.25rem, 1vw + 1rem, 1.75rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  .approach__about {
+    display: grid;
+    gap: var(--s-5);
+    align-content: end;
+    justify-items: start;
+  }
+
+  .approach__bio {
+    font-size: clamp(1.125rem, 0.5vw + 1rem, 1.375rem);
+    line-height: 1.55;
+  }
+
+  @media (min-width: 1024px) {
+    .approach__main {
+      grid-column: 1 / span 7;
+    }
+    .approach__about {
+      grid-column: 9 / -1;
+    }
+  }
+
+  /* Mobile pass (approved by Allam, deviates from §5): phones get compact cards without the
+     illustrative cover (it stays on the case pages), and tighter gaps on the homepage.
+     Last in the file so it wins the cascade. */
+  @media (max-width: 767px) {
+    .work__head {
+      margin-bottom: var(--s-6);
+    }
+
+    .work__list,
+    .work__pair {
+      gap: var(--s-7);
+    }
+
+    .work__list :global(.card__cover) {
+      display: none;
+    }
+
+    .caps__title {
+      margin-bottom: var(--s-6);
+    }
+
+    .caps {
+      row-gap: var(--s-6);
+    }
+
+    .approach__grid {
+      row-gap: var(--s-6);
+    }
+
+    .principles {
+      gap: var(--s-5);
+      margin-top: var(--s-6);
+    }
+
+    /* The bio lives on /about/; the "More about me" link stays. */
+    .approach__bio {
+      display: none;
+    }
+  }
+</style>

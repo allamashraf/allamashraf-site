@@ -1,0 +1,155 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Timeline from '../components/Timeline.astro';
+import Claim from '../components/Claim.astro';
+import { approach, capabilities } from '../content/copy';
+import { claimRenders } from '../lib/claims';
+
+const toolRows: { title: string; toolsClaim: string }[] = [];
+for (const g of capabilities.groups) {
+  if (g.toolsClaim && (await claimRenders(g.toolsClaim))) toolRows.push({ title: g.title, toolsClaim: g.toolsClaim });
+}
+---
+
+<BaseLayout
+  title="About"
+  description="About Allam Ashraf: Computer Science student at Egypt University of Informatics in Cairo, working on lead operations, CRM and workflow automation."
+>
+  <header class="page-head container grid">
+    <div class="page-head__text">
+      <h1 class="page-head__title">About</h1>
+      <p class="lede"><Claim id="bio-short" /></p>
+    </div>
+  </header>
+
+  <section class="container section about-section" aria-labelledby="path-title">
+    <div class="grid">
+      <h2 id="path-title" class="h3 about-section__title">Path so far</h2>
+      <div class="about-section__body">
+        <Timeline />
+      </div>
+    </div>
+  </section>
+
+  <section class="container section about-section" aria-labelledby="tools-title">
+    <div class="grid">
+      <h2 id="tools-title" class="h3 about-section__title">Tools I have used</h2>
+      <dl class="about-section__body tools">
+        {
+          toolRows.map((g) => (
+            <div class="tools__row">
+              <dt class="mono muted">{g.title}</dt>
+              <dd>
+                <Claim id={g.toolsClaim} />
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <section class="container section about-section" aria-labelledby="way-title">
+    <div class="grid">
+      <h2 id="way-title" class="h3 about-section__title">{approach.title}</h2>
+      <ul class="about-section__body way">
+        {
+          approach.principles.map((p) => (
+            <li>
+              <h3 class="way__title">{p.title}</h3>
+              <p class="muted">{p.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    padding-top: calc(var(--header-h) + var(--s-8));
+    padding-bottom: var(--s-8);
+  }
+
+  .page-head__text {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: var(--s-5);
+  }
+
+  @media (min-width: 1024px) {
+    .page-head__text {
+      grid-column: 1 / span 9;
+    }
+  }
+
+  .page-head__title {
+    font-size: clamp(3rem, 7vw + 0.5rem, 8rem);
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+  }
+
+  .about-section {
+    border-top: 1px solid var(--hairline);
+    padding-block: var(--s-8);
+  }
+
+  .about-section__title,
+  .about-section__body {
+    grid-column: 1 / -1;
+  }
+
+  .about-section__title {
+    margin-bottom: var(--s-6);
+  }
+
+  @media (min-width: 1024px) {
+    .about-section__title {
+      grid-column: 1 / span 4;
+    }
+    .about-section__body {
+      grid-column: 5 / -1;
+    }
+  }
+
+  .tools {
+    display: grid;
+    margin: 0;
+  }
+
+  .tools__row {
+    display: grid;
+    gap: var(--s-2);
+    padding-block: var(--s-4);
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .tools dd {
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    .tools__row {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+      gap: var(--s-5);
+    }
+  }
+
+  .way {
+    display: grid;
+    gap: var(--s-6);
+  }
+
+  .way li {
+    display: grid;
+    gap: var(--s-2);
+    padding-left: var(--s-5);
+    border-left: var(--line-w) solid var(--line-inactive);
+  }
+
+  .way__title {
+    font-size: clamp(1.25rem, 1vw + 1rem, 1.75rem);
+    line-height: 1.2;
+  }
+</style>

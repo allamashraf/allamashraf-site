@@ -1,0 +1,97 @@
+---
+import { Font } from 'astro:assets';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import SkipLink from '../components/SkipLink.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { SITE } from '../config/site';
+
+interface Props {
+  title: string;
+  description: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+}
+
+const { title, description, ogType = 'website', noindex = false } = Astro.props;
+const fullTitle = title === SITE.name ? title : `${title} · ${SITE.name}`;
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const socialSlug = Astro.url.pathname.replace(/^\/+|\/+$/g, '').replaceAll('/', '-') || 'home';
+const socialImage = new URL(`/og/${socialSlug}.png`, SITE.url).href;
+const socialAlt = `${fullTitle} — GTM engineering, lead operations and automation`;
+
+// sameAs lists only links Allam has confirmed.
+const sameAs = [SITE.linkedinUrl, SITE.githubUrl].filter((u): u is string => typeof u === 'string');
+const personLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: SITE.name,
+  url: `${SITE.url}/`,
+  ...(sameAs.length ? { sameAs } : {}),
+});
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#08090B" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:secure_url" content={socialImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={socialAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <meta name="twitter:image:alt" content={socialAlt} />
+
+    <!-- Exactly one preload: the display face that renders the H1 (LCP). -->
+    <Font cssVariable="--font-display" preload />
+    <Font cssVariable="--font-body" />
+    <Font cssVariable="--font-mono" />
+
+    <script is:inline type="application/ld+json" set:html={personLd} />
+  </head>
+  <body>
+    <SkipLink />
+    <SiteHeader />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <SiteFooter />
+    <script>
+      // The tiny inline scheduler is counted in the own-JS budget. Enhancement
+      // downloads wait for load, local fonts and two frames; no eager imports.
+      const start = () => document.fonts.ready.then(() => {
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          const script = document.createElement('script');
+          script.type = 'module';
+          script.src = '/client/client.js';
+          document.body.append(script);
+        }));
+      });
+      if (document.readyState === 'complete') start();
+      else window.addEventListener('load', start, { once: true });
+    </script>
+  </body>
+</html>

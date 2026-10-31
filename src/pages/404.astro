@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { notFound } from '../content/copy';
+---
+
+<BaseLayout title="Signal lost" description="This page does not exist on allamashraf.dev." noindex>
+  <section class="lost container" aria-labelledby="lost-title">
+    <!-- The signal line breaks into a dotted lime line with no final node. -->
+    <svg class="lost__line" viewBox="0 0 600 40" preserveAspectRatio="none" aria-hidden="true">
+      <circle cx="8" cy="20" r="6" />
+      <path class="solid" d="M14 20 H 260" />
+      <path class="broken" d="M290 20 H 600" />
+    </svg>
+    <h1 id="lost-title" class="lost__title">{notFound.title}</h1>
+    <p class="lede">{notFound.body}</p>
+    <p class="lost__links">
+      <a class="btn btn--primary" href="/work/">Work</a>
+      <a class="btn" href="/">Home</a>
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .lost {
+    min-height: 80svh;
+    display: grid;
+    align-content: center;
+    gap: var(--s-6);
+    padding-top: calc(var(--header-h) + var(--s-8));
+    padding-bottom: var(--s-9);
+  }
+
+  .lost__line {
+    width: min(100%, 720px);
+    height: 40px;
+    overflow: visible;
+  }
+
+  .lost__line circle {
+    fill: var(--bg);
+    stroke: var(--accent);
+    stroke-width: 2;
+  }
+
+  .lost__line path {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .lost__line .broken {
+    stroke-dasharray: 2 10;
+    stroke-linecap: round;
+  }
+
+  .lost__title {
+    font-size: var(--fs-h1);
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+  }
+
+  .lost__links {
+    display: flex;
+    gap: var(--s-3);
+    flex-wrap: wrap;
+  }
+</style>

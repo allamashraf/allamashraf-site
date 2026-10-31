@@ -1,0 +1,54 @@
+---
+// Status is encoded by mono text + border style, never by colour alone (§4.2 rule 10).
+// UNRELEASED (added 22 Oct 2026, approved by Allam): built and complete, never launched.
+interface Props {
+  status: 'DELIVERED' | 'UNRELEASED' | 'PROTOTYPE' | 'CONCEPT' | 'IN_PROGRESS';
+  class?: string;
+}
+
+const { status, class: className } = Astro.props;
+const label = status === 'IN_PROGRESS' ? 'In progress' : status.toLowerCase();
+---
+
+<span class:list={['badge', `badge--${status.toLowerCase().replace('_', '-')}`, 'mono', className]}>
+  {status === 'IN_PROGRESS' && <span class="badge__half" aria-hidden="true" />}
+  {label}
+</span>
+
+<style>
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    padding: var(--s-1) var(--s-3);
+    border: 1px solid var(--text);
+    color: var(--text);
+    white-space: nowrap;
+    line-height: 1.5;
+  }
+
+  .badge--unreleased {
+    border: 3px double var(--text);
+    padding: 2px calc(var(--s-3) - 2px);
+  }
+
+  .badge--prototype {
+    border-style: dashed;
+  }
+
+  .badge--concept {
+    border-style: dotted;
+  }
+
+  .badge--in-progress {
+    border-color: var(--line-inactive);
+  }
+
+  .badge__half {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid var(--text);
+    background: linear-gradient(90deg, var(--text) 50%, transparent 50%);
+  }
+</style>

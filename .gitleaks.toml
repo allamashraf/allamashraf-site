@@ -1,0 +1,15 @@
+title = "allamashraf-site"
+
+[extend]
+useDefault = true
+
+# Personal email addresses must never be committed. The only public address is allam@allamashraf.dev.
+[[rules]]
+id = "personal-gmail-address"
+description = "A gmail.com address in the repo"
+regex = '''[A-Za-z0-9._%+-]+@gmail\.com'''
+keywords = ["gmail.com"]
+
+[allowlist]
+description = "Build output and dependencies"
+paths = ['''node_modules/''', '''dist/''', '''\.variants/''', '''package-lock\.json''']

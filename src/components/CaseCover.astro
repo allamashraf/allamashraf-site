@@ -1,0 +1,182 @@
+---
+// Hand-authored illustrative covers in the line-and-node language.
+// They show the shape of each project, not production screens, and say so.
+import { caseTemplate } from '../content/copy';
+
+interface Props {
+  kind: 'hotel' | 'routing' | 'showroom';
+  size?: 'card' | 'hero';
+}
+
+const { kind, size = 'card' } = Astro.props;
+---
+
+<figure class:list={['cover', `cover--${size}`]}>
+  <div class:list={['cover__frame', `vt-${kind}`]}>
+    {
+      kind === 'hotel' && (
+        <svg viewBox="0 0 480 300" role="img" aria-label="Illustrative flow: Arabic or English entry, an interest picker, then a tracking event">
+          <path class="ln" d="M80 100 C 140 100, 150 150, 200 150" />
+          <path class="ln" d="M80 200 C 140 200, 150 150, 200 150" />
+          <path class="ln ln--hot" d="M200 150 L 400 150" />
+          <circle class="nd" cx="80" cy="100" r="8" />
+          <circle class="nd" cx="80" cy="200" r="8" />
+          <circle class="nd nd--hot" cx="200" cy="150" r="8" />
+          <rect class="box" x="232" y="118" width="96" height="64" />
+          <path class="tick" d="M244 136 l5 5 9 -9" />
+          <path class="tick" d="M244 156 l5 5 9 -9" />
+          <path class="bar" d="M268 136 h48 M268 156 h36 M268 172 h44" />
+          <circle class="nd nd--end" cx="400" cy="150" r="10" />
+          <text x="62" y="80">AR</text>
+          <text x="62" y="232">EN</text>
+          <text x="232" y="106">INTEREST</text>
+          <text x="376" y="186">TRACK</text>
+        </svg>
+      )
+    }
+    {
+      kind === 'routing' && (
+        <svg viewBox="0 0 480 300" role="img" aria-label="Illustrative pipeline: normalize the phone, score, catch duplicates, then route to one of three reps">
+          <path class="ln ln--hot" d="M40 150 L 300 150" />
+          <path class="ln" d="M300 150 C 340 150, 350 80, 400 80 L 430 80" />
+          <path class="ln ln--hot" d="M300 150 L 430 150" />
+          <path class="ln" d="M300 150 C 340 150, 350 220, 400 220 L 430 220" />
+          <circle class="nd nd--hot" cx="40" cy="150" r="7" />
+          <circle class="nd nd--hot" cx="105" cy="150" r="7" />
+          <circle class="nd nd--hot" cx="170" cy="150" r="7" />
+          <circle class="nd nd--hot" cx="235" cy="150" r="7" />
+          <circle class="nd nd--hot" cx="300" cy="150" r="7" />
+          <circle class="nd" cx="430" cy="80" r="7" />
+          <circle class="nd nd--end" cx="430" cy="150" r="9" />
+          <circle class="nd" cx="430" cy="220" r="7" />
+          <text x="22" y="186">IN</text>
+          <text x="78" y="124">PHONE</text>
+          <text x="143" y="186">SCORE</text>
+          <text x="210" y="124">DEDUP</text>
+          <text x="273" y="186">ROUTE</text>
+          <text x="394" y="60">REP A</text>
+          <text x="394" y="130">REP B</text>
+          <text x="394" y="252">REP C</text>
+        </svg>
+      )
+    }
+    {
+      kind === 'showroom' && (
+        <svg viewBox="0 0 480 300" role="img" aria-label="Illustrative showroom: a touch screen with project tiles, full-screen video and an idle loop">
+          <rect class="box" x="110" y="50" width="260" height="170" />
+          <rect class="tile" x="130" y="70" width="70" height="52" />
+          <rect class="tile" x="210" y="70" width="70" height="52" />
+          <rect class="tile" x="290" y="70" width="60" height="52" />
+          <rect class="tile" x="130" y="132" width="110" height="68" />
+          <rect class="tile" x="250" y="132" width="100" height="68" />
+          <path class="ln ln--hot" d="M288 152 L 288 180 L 312 166 Z" />
+          <path class="ln" d="M240 220 L 240 252" />
+          <path class="ln" d="M196 266 A 44 14 0 1 0 284 266 A 44 14 0 1 0 196 266" />
+          <circle class="nd nd--end" cx="284" cy="266" r="7" />
+          <text x="110" y="36">TOUCH</text>
+          <text x="310" y="250">IDLE</text>
+          <text x="300" y="36">VIDEO</text>
+        </svg>
+      )
+    }
+  </div>
+  <figcaption class="cover__caption mono">{caseTemplate.diagramCaption}</figcaption>
+</figure>
+
+<style>
+  .cover {
+    display: grid;
+    gap: var(--s-3);
+  }
+
+  .cover__frame {
+    border: 1px solid var(--hairline);
+    background: var(--surface);
+    aspect-ratio: 8 / 5;
+    overflow: hidden;
+  }
+
+  .cover__frame svg {
+    width: 100%;
+    height: 100%;
+    transition: transform var(--dur-ui) var(--ease);
+  }
+
+  /* One name per project, so each page has at most one of each. */
+  .vt-showroom {
+    view-transition-name: cover-showroom;
+  }
+
+  .vt-hotel {
+    view-transition-name: cover-hotel;
+  }
+
+  .vt-routing {
+    view-transition-name: cover-routing;
+  }
+
+  .cover__caption {
+    color: var(--muted);
+    text-transform: none;
+    letter-spacing: 0.02em;
+    font-size: 0.75rem;
+  }
+
+  .ln {
+    fill: none;
+    stroke: var(--line-inactive);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .ln--hot {
+    stroke: var(--accent);
+  }
+
+  .nd {
+    fill: var(--surface);
+    stroke: var(--line-inactive);
+    stroke-width: 2;
+  }
+
+  .nd--hot {
+    stroke: var(--accent);
+  }
+
+  .nd--end {
+    fill: var(--accent);
+    stroke: var(--accent);
+  }
+
+  .box,
+  .tile {
+    fill: none;
+    stroke: var(--line-inactive);
+    stroke-width: 1.5;
+  }
+
+  .tile {
+    stroke: var(--hairline);
+    fill: var(--bg);
+  }
+
+  .tick {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.5;
+  }
+
+  .bar {
+    fill: none;
+    stroke: var(--line-inactive);
+    stroke-width: 2;
+  }
+
+  text {
+    font-family: var(--ff-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    fill: var(--muted);
+  }
+</style>

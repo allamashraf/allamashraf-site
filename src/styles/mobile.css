@@ -1,0 +1,53 @@
+/* Reference-led homepage changes only. This file has no rule applying at >=768px. */
+@media (max-width: 767px) {
+  body:has(.mobile-demo) { --bg: #050606; --surface: #0b0d0c; --accent: #c4ff00; --text: #f2efe7; --muted: #a4a5a3; --gutter: 24px; padding-bottom: calc(72px + env(safe-area-inset-bottom)); }
+  body:has(.mobile-demo) .section { --section-pad: 48px; }
+  body:has(.mobile-demo) .coord { font-size: 10px; letter-spacing: .04em; margin-bottom: 18px; }
+  body:has(.mobile-demo) .coord::before { background: var(--accent); width: 16px; }
+  body:has(.mobile-demo) .h2 { font-family: var(--ff-body); font-size: 40px; font-weight: 500; line-height: 1.08; }
+  body:has(.mobile-demo) .work__title { max-width: 7ch; }
+  .mobile-work-accent { color: var(--accent); }
+  body:has(.mobile-demo) .desktop-work-title { display: none; }
+  body:has(.mobile-demo) .mobile-work-title { display: contents; }
+  body:has(.mobile-demo) .work__head { gap: 14px; margin-bottom: 22px; }
+  body:has(.mobile-demo) .work__intro { font: 12px/1.6 var(--ff-mono); }
+  body:has(.mobile-demo) .work__list, body:has(.mobile-demo) .work__pair { gap: 10px; }
+  body:has(.mobile-demo) #work .card { border: 1px solid #3d3e3d; border-radius: 10px; padding: 42px 12px 14px; gap: 8px; background: linear-gradient(140deg,#0c0e0c33,#050606); }
+  body:has(.mobile-demo) #work .card__branch { display: none; }
+  body:has(.mobile-demo) #work .card__body { gap: 6px; padding-top: 12px; border-top: 1px solid #2a2b2a; }
+  body:has(.mobile-demo) #work .card__num { position: absolute; top: 11px; left: 12px; font-size: 10px; color: var(--accent); }
+  body:has(.mobile-demo) #work .card__meta { display: contents; }
+  body:has(.mobile-demo) #work .badge { position: absolute; top: 9px; right: 12px; border-radius: 999px; font-size: 9px; padding: 2px 8px; color: var(--text); }
+  body:has(.mobile-demo) #work .badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+  body:has(.mobile-demo) #work .badge--delivered { color: var(--accent); }
+  body:has(.mobile-demo) #work .badge--unreleased { color: #ffd044; }
+  body:has(.mobile-demo) #work .card__title { font: 500 16px/1.25 var(--ff-body); letter-spacing: -.02em; max-width: calc(100% - 32px); }
+  body:has(.mobile-demo) #work .card__summary { font: 11px/1.7 var(--ff-mono); max-width: calc(100% - 32px); }
+  body:has(.mobile-demo) #work .card__role { font: 8px/1.6 var(--ff-mono); color: var(--muted); max-width: calc(100% - 36px); }
+  body:has(.mobile-demo) #work .card__more { font-size: 0; position: absolute; right: 12px; bottom: 22px; width: 34px; height: 34px; margin: 0; border: 1px solid #b5b6b0; border-radius: 50%; display: grid; place-items: center; }
+  body:has(.mobile-demo) #work .card__more .arrow { font: 20px/1 var(--ff-body); }
+  body:has(.mobile-demo) .caps, body:has(.mobile-demo) #approach { display: none; }
+  body:has(.mobile-demo) .mobile-skills { display: block; }
+  body:has(.mobile-demo) .caps__title { margin-bottom: 24px; }
+  .mobile-skills details { border-top: 1px solid #383a38; }
+  .mobile-skills summary { font: 500 16px/1.4 var(--ff-body); padding: 16px 20px 16px 0; min-height: 54px; cursor: pointer; }
+  .mobile-skills details p { font: 12px/1.7 var(--ff-mono); color: var(--muted); padding-bottom: 18px; }
+  .mobile-skills > .btn { margin-top: 24px; border-radius: 999px; text-transform: none; }
+  body:has(.mobile-demo) .contact__title { font-family: var(--ff-body); font-size: 40px; font-weight: 500; line-height: 1.08; }
+  body:has(.mobile-demo) .contact .btn { border-radius: 999px; }
+  body:has(.mobile-demo) .contact__availability { font-size: 18px; }
+  body:has(.mobile-demo) .contact__facts { font-size: 13px; }
+  body:has(.mobile-demo) .site-footer { padding-block: 32px; }
+  body:has(.mobile-demo) .site-footer__meta { font-size: 10px; }
+  body:has(.mobile-demo) .mobile-contact:not([hidden]) { position: fixed; z-index: 40; bottom: calc(12px + env(safe-area-inset-bottom)); left: 24px; right: 24px; display: flex; justify-content: space-between; border-radius: 999px; min-height: 48px; box-shadow: 0 0 0 10px #050606e8; }
+  body:has(.mobile-demo)::before { content: ''; position: fixed; left: 0; top: 108px; bottom: 0; width: 1px; background: #8db50055; z-index: 1; pointer-events: none; }
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      body:has(.mobile-demo)::before { transform-origin: top; animation: mobile-progress linear both; animation-timeline: scroll(); }
+    }
+  }
+  @keyframes mobile-progress { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  @media (prefers-reduced-motion: no-preference) {
+    body:has(.mobile-demo) .btn:active { transform: scale(.98); }
+  }
+}

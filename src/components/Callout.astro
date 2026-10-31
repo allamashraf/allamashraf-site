@@ -1,0 +1,38 @@
+---
+interface Props {
+  kind: 'limitations' | 'not-measured' | 'note';
+  label?: string;
+}
+
+const { kind, label } = Astro.props;
+const defaultLabel = { limitations: 'Limitations', 'not-measured': 'Not measured', note: 'Note' }[kind];
+---
+
+<aside class:list={['callout', `callout--${kind}`]} aria-label={label ?? defaultLabel}>
+  <p class="callout__label mono" data-structural>{label ?? defaultLabel}</p>
+  <div class="callout__body"><slot /></div>
+</aside>
+
+<style>
+  .callout {
+    display: grid;
+    gap: var(--s-3);
+    padding: var(--s-5);
+    border: 1px dashed var(--line-inactive);
+    max-width: calc(var(--measure) + 2 * var(--s-5));
+  }
+
+  .callout--limitations {
+    border-style: solid;
+    border-left: 4px solid var(--text);
+  }
+
+  .callout__label {
+    color: var(--muted);
+  }
+
+  .callout__body {
+    display: grid;
+    gap: var(--s-3);
+  }
+</style>

@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseCard from '../../components/CaseCard.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import Claim from '../../components/Claim.astro';
+
+const cases = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+const lab = (await getCollection('lab')).filter((l) => l.data.published);
+---
+
+<BaseLayout
+  title="Work"
+  description="Case studies by Allam Ashraf: an offline touch-screen sales showroom, a bilingual hotel lead-capture page, and a lead-routing prototype."
+>
+  <header class="page-head container">
+    <h1 class="page-head__title">Work</h1>
+    <p class="lede page-head__intro">
+      Three projects along the path from first click to the sales team. Each case says what I did, what I did not do, and what was not measured.
+    </p>
+  </header>
+
+  <section class="container work-list" aria-label="Case studies">
+    {cases.map((c) => <CaseCard entry={c} layout="row" headingLevel="h2" />)}
+  </section>
+
+  {
+    lab.length > 0 && (
+      <section class="container lab" aria-labelledby="lab-title">
+        <h2 id="lab-title" class="h3">
+          Lab
+        </h2>
+        <ul class="lab__list">
+          {lab.map((l) => (
+            <li class="lab__item">
+              <h3 class="lab__title">{l.data.title}</h3>
+              <StatusBadge status={l.data.projectStatus} />
+              <p class="mono muted">{l.data.note}</p>
+              <p class="muted">
+                <Claim id={l.data.summaryClaim} />
+              </p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .page-head {
+    padding-top: calc(var(--header-h) + var(--s-8));
+    padding-bottom: var(--s-8);
+  }
+
+  .page-head__title {
+    font-size: clamp(3rem, 7vw + 0.5rem, 8rem);
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--s-5);
+  }
+
+  .page-head__intro {
+    max-width: 54ch;
+  }
+
+  .work-list {
+    display: grid;
+    gap: var(--s-9);
+    padding-bottom: var(--s-9);
+  }
+
+  .lab {
+    padding-bottom: var(--s-9);
+  }
+
+  .lab__list {
+    display: grid;
+    gap: var(--s-5);
+    margin-top: var(--s-5);
+  }
+
+  .lab__item {
+    display: grid;
+    gap: var(--s-3);
+    justify-items: start;
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--hairline);
+  }
+
+  .lab__title {
+    font-size: 1.25rem;
+  }
+</style>

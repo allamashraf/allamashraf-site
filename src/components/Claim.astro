@@ -1,0 +1,29 @@
+---
+// Binds a sentence to the claims ledger (src/content/claims.yaml).
+// prod: only VERIFIED / USER_REPORTED render; anything else renders nothing.
+// dev:  everything renders; blocked claims carry a red UNVERIFIED marker.
+import { getEntry } from 'astro:content';
+import { isProd } from '../config/site';
+
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+const claim = await getEntry('claims', id);
+if (!claim) {
+  throw new Error(`Claim "${id}" is not in src/content/claims.yaml`);
+}
+
+const { text, status } = claim.data;
+const publishable = status === 'VERIFIED' || status === 'USER_REPORTED';
+const render = publishable || !isProd;
+---
+
+{
+  render && (
+    <span class:list={['claim', { 'claim--blocked': !publishable }]} data-claim={id} data-claim-status={status}>
+      {text}
+    </span>
+  )
+}
