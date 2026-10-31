@@ -26,8 +26,8 @@ jobs:
           node-version: 24
           build-cmd: npm run build:prod
         env:
-          # Flip to 'true' only after the allam@ forwarding test passes (docs/DNS_PLAN.md).
-          EMAIL_PUBLISHED: 'false'
+          # External delivery confirmed by Allam with inbox evidence on 31 Oct 2026.
+          EMAIL_PUBLISHED: 'true'
 
   deploy:
     needs: build

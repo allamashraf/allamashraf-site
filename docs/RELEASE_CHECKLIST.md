@@ -83,8 +83,9 @@ Measured on 31 October 2026:
 - The private GitHub repository allamashraf/allamashraf-site and draft PR #1 exist. The separate automation repository is untouched. GitHub 2FA is configured. Actions paid usage is capped at $0.
 - GitHub has verified ownership of allamashraf.dev using its issued TXT record.
 - Name.com default nameservers are unchanged. The domain expires 21 October 2027; auto-renew is off and a payment profile is present. DNSSEC is unavailable on those default nameservers. No purchase or security-setting change was made.
-- Name.com two-step verification is still pending the owner's secure setup. No new authentication secret is handled by the agent.
-- The eight-record pre-web DNS snapshot is saved privately for rollback. Forwarding for allam@allamashraf.dev is configured, but external delivery has not been tested; EMAIL_PUBLISHED stays false.
+- Name.com two-step verification was enabled by Allam and its active credential-management state verified on 31 October 2026. Authentication secrets and recovery codes remain with Allam.
+- The eight-record pre-web DNS snapshot is saved privately for rollback. Allam confirmed external delivery for allam@allamashraf.dev on 31 October 2026 and supplied inbox evidence: a university-domain sender, the public address as recipient and the forwarding service shown in the message details. The existing destination is retained at Allam's explicit request. No private destination address or inbox screenshot is added to public source.
+- The email release gate is now passed. The manual Pages deployment uses EMAIL_PUBLISHED=true. The updated owner-only preview is packaged with that same flag; the local default stays false so both email states remain testable.
 - No website A/AAAA or www CNAME cutover has occurred. Main protection, repository public visibility, GitHub Pages configuration, final HTTPS/redirect/404/header checks and public launch remain unfinished.
 
 ## Remaining human checks
