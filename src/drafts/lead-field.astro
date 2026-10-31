@@ -1,0 +1,467 @@
+---
+// "Lead Field" DRAFT at /draft/lead-field/. This file lives outside src/pages on purpose:
+// astro.config.mjs injects the route only when PUBLISH_MODE is not 'prod', so build:prod
+// never bundles its HTML, scripts or styles. Not linked anywhere, noindex, not in the
+// sitemap. All copy is PROPOSED.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { leadField as c } from '../content/drafts/lead-field';
+import { RULES, scoreLead, type RuleId } from '../lib/lead-score';
+
+const ruleOrder: RuleId[] = ['budget', 'price', 'visit', 'phone', 'urgency', 'short'];
+const fmt = (n: number) => (n > 0 ? `+${n}` : `−${Math.abs(n)}`);
+const lanes = [
+  { label: 'Hot', y: 110 },
+  { label: 'Warm', y: 250 },
+  { label: 'Cold', y: 390 },
+] as const;
+
+// No-JS worked example, computed by the same scorer at build time.
+const exampleMessage = c.scorer.examples[1]?.text ?? '';
+const example = scoreLead(exampleMessage, true, false);
+
+const jsCopy = JSON.stringify({
+  applied: c.scorer.applied,
+  notApplied: c.scorer.notApplied,
+  routedTo: c.scorer.routedTo,
+  followUp: [1, 2, 3].map(c.scorer.followUp),
+});
+---
+
+<BaseLayout title={`${c.title} (draft)`} description={c.intro} noindex>
+  <section class="lf" data-lf data-lf-copy={jsCopy} aria-labelledby="lf-title">
+    <div class="container">
+    <p class="lf__banner mono">{c.draftBanner}</p>
+    <h1 id="lf-title" class="lf__title">{c.title}</h1>
+    <p class="lede lf__intro">{c.intro}</p>
+    </div>
+
+    <!-- v2: full-bleed stage -->
+
+    <div class="lf__stage" data-lf-stage>
+      <p class="visually-hidden">{c.stage.description}</p>
+      <svg class="lf__lines" viewBox="0 0 1000 500" preserveAspectRatio="none" aria-hidden="true">
+        <path class="lf__in" d="M0 70 C 150 70, 300 250, 450 250" />
+        <path class="lf__in" d="M0 250 L 450 250" />
+        <path class="lf__in" d="M0 430 C 150 430, 300 250, 450 250" />
+        <rect class="lf__gate" x="440" y="185" width="40" height="130" />
+        {lanes.map((l) => <path class:list={['lf__lane', `lf__lane--${l.label.toLowerCase()}`]} d={`M480 250 C 600 250, 700 ${l.y}, 880 ${l.y}`} />)}
+      </svg>
+      <canvas class="lf__canvas" data-lf-canvas aria-hidden="true"></canvas>
+      <span class="lf__gate-label mono" aria-hidden="true">{c.stage.gate}</span>
+      {
+        lanes.map((l) => (
+          <span class:list={['lf__end', `lf__end--${l.label.toLowerCase()}`]} aria-hidden="true">
+            <span class="lf__end-dot" />
+            <span class="lf__end-label mono">{l.label}</span>
+          </span>
+        ))
+      }
+      <p class="lf__note mono">{c.stage.illustrative}</p>
+    </div>
+
+    <div class="container">
+    <div class="lf__panel">
+      <div class="lf__input">
+        <h2 class="lf__h2">{c.scorer.heading}</h2>
+
+        <div class="lf__js" data-lf-js hidden>
+          <label class="lf__label mono" for="lf-message">{c.scorer.messageLabel}</label>
+          <input id="lf-message" class="lf__field" type="text" dir="auto" maxlength="280" autocomplete="off" spellcheck="false" data-lf-message />
+          <div class="lf__examples" role="group" aria-label={c.scorer.examplesLabel}>
+            <span class="mono muted">{c.scorer.examplesLabel}</span>
+            {
+              c.scorer.examples.map((e) => (
+                <button type="button" class="lf__chip mono" data-lf-example={e.text}>
+                  {e.label}
+                </button>
+              ))
+            }
+          </div>
+          <div class="lf__toggles">
+            <label class="lf__toggle"><input type="checkbox" data-lf-budget /> {c.scorer.budget}</label>
+            <label class="lf__toggle"><input type="checkbox" data-lf-phone /> {c.scorer.phone}</label>
+          </div>
+          <button type="button" class="btn btn--primary" data-lf-route>{c.scorer.route} <span class="arrow" aria-hidden="true">→</span></button>
+          <p class="lf__result" data-lf-result></p>
+          <p class="lf__fine mono">{c.scorer.routingNote}</p>
+          <p class="lf__fine mono">{c.scorer.privacy}</p>
+          <p class="visually-hidden" aria-live="polite" data-lf-live></p>
+        </div>
+
+        <div class="lf__nojs" data-lf-nojs>
+          <p class="muted">{c.scorer.noScript}</p>
+          <h3 class="lf__h3 mono">{c.scorer.exampleHeading}</h3>
+          <p dir="auto">“{exampleMessage}”</p>
+          <p class="mono muted">{c.scorer.budget} · {example.fired.map((f) => `${f.label} ${fmt(f.points)}`).join(' · ')}</p>
+          <p>{example.score} / 100 · {example.label} · {c.scorer.followUp(example.followUpDays)}</p>
+        </div>
+      </div>
+
+      <div class="lf__output">
+        <div class="lf__js lf__scoreline" data-lf-js hidden>
+          <span class="mono muted">{c.scorer.scoreLabel}</span>
+          <span class="lf__score"><span data-lf-score>0</span><span class="lf__of">/ 100</span></span>
+          <span class="lf__badge mono" data-lf-label>COLD</span>
+        </div>
+        <div class="lf__js lf__bar" data-lf-js hidden aria-hidden="true"><span data-lf-bar></span></div>
+        <h3 class="lf__h3 mono">{c.scorer.rulesHeading}</h3>
+        <ul class="lf__rules">
+          {
+            ruleOrder.map((id) => (
+              <li data-rule={id}>
+                <span>{RULES[id].label}</span>
+                <span class="mono">{fmt(RULES[id].points)}</span>
+                <span class="visually-hidden" data-rule-state />
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import '../scripts/lead-field-page';
+</script>
+
+<style>
+  .lf {
+    padding-top: calc(var(--header-h) + var(--s-7));
+    padding-bottom: var(--s-9);
+  }
+
+  .lf__banner {
+    display: inline-block;
+    padding: var(--s-1) var(--s-3);
+    border: 1px dashed var(--line-inactive);
+    color: var(--muted);
+    margin-bottom: var(--s-5);
+  }
+
+  .lf__title {
+    font-size: clamp(2.75rem, 6vw + 0.5rem, 7rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--s-4);
+  }
+
+  .lf__intro {
+    margin-bottom: var(--s-7);
+  }
+
+  /* ---- Stage: static SVG structure; the canvas adds the particles on desktop ---- */
+  /* v2: full-bleed (the stage sits outside .container), 60vh with a 420px floor from
+     tablet up. Phones keep a shorter static diagram. */
+  .lf__stage {
+    position: relative;
+    width: 100%;
+    height: 340px;
+    border-block: 1px solid var(--hairline);
+    margin-bottom: var(--s-7);
+    overflow: hidden;
+  }
+
+  @media (min-width: 768px) {
+    .lf__stage {
+      height: max(420px, 60vh);
+    }
+  }
+
+  .lf__lines,
+  .lf__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .lf__canvas {
+    display: none;
+  }
+
+  .lf__stage:global(.is-live) .lf__canvas {
+    display: block;
+  }
+
+  .lf__lines path,
+  .lf__lines rect {
+    fill: none;
+    stroke: var(--line-inactive);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .lf__lines .lf__in {
+    stroke: var(--hairline);
+  }
+
+  .lf__lines .lf__gate {
+    stroke: var(--text);
+    fill: var(--bg);
+  }
+
+  .lf__stage[data-hit='Hot'] .lf__lane--hot,
+  .lf__stage[data-hit='Warm'] .lf__lane--warm,
+  .lf__stage[data-hit='Cold'] .lf__lane--cold {
+    stroke: var(--accent);
+    stroke-width: 2;
+  }
+
+  .lf__gate-label {
+    position: absolute;
+    left: 46%;
+    top: calc(37% - 2.2em);
+    transform: translateX(-50%);
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .lf__end {
+    position: absolute;
+    left: 88%;
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    transform: translate(-6px, -50%);
+  }
+
+  /* Narrow screens: labels sit left of the dots so they never run off the edge. */
+  @media (max-width: 767px) {
+    .lf__end {
+      flex-direction: row-reverse;
+      transform: translate(calc(-100% + 6px), -50%);
+    }
+  }
+
+  .lf__end--hot {
+    top: 22%;
+  }
+
+  .lf__end--warm {
+    top: 50%;
+  }
+
+  .lf__end--cold {
+    top: 78%;
+  }
+
+  .lf__end-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--line-inactive);
+    background: var(--bg);
+  }
+
+  .lf__stage[data-hit='Hot'] .lf__end--hot .lf__end-dot,
+  .lf__stage[data-hit='Warm'] .lf__end--warm .lf__end-dot,
+  .lf__stage[data-hit='Cold'] .lf__end--cold .lf__end-dot {
+    border-color: var(--accent);
+    background: var(--accent);
+  }
+
+  .lf__end-label {
+    color: var(--text);
+  }
+
+  .lf__note {
+    position: absolute;
+    left: var(--gutter);
+    bottom: var(--s-3);
+    color: var(--muted);
+    text-transform: none;
+    letter-spacing: 0.04em;
+  }
+
+  /* ---- Scorer panel ---- */
+  .lf__panel {
+    display: grid;
+    gap: var(--s-7);
+    padding: var(--s-6);
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+  }
+
+  @media (min-width: 1024px) {
+    .lf__panel {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: var(--s-8);
+      padding: var(--s-7);
+    }
+  }
+
+  .lf__h2 {
+    font-size: var(--fs-h3);
+    line-height: 1.1;
+    margin-bottom: var(--s-5);
+  }
+
+  .lf__h3 {
+    color: var(--muted);
+    margin: var(--s-5) 0 var(--s-3);
+  }
+
+  .lf__js,
+  .lf__nojs {
+    display: grid;
+    gap: var(--s-4);
+    justify-items: start;
+  }
+
+  .lf__js[hidden],
+  .lf__nojs[hidden] {
+    display: none;
+  }
+
+  .lf__label {
+    color: var(--muted);
+  }
+
+  .lf__field {
+    width: 100%;
+    min-height: 48px;
+    padding: var(--s-3) var(--s-4);
+    font: inherit;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--line-inactive);
+  }
+
+  .lf__field:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .lf__examples {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-2) var(--s-3);
+  }
+
+  .lf__chip {
+    min-height: 36px;
+    padding: var(--s-1) var(--s-3);
+    color: var(--text);
+    background: transparent;
+    border: 1px solid var(--line-inactive);
+    cursor: pointer;
+  }
+
+  .lf__toggles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-5);
+  }
+
+  .lf__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: 44px;
+    cursor: pointer;
+  }
+
+  .lf__toggle input {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--accent);
+  }
+
+  .lf__result {
+    min-height: 1.6em;
+    font-family: var(--ff-display);
+    font-weight: 500;
+    font-size: 1.25rem;
+  }
+
+  .lf__fine {
+    color: var(--muted);
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+
+  .lf__scoreline {
+    grid-template-columns: auto auto auto;
+    align-items: baseline;
+    justify-content: start;
+    column-gap: var(--s-4);
+  }
+
+  .lf__score {
+    font-family: var(--ff-display);
+    font-weight: 600;
+    font-size: clamp(3rem, 4vw + 1rem, 5rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .lf__of {
+    font-size: 0.35em;
+    color: var(--muted);
+    margin-inline-start: var(--s-2);
+    letter-spacing: 0;
+  }
+
+  .lf__badge {
+    padding: var(--s-1) var(--s-3);
+    border: 1px dotted var(--text);
+  }
+
+  .lf__badge[data-label='Warm'] {
+    border-style: dashed;
+  }
+
+  .lf__badge[data-label='Hot'] {
+    border-style: solid;
+  }
+
+  .lf__bar {
+    position: relative;
+    width: 100%;
+    height: 4px;
+    background: var(--hairline);
+  }
+
+  .lf__bar span {
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .lf__bar span {
+      transition: transform 200ms var(--ease);
+    }
+  }
+
+  .lf__rules {
+    display: grid;
+    gap: var(--s-2);
+  }
+
+  .lf__rules li {
+    display: grid;
+    grid-template-columns: 1.5em 1fr auto;
+    align-items: baseline;
+    gap: var(--s-2);
+    color: var(--muted);
+  }
+
+  .lf__rules li::before {
+    content: '–';
+  }
+
+  .lf__rules li:global(.is-fired) {
+    color: var(--text);
+  }
+
+  .lf__rules li:global(.is-fired)::before {
+    content: '✓';
+    color: var(--accent);
+  }
+</style>

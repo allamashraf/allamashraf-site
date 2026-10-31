@@ -1,0 +1,94 @@
+---
+import MobileParticles from './MobileParticles.astro';
+import { leadField } from '../content/drafts/lead-field';
+import { mobileCopy } from '../content/mobile';
+import { RULES, scoreLead } from '../lib/lead-score';
+const initial = scoreLead(leadField.scorer.examples[0]!.text, false, false);
+---
+<div class="mobile-demo" data-mobile-demo data-copy-status={mobileCopy.status}>
+  <p class="mobile-demo__caption mono">{mobileCopy.caption}</p>
+  <div class="mobile-demo__stage">
+    <div class="mobile-demo__samples" role="group" aria-label={mobileCopy.sample}>
+      {leadField.scorer.examples.map((sample, i) => <button type="button" class="sample" data-sample={i} disabled aria-pressed={i === 0 ? 'true' : 'false'}><span>{sample.label}</span><span class:list={['sample__tag', `sample__tag--${scoreLead(sample.text, false, false).label.toLowerCase()}`]}>{scoreLead(sample.text, false, false).label}</span></button>)}
+    </div>
+    <div class="score-card" aria-live="polite" aria-atomic="true" data-mobile-result>
+      <span class="score-card__label">{leadField.scorer.scoreLabel}</span>
+      <p><strong data-score>{initial.score}</strong><span class="score-card__max"> / 100</span></p>
+      <ul class="score-card__rules">{Object.entries(RULES).filter(([id]) => initial.fired.some(r => r.id === id)).map(([id, rule]) => <li data-rule={id}><span>{rule.label}</span><b>{rule.points > 0 ? '+' : ''}{rule.points}</b></li>)}</ul>
+      <p class="score-card__route" data-route>{initial.label}</p>
+    </div>
+    <div class="mobile-demo__field"><MobileParticles kind="funnel" /></div>
+    <p class="mobile-demo__gate mono">{leadField.stage.gate}</p>
+    <div class="mobile-demo__streams mono">{['Hot', 'Warm', 'Cold'].map(label => <div class={`stream stream--${label.toLowerCase()}`}><strong>{label}</strong></div>)}</div>
+  </div>
+  <details class="mobile-demo__write" hidden>
+    <summary>{mobileCopy.write}</summary>
+    <label for="mobile-message">{leadField.scorer.messageLabel}</label>
+    <textarea id="mobile-message" dir="auto" rows="3" maxlength="1000" data-mobile-message></textarea>
+    <div class="mobile-demo__options">
+      <label><input type="checkbox" data-mobile-budget />{RULES.budget.label}</label>
+      <label><input type="checkbox" data-mobile-phone />{RULES.phone.label}</label>
+    </div>
+    <button type="button" class="btn btn--primary" data-mobile-submit>{leadField.scorer.route}</button>
+    <p data-mobile-message-preview dir="auto"></p>
+  </details>
+  <noscript><p>{leadField.scorer.noScript} {mobileCopy.result}: {initial.score} · {initial.label}</p></noscript>
+  <details class="mobile-demo__rulebook">
+    <summary>{leadField.scorer.rulesHeading}</summary>
+    <ul>{Object.values(RULES).map(rule => <li>{rule.label}: {rule.points > 0 ? '+' : ''}{rule.points}</li>)}</ul>
+  </details>
+</div>
+<script>
+  // Wait for first paint. Desktop never imports the mobile controller or canvas code.
+  const mobile = matchMedia('(max-width: 767px)');
+  let loaded = false;
+  const load = () => {
+    if (!mobile.matches || loaded) return;
+    loaded = true;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      import('../scripts/mobile-experience').then(m => m.initMobileExperience()).catch(() => { /* SSR samples and SVG remain complete. */ });
+    }));
+  };
+  if (document.readyState === 'complete') load();
+  else window.addEventListener('load', load, { once: true });
+  mobile.addEventListener('change', load);
+</script>
+<style>
+  .mobile-demo { display: none; }
+  @media (max-width: 767px) {
+    .mobile-demo { display: block; margin-top: 24px; font-family: var(--ff-mono); font-size: 11px; }
+    .mobile-demo__caption { color: var(--muted); font-size: 9px; letter-spacing: .025em; text-transform: none; margin-bottom: 22px; }
+    .mobile-demo__stage { position: relative; padding-top: 0; }
+    .mobile-demo__samples { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 7px; width: 63%; position: relative; z-index: 2; }
+    .sample { min-height: 60px; padding: 8px 6px; border: 1px solid #383838; border-radius: 8px; background: #080909; color: var(--text); font: inherit; text-align: left; cursor: pointer; }
+    .sample[aria-pressed='true'] { border-color: var(--accent); box-shadow: 0 0 22px #c4ff001a; }
+    .sample__tag { display: block; width: fit-content; border: 1px solid #777; border-radius: 20px; padding: 0 4px; font-size: 8px; margin-top: 8px; }
+    .sample__tag--hot { color: var(--accent); border-color: var(--accent); }
+    .sample__tag--warm { color: #ffd044; border-color: #ffd044; }
+    .sample__tag--cold { color: #f2efe7; border-color: #bfbfb8; }
+    .sample:disabled { cursor: default; }
+    .score-card { position: absolute; z-index: 2; right: 0; top: 0; width: 35%; padding: 12px 10px; background: linear-gradient(130deg,#101110,#070808); border: 1px solid #454545; border-radius: 9px; }
+    .score-card__label { font-family: var(--ff-body); font-size: 13px; }
+    .score-card strong { font: 500 34px/1.3 var(--ff-display); color: var(--accent); }
+    .score-card__max { color: var(--muted); font-size: 10px; }
+    .score-card__rules { margin-top: 8px; padding-top: 8px; border-top: 1px solid #303030; }
+    .score-card__rules li { display: flex; align-items: start; justify-content: space-between; gap: 5px; font-size: 8px; padding-block: 6px; }
+    .score-card__rules b { color: var(--accent); white-space: nowrap; }
+    .score-card__route { margin-top: 6px; color: var(--muted); font-size: 10px; }
+    .score-card[data-label='warm'] strong, .score-card[data-label='warm'] b { color: #ffd044; }
+    .score-card[data-label='cold'] strong, .score-card[data-label='cold'] b { color: #f2efe7; }
+    .mobile-demo__field { margin-inline: -8px; margin-top: -4px; }
+    .mobile-demo__gate { position: absolute; left: 0; top: 200px; width: 64px; font-size: 9px; background: #050606; color: var(--muted); }
+    .mobile-demo__streams { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: -20px; text-align: center; }
+    .stream { padding: 12px 0 20px; font-size: 14px; font-weight: 500; }
+    .stream--hot { color: var(--accent); } .stream--warm { color: #ffd044; } .stream--cold { color: #f2efe7; }
+    .mobile-demo__write, .mobile-demo__rulebook { border-bottom: 1px solid #343434; }
+    summary { min-height: 44px; padding-block: 14px; cursor: pointer; }
+    .mobile-demo__write > label { display: block; margin: 12px 0; }
+    textarea { width: 100%; border: 1px solid #737373; border-radius: 8px; padding: 12px; color: var(--text); background: #101110; font: 16px var(--ff-body); }
+    .mobile-demo__options { display: flex; flex-wrap: wrap; gap: 12px; margin: 10px 0; }
+    .mobile-demo__options label { min-height: 44px; display: flex; align-items: center; gap: 6px; }
+    .mobile-demo__rulebook ul { padding: 8px 0 20px; line-height: 2; }
+    [data-mobile-message-preview] { padding-block: 12px; overflow-wrap: anywhere; }
+  }
+</style>

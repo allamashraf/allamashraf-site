@@ -1,0 +1,159 @@
+---
+import { SITE } from '../config/site';
+import { mobileCopy } from '../content/mobile';
+const path = Astro.url.pathname;
+const links = [
+  { href: '/work/', label: 'Work', match: (p: string) => p.startsWith('/work/') },
+  { href: '/about/', label: 'About', match: (p: string) => p.startsWith('/about/') },
+  { href: '/#contact', label: 'Contact', match: () => false },
+];
+---
+
+<header class="site-header" data-site-header>
+  <div class="container site-header__inner">
+    <div class="site-brand"><a class="logo" href="/" aria-label="Allam Ashraf, home"><span class="logo__desktop">ALLAM</span><span class="logo__mobile">{SITE.name}</span><span class="logo__dot" aria-hidden="true"></span></a><small class="mobile-location">{SITE.location}</small></div>
+    <nav aria-label="Primary">
+      <ul class="nav">
+        {
+          links.map((l) => (
+            <li>
+              <a class="nav__link mono" href={l.href} aria-current={l.match(path) ? 'page' : undefined}>
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <details class="mobile-menu" data-copy-status={mobileCopy.status}>
+      <summary aria-label={mobileCopy.menu}><span></span><span></span><span></span></summary>
+      <nav aria-label="Mobile"><ul>{links.map(l => <li><a href={l.href}>{l.label}</a></li>)}</ul></nav>
+    </details>
+  </div>
+</header>
+<div class="header-sentinel" data-header-sentinel aria-hidden="true"></div>
+
+<script>
+  // Header switches to --surface after 80px of scroll (§5 section 0). Opacity only.
+  const header = document.querySelector<HTMLElement>('[data-site-header]');
+  const sentinel = document.querySelector<HTMLElement>('[data-header-sentinel]');
+  if (header && sentinel && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => {
+      header.classList.toggle('is-scrolled', !entry?.isIntersecting);
+    }).observe(sentinel);
+  }
+</script>
+
+<style>
+  .logo__mobile, .mobile-menu, .mobile-location { display: none; }
+  .site-brand { display: contents; }
+  .site-header {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    z-index: 50;
+    height: var(--header-h);
+  }
+
+  .site-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--hairline);
+    opacity: 0;
+    transition: opacity var(--dur-ui) var(--ease);
+  }
+
+  .site-header:global(.is-scrolled)::before {
+    opacity: 1;
+  }
+
+  .header-sentinel {
+    position: absolute;
+    top: 80px;
+    height: 1px;
+    width: 1px;
+  }
+
+  .site-header__inner {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-5);
+  }
+
+  .logo {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 3px;
+    font-family: var(--ff-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .logo__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    align-self: flex-end;
+    margin-bottom: 14px;
+  }
+
+  .nav {
+    display: flex;
+    gap: clamp(0px, 2vw, var(--s-6));
+  }
+
+  @media (max-width: 359px) {
+    .nav__link {
+      padding-inline: var(--s-1);
+      letter-spacing: 0.04em;
+    }
+  }
+
+  .nav__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-inline: var(--s-2);
+    text-decoration: none;
+    color: var(--muted);
+    transition: color var(--dur-ui) var(--ease);
+  }
+
+  .nav__link:hover,
+  .nav__link[aria-current='page'] {
+    color: var(--text);
+  }
+
+  .nav__link[aria-current='page'] {
+    text-decoration: underline;
+    text-decoration-color: var(--line-inactive);
+    text-underline-offset: 0.5em;
+  }
+  @media (max-width: 767px) {
+    .site-header { height: 108px; background: #050606; }
+    .site-header::before { background: #050606; }
+    .site-header__inner { border-bottom: 1px solid #2a2a2a; width: calc(100% - 48px); padding: 0; }
+    .logo { font-family: var(--ff-body); font-size: 20px; font-weight: 400; letter-spacing: -.02em; line-height: 1.35; }
+    .logo__desktop, .logo__dot, .site-header__inner > nav { display: none; }
+    .logo__mobile { display: block; }
+    .site-brand { display: flex; flex-direction: column; }
+    .site-brand .logo { min-height: 28px; }
+    .mobile-location { display: block; font: 11px/1.8 var(--ff-mono); letter-spacing: .01em; color: var(--muted); }
+    .mobile-menu { display: block; }
+    .mobile-menu summary { width: 44px; height: 44px; display: flex; flex-direction: column; justify-content: center; align-items: end; gap: 4px; cursor: pointer; list-style: none; }
+    .mobile-menu summary::-webkit-details-marker { display: none; }
+    .mobile-menu summary span { display: block; width: 20px; height: 1px; background: var(--text); }
+    .mobile-menu nav { position: absolute; right: 0; top: 96px; min-width: 160px; padding: 12px; border: 1px solid #454545; border-radius: 10px; background: #0b0c0c; }
+    .mobile-menu a { display: flex; align-items: center; min-height: 44px; padding-inline: 12px; text-decoration: none; }
+  }
+</style>

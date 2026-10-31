@@ -1,0 +1,183 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Claim from './Claim.astro';
+import StatusBadge from './StatusBadge.astro';
+import CaseCover from './CaseCover.astro';
+import MobileSchematic from './MobileSchematic.astro';
+import { work as workCopy } from '../content/copy';
+
+interface Props {
+  entry: CollectionEntry<'work'>;
+  layout?: 'feature' | 'half' | 'row';
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { entry, layout = 'half', headingLevel = 'h3' } = Astro.props;
+const { data } = entry;
+const Heading = headingLevel;
+const num = String(data.order).padStart(2, '0');
+---
+
+<article class:list={['card', `card--${layout}`]} data-case={entry.id}>
+  <span class="card__branch" aria-hidden="true"></span>
+  {Astro.url.pathname === '/' && <MobileSchematic kind={data.diagram} />}
+  <div class="card__cover">
+    <CaseCover kind={data.diagram} />
+  </div>
+  <div class="card__body">
+    <p class="card__num mono">{num}</p>
+    <Heading class="card__title h3">
+      <a class="card__link" href={`/work/${entry.id}/`}>{data.title}</a>
+    </Heading>
+    <p class="card__summary"><Claim id={data.summaryClaim} /></p>
+    <div class="card__meta">
+      <StatusBadge status={data.projectStatus} />
+      <span class="card__role mono"><Claim id={data.roleClaim} /></span>
+    </div>
+    <span class="card__more mono" aria-hidden="true">{workCopy.readMore} <span class="arrow">→</span></span>
+  </div>
+</article>
+
+<style>
+  .card {
+    position: relative;
+    display: grid;
+    gap: var(--s-5);
+    padding-top: var(--s-6);
+  }
+
+  /* A branch tapping off the signal line into each card. */
+  .card__branch {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--line-w);
+    height: var(--s-5);
+    background: var(--line-inactive);
+  }
+
+  .card__branch::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: calc(var(--line-w) / 2 - 5px);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: var(--line-w) solid var(--line-inactive);
+    background: var(--bg);
+  }
+
+  .card__body {
+    display: grid;
+    gap: var(--s-4);
+    align-content: start;
+  }
+
+  .card__num {
+    color: var(--muted);
+  }
+
+  .card__title {
+    max-width: 22ch;
+  }
+
+  .card__link {
+    text-decoration: none;
+  }
+
+  /* Whole card is one link target; the title link is the accessible name. */
+  .card__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .card__link:focus-visible {
+    outline: none;
+  }
+
+  .card:has(.card__link:focus-visible) {
+    outline: 2px solid var(--accent);
+    outline-offset: 6px;
+  }
+
+  .card__summary {
+    color: var(--muted);
+    max-width: 52ch;
+  }
+
+  .card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-3) var(--s-4);
+  }
+
+  .card__role {
+    color: var(--muted);
+  }
+
+  .card__more {
+    margin-top: var(--s-2);
+    color: var(--text);
+  }
+
+  .card__more .arrow {
+    display: inline-block;
+    transition: transform var(--dur-ui) var(--ease);
+  }
+
+  .card:hover .card__more .arrow,
+  .card:has(.card__link:focus-visible) .card__more .arrow {
+    transform: translateX(4px);
+  }
+
+  .card :global(.cover__frame svg) {
+    transform-origin: center;
+  }
+
+  .card:hover :global(.cover__frame svg) {
+    transform: scale(1.03);
+  }
+
+  @media (min-width: 1024px) {
+    .card--feature {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--col-gap);
+    }
+
+    .card--feature .card__body {
+      grid-column: 1 / span 5;
+      grid-row: 1;
+      align-content: end;
+    }
+
+    .card--feature .card__cover {
+      grid-column: 6 / -1;
+      grid-row: 1;
+    }
+
+    .card--feature .card__title {
+      font-size: clamp(2.25rem, 2.6vw + 1rem, 4rem);
+      line-height: 1;
+      letter-spacing: -0.025em;
+    }
+
+    .card--row {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--col-gap);
+    }
+
+    .card--row .card__body {
+      grid-column: 1 / span 6;
+      grid-row: 1;
+    }
+
+    .card--row .card__cover {
+      grid-column: 8 / -1;
+      grid-row: 1;
+    }
+  }
+</style>

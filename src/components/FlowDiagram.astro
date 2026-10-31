@@ -1,0 +1,100 @@
+---
+// Sprint 1 workflow diagram: real text in the line-and-node language.
+// Sprint 2 replaces it with hand-drawn SVG that draws once on view.
+import { caseTemplate } from '../content/copy';
+
+interface Props {
+  steps: string[];
+  label: string;
+}
+
+const { steps, label } = Astro.props;
+---
+
+<figure class="flow">
+  <ol class="flow__steps" aria-label={label}>
+    {steps.map((s) => <li class="flow__step mono">{s}</li>)}
+  </ol>
+  <figcaption class="flow__caption mono">{caseTemplate.diagramCaption}</figcaption>
+</figure>
+
+<style>
+  .flow {
+    display: grid;
+    gap: var(--s-4);
+    padding: var(--s-6) var(--s-5);
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+  }
+
+  .flow__steps {
+    display: grid;
+    gap: var(--s-5);
+  }
+
+  .flow__step {
+    position: relative;
+    padding-left: calc(14px + var(--s-4));
+    color: var(--text);
+    font-size: 0.9375rem;
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+
+  .flow__step::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.2em;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: var(--line-w) solid var(--accent);
+    background: var(--surface);
+    z-index: 1;
+  }
+
+  .flow__step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 1.1em;
+    height: calc(100% + var(--s-5) - 0.6em);
+    width: var(--line-w);
+    background: var(--accent);
+  }
+
+  .flow__caption {
+    color: var(--muted);
+    text-transform: none;
+    letter-spacing: 0.02em;
+    font-size: 0.75rem;
+  }
+
+  /* §8.3: the path draws as the diagram scrolls into view. CSS scroll-driven only;
+     where unsupported (Firefox) or under reduced motion it stays complete and static. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .flow__step:not(:last-child)::after {
+        transform-origin: top;
+        animation: flow-draw linear both;
+      }
+
+      /* Separate rule: the minifier would otherwise merge the timeline into the shorthand,
+         which browsers reject. */
+      :global(html) .flow__step:not(:last-child)::after {
+        animation-timeline: view();
+        animation-range: entry 40% cover 50%;
+      }
+    }
+  }
+
+  @keyframes flow-draw {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+</style>

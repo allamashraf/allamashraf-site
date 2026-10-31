@@ -1,0 +1,258 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Claim from '../../components/Claim.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import CaseCover from '../../components/CaseCover.astro';
+import { claimRenders } from '../../lib/claims';
+
+export async function getStaticPaths() {
+  const cases = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+  return cases.map((entry, i) => ({
+    params: { slug: entry.id },
+    props: { entry, next: cases[(i + 1) % cases.length] },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'work'>;
+  next: CollectionEntry<'work'>;
+}
+
+const { entry, next } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+
+// Rows whose claim is withheld in this build are left out rather than shown empty.
+const candidates = [
+  { label: 'Year', id: data.yearClaim },
+  { label: 'Role', id: data.roleClaim },
+  { label: 'Tools', id: data.toolsClaim },
+  ...(data.durationClaim ? [{ label: 'Duration', id: data.durationClaim }] : []),
+];
+const facts = [];
+for (const f of candidates) if (await claimRenders(f.id)) facts.push(f);
+---
+
+<BaseLayout title={data.title} description={data.description} ogType="article">
+  <header class="case-hero">
+    <div class="container">
+      <p class="case-hero__back mono"><a href="/work/">Work</a> <span aria-hidden="true">/</span> {String(data.order).padStart(2, '0')}</p>
+      <h1 class="case-hero__title">{data.title}</h1>
+      <div class="grid case-hero__grid">
+        <dl class="facts">
+          <div class="facts__row">
+            <dt class="mono">Status</dt>
+            <dd class="facts__status">
+              <StatusBadge status={data.projectStatus} />
+              <span class="mono muted">{data.statusLine}</span>
+            </dd>
+          </div>
+          {
+            facts.map((f) => (
+              <div class="facts__row">
+                <dt class="mono">{f.label}</dt>
+                <dd>
+                  <Claim id={f.id} />
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+        <div class="case-hero__cover">
+          <CaseCover kind={data.diagram} size="hero" />
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container case-layout">
+    <div class="case-rail" aria-hidden="true"><span></span></div>
+    <article class="case-body" data-case-body>
+      <Content />
+    </article>
+  </div>
+
+  <nav class="container case-next" aria-label="Next">
+    <a class="case-next__link" href={`/work/${next.id}/`}>
+      <span class="mono muted">Next case</span>
+      <span class="case-next__title">{next.data.title} <span class="arrow" aria-hidden="true">→</span></span>
+    </a>
+    <a class="btn" href="/#contact">Contact</a>
+  </nav>
+</BaseLayout>
+
+<style>
+  .case-hero {
+    padding-top: calc(var(--header-h) + var(--s-8));
+    padding-bottom: var(--s-8);
+  }
+
+  .case-hero__back {
+    color: var(--muted);
+    margin-bottom: var(--s-5);
+  }
+
+  .case-hero__back a {
+    color: var(--text);
+  }
+
+  .case-hero__title {
+    font-size: clamp(2.5rem, 6vw + 0.5rem, 7rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    max-width: 16ch;
+    margin-bottom: var(--s-8);
+  }
+
+  .case-hero__grid {
+    row-gap: var(--s-7);
+  }
+
+  .facts,
+  .case-hero__cover {
+    grid-column: 1 / -1;
+  }
+
+  .facts {
+    display: grid;
+    margin: 0;
+    border-top: 1px solid var(--line-inactive);
+    align-content: start;
+  }
+
+  .facts__row {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    gap: var(--s-4);
+    padding-block: var(--s-4);
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .facts dt {
+    color: var(--muted);
+    padding-top: 0.2em;
+  }
+
+  .facts dd {
+    margin: 0;
+  }
+
+  .facts__status {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .facts {
+      grid-column: 1 / span 5;
+    }
+    .case-hero__cover {
+      grid-column: 7 / -1;
+    }
+  }
+
+  .case-layout {
+    position: relative;
+    display: grid;
+    padding-bottom: var(--s-9);
+  }
+
+  /* Static progress rail (Sprint 2 draws it with a CSS scroll timeline). */
+  .case-rail {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .case-layout {
+      grid-template-columns: 24px 1fr;
+      column-gap: var(--s-5);
+    }
+
+    .case-rail {
+      display: block;
+      position: relative;
+    }
+
+    .case-rail span {
+      position: sticky;
+      top: calc(var(--header-h) + var(--s-6));
+      display: block;
+      width: var(--line-w);
+      height: 40vh;
+      margin-inline: auto;
+      background: var(--line-inactive);
+    }
+
+    /* §6.2: a lime progress line drawn by scrolling (CSS scroll timeline).
+       Static inactive rail where unsupported (Firefox) or under reduced motion. */
+    .case-rail span::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--accent);
+      transform-origin: top;
+      display: none;
+    }
+
+    @supports (animation-timeline: scroll()) {
+      @media (prefers-reduced-motion: no-preference) {
+        .case-rail span::after {
+          display: block;
+          animation: rail-fill linear both;
+        }
+
+        /* Separate rule: the minifier would otherwise merge the timeline into the shorthand,
+           which browsers reject. */
+        :global(html) .case-rail span::after {
+          animation-timeline: scroll(root);
+        }
+      }
+    }
+  }
+
+  @keyframes rail-fill {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+
+  .case-next {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--s-6);
+    padding-block: var(--s-8) var(--s-9);
+    border-top: 1px solid var(--hairline);
+  }
+
+  .case-next__link {
+    display: grid;
+    gap: var(--s-2);
+    text-decoration: none;
+  }
+
+  .case-next__title {
+    font-family: var(--ff-display);
+    font-weight: 600;
+    font-size: var(--fs-h3);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+  }
+
+  .case-next__link .arrow {
+    display: inline-block;
+    transition: transform var(--dur-ui) var(--ease);
+  }
+
+  .case-next__link:hover .arrow,
+  .case-next__link:focus-visible .arrow {
+    transform: translateX(4px);
+  }
+</style>

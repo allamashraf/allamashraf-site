@@ -1,0 +1,59 @@
+---
+import Claim from './Claim.astro';
+import { claimRenders } from '../lib/claims';
+
+interface Props {
+  title: string;
+  body: string;
+  toolsClaim: string | null;
+}
+
+const { title, body, toolsClaim } = Astro.props;
+const showTools = toolsClaim !== null && (await claimRenders(toolsClaim));
+---
+
+<div class="cap">
+  <h3 class="cap__title">{title}</h3>
+  <p class="cap__body muted">{body}</p>
+  {
+    showTools && toolsClaim && (
+      <p class="cap__tools mono">
+        <span class="cap__tools-label">Tools</span> <Claim id={toolsClaim} />
+      </p>
+    )
+  }
+</div>
+
+<style>
+  .cap {
+    display: grid;
+    gap: var(--s-3);
+    align-content: start;
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--line-inactive);
+  }
+
+  .cap__title {
+    font-size: clamp(1.375rem, 1vw + 1rem, 1.875rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    max-width: 20ch;
+  }
+
+  .cap__body {
+    max-width: 44ch;
+  }
+
+  .cap__tools {
+    color: var(--text);
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+
+  .cap__tools-label {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-inline-end: var(--s-2);
+  }
+</style>

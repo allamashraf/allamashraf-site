@@ -1,0 +1,31 @@
+# Career timeline, years only (months are approximate and not shown).
+# AOG Developments is a FORMER employer (Allam resigned in October 2026).
+# The two-month internship at AOG is not a separate node.
+- id: gold-star
+  org: Gold Star
+  order: 1
+  kind: work
+  roleClaim: goldstar-title
+  summaryClaim: goldstar-summary
+  startYear: 2024
+  endYear: 2025
+  arc: Sales
+  published: true
+
+- id: aog
+  org: AOG Developments
+  order: 2
+  kind: work
+  roleClaim: aog-title
+  summaryClaim: aog-summary
+  startYear: 2025
+  endYear: 2026
+  arc: Marketing tech → GTM engineering
+  published: true
+
+- id: eui
+  org: Egypt University of Informatics
+  order: 3
+  kind: education
+  roleClaim: eui-role
+  published: true

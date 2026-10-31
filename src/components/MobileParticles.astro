@@ -1,0 +1,49 @@
+---
+interface Props { kind: 'wave' | 'funnel' }
+const { kind } = Astro.props;
+let seed = 47;
+const random = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+const colors = ['#c4ff00', '#ffd044', '#f2efe7'];
+const dots = Array.from({ length: kind === 'wave' ? 1700 : 1000 }, (_, i) => {
+  const t = random();
+  const lane = i % 3;
+  const spread = (random() - .5) * (kind === 'wave' ? 85 : 25) * (.25 + t);
+  const x = kind === 'wave' ? t * 360 : 180 + ((lane - 1) * 122) * Math.pow(Math.abs(t - .4) / .6, .8) + spread;
+  const y = kind === 'wave' ? 92 + Math.sin(t * Math.PI) * 112 + spread : t * 370;
+  return { x, y, radius: random() < .04 ? 1.8 + random() * 2 : .35 + random() * .65, opacity: .18 + random() * .75, color: kind === 'wave' ? colors[0] : colors[lane] };
+});
+// Batch the static specks into a few paths rather than thousands of DOM nodes.
+// Canvas still has only 40/80 moving dots; the dense reference texture never repaints.
+const groups = new Map<string, { color: string | undefined; radius: number; opacity: number; path: string }>();
+for (const dot of dots) {
+  const radius = Math.max(.5, Math.round(dot.radius * 2) / 2);
+  const opacity = Math.round(dot.opacity * 3) / 3;
+  const key = `${dot.color}-${radius}-${opacity}`;
+  const group = groups.get(key) ?? { color: dot.color, radius, opacity, path: '' };
+  group.path += `M${dot.x.toFixed(1)} ${dot.y.toFixed(1)}h.01`;
+  groups.set(key, group);
+}
+---
+<div class:list={['mobile-particles', `mobile-particles--${kind}`]} data-mobile-particles={kind} aria-hidden="true">
+  <svg viewBox={kind === 'wave' ? '0 0 360 260' : '0 0 360 400'} preserveAspectRatio="none">
+    {[...groups.values()].map(group => <path d={group.path} fill="none" stroke={group.color} stroke-width={group.radius * 2} stroke-linecap="round" opacity={group.opacity} />)}
+    {kind === 'funnel' && <>
+      <path d="M12 150 H348" stroke="#c4ff00" stroke-width=".7" />
+      {[58,180,302].map((x,i) => <>
+        <path d={`M120 0 Q120 150 180 150 Q${x} 245 ${x} 350`} fill="none" stroke={colors[i]} stroke-opacity=".4" stroke-width=".6" />
+        <ellipse cx={x} cy="365" rx="32" ry="7" fill="none" stroke={colors[i]} stroke-width="1" />
+        <ellipse cx={x} cy="365" rx="25" ry="5" fill="none" stroke={colors[i]} opacity=".5" />
+      </>)}
+    </>}
+  </svg>
+  <canvas data-particle-canvas></canvas>
+</div>
+<style>
+  .mobile-particles { display: none; }
+  @media (max-width: 767px) {
+    .mobile-particles { display: block; position: relative; pointer-events: none; overflow: hidden; }
+    .mobile-particles svg, .mobile-particles canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .mobile-particles--wave { height: 240px; margin: 0 -24px; background: radial-gradient(ellipse at 50% 90%, #a4d50012, transparent 65%); }
+    .mobile-particles--funnel { height: 400px; background: radial-gradient(ellipse at 50% 38%, #b5ed0015, transparent 38%); }
+  }
+</style>

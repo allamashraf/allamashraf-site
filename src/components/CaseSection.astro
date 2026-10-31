@@ -1,0 +1,104 @@
+---
+// Numbered case-study section (01–11). If every claim inside is withheld (prod build),
+// the section says so instead of rendering an empty block.
+import { caseTemplate } from '../content/copy';
+
+interface Props {
+  n: number;
+}
+
+const { n } = Astro.props;
+const title = caseTemplate.sections[n - 1];
+if (!title) throw new Error(`CaseSection n=${n} is outside 1–11`);
+
+const num = String(n).padStart(2, '0');
+const html = await Astro.slots.render('default');
+const hasText =
+  html
+    .replace(/<svg[\s\S]*?<\/svg>/g, 'diagram')
+    // Labels marked data-structural (e.g. a callout's "Limitations") are not content.
+    .replace(/<(\w+)[^>]*\bdata-structural\b[^>]*>[^<]*<\/\1>/g, '')
+    .replace(/<[^>]+>/g, '')
+    .trim().length > 0;
+const id = `s-${num}`;
+---
+
+<section class="case-section" aria-labelledby={id}>
+  <h2 class="case-section__title" id={id}>
+    <span class="case-section__num mono" data-structural>{num}</span>
+    {title}
+  </h2>
+  <div class="case-section__body">
+    {hasText ? <Fragment set:html={html} /> : <p class="case-section__pending muted">{caseTemplate.pending}</p>}
+  </div>
+</section>
+
+<style>
+  .case-section {
+    display: grid;
+    gap: var(--s-5);
+    padding-block: var(--s-7);
+    border-top: 1px solid var(--hairline);
+  }
+
+  .case-section__title {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-4);
+    font-size: clamp(1.5rem, 1.4vw + 1rem, 2.25rem);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+  }
+
+  .case-section__num {
+    color: var(--muted);
+    flex: none;
+    min-width: 2.5ch;
+  }
+
+  .case-section__body {
+    display: grid;
+    gap: var(--s-4);
+  }
+
+  .case-section__body :global(ul) {
+    display: grid;
+    gap: var(--s-3);
+    max-width: var(--measure);
+  }
+
+  .case-section__body :global(ul > li) {
+    position: relative;
+    padding-left: var(--s-5);
+  }
+
+  .case-section__body :global(ul > li)::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.75em;
+    width: 10px;
+    height: var(--line-w);
+    background: var(--line-inactive);
+  }
+
+  .case-section__pending {
+    font-style: italic;
+  }
+
+  @media (min-width: 1024px) {
+    .case-section {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--col-gap);
+    }
+
+    .case-section__title {
+      grid-column: 1 / span 4;
+      align-self: start;
+    }
+
+    .case-section__body {
+      grid-column: 5 / -1;
+    }
+  }
+</style>

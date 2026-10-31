@@ -1,0 +1,113 @@
+---
+// Vertical timeline in the Signal Path language. Years only; unpublished nodes never render.
+import { getCollection } from 'astro:content';
+import Claim from './Claim.astro';
+
+const entries = (await getCollection('timeline')).filter((e) => e.data.published).sort((a, b) => a.data.order - b.data.order);
+
+const period = (start?: number, end?: number) => {
+  if (start === undefined) return null;
+  if (end === undefined || end === start) return String(start);
+  return `${start} – ${end}`;
+};
+---
+
+<ol class="timeline">
+  {
+    entries.map((e) => {
+      const p = period(e.data.startYear, e.data.endYear);
+      return (
+        <li class:list={['node', `node--${e.data.kind}`]}>
+          <span class="node__dot" aria-hidden="true" />
+          <p class="node__period mono">{p ?? (e.data.kind === 'education' ? 'Education' : '')}</p>
+          <h3 class="node__org">{e.data.org}</h3>
+          <p class="node__role">
+            <Claim id={e.data.roleClaim} />
+          </p>
+          {e.data.summaryClaim && (
+            <p class="node__summary muted">
+              <Claim id={e.data.summaryClaim} />
+            </p>
+          )}
+          {e.data.arc && <p class="node__arc mono">{e.data.arc}</p>}
+        </li>
+      );
+    })
+  }
+</ol>
+
+<style>
+  .timeline {
+    --node: 16px;
+    position: relative;
+    display: grid;
+  }
+
+  .node {
+    position: relative;
+    display: grid;
+    gap: var(--s-2);
+    padding-inline-start: calc(var(--node) + var(--s-5));
+    padding-bottom: var(--s-8);
+  }
+
+  .node::before {
+    content: '';
+    position: absolute;
+    left: calc(var(--node) / 2 - var(--line-w) / 2);
+    top: calc(var(--node) / 2 + 4px);
+    bottom: -4px;
+    width: var(--line-w);
+    background: var(--line-inactive);
+  }
+
+  .node:last-child {
+    padding-bottom: 0;
+  }
+
+  .node:last-child::before {
+    display: none;
+  }
+
+  .node__dot {
+    position: absolute;
+    left: 0;
+    top: 4px;
+    width: var(--node);
+    height: var(--node);
+    border-radius: 50%;
+    border: var(--line-w) solid var(--line-inactive);
+    background: var(--bg);
+  }
+
+  .node--education .node__dot {
+    border-style: dashed;
+  }
+
+  .node__period {
+    color: var(--muted);
+  }
+
+  .node__org {
+    font-size: var(--fs-h3);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+  }
+
+  .node__arc {
+    margin-top: var(--s-2);
+    color: var(--muted);
+    text-transform: none;
+    letter-spacing: 0.04em;
+  }
+
+  .node__arc::before {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: var(--line-w);
+    margin-inline-end: var(--s-2);
+    vertical-align: middle;
+    background: var(--line-inactive);
+  }
+</style>

@@ -1,0 +1,37 @@
+---
+import { SITE } from '../config/site';
+import { contact } from '../content/copy';
+---
+
+<div class="copy-email" data-copy-email data-email={SITE.email} data-copied={contact.copied}>
+  <a class="copy-email__address" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+  <button type="button" class="btn copy-email__btn" data-copy-button>{contact.copy}</button>
+  <p class="copy-email__status mono" role="status" aria-live="polite" data-copy-status></p>
+</div>
+
+<script>
+  import '../scripts/copy-email';
+</script>
+
+<style>
+  .copy-email {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s-4);
+  }
+
+  .copy-email__address {
+    font-family: var(--ff-display);
+    font-weight: 500;
+    font-size: clamp(1.375rem, 2vw + 1rem, 2.5rem);
+    letter-spacing: -0.01em;
+    overflow-wrap: anywhere;
+  }
+
+  .copy-email__status {
+    flex-basis: 100%;
+    min-height: 1.4em;
+    color: var(--muted);
+  }
+</style>

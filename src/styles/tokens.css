@@ -1,0 +1,48 @@
+/* Signal Noir: Lime. Locked by master plan §4. Dark-only. */
+:root {
+  color-scheme: dark;
+
+  /* §4.2 colour tokens */
+  --bg: #08090b;
+  --surface: #141b24;
+  --text: #f2efe7;
+  --muted: #8b9199;
+  --accent: #c8ff4d;
+  --on-accent: #08090b;
+  --line-inactive: #5b6573;
+  --hairline: #232b36;
+
+  /* §4.3 type */
+  --ff-display: var(--font-display), sans-serif;
+  --ff-body: var(--font-body), sans-serif;
+  --ff-mono: var(--font-mono), monospace;
+  --fs-h1: clamp(3rem, 8.5vw + 0.5rem, 10rem);
+  --fs-h2: clamp(2.25rem, 4.5vw + 0.5rem, 5.5rem);
+  --fs-h3: clamp(1.5rem, 1.6vw + 1rem, 2.5rem);
+  --fs-body: 1.125rem;
+  --fs-small: 1rem;
+  --fs-mono: 0.8125rem;
+  --measure: 68ch;
+
+  /* §4.4 spacing scale: 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96 / 160 */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+  --s-9: 96px;
+  --s-10: 160px;
+
+  /* §4.4 grid */
+  --max-width: 1440px;
+  --gutter: clamp(20px, 5vw, 96px);
+  --col-gap: clamp(16px, 2vw, 32px);
+  --header-h: 64px;
+
+  --line-w: 2px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur-ui: 200ms;
+}

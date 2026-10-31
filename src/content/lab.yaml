@@ -1,0 +1,14 @@
+# Optional Lab list on /work/. Entries render only when published: true (needs Allam's assets).
+- id: attendance
+  title: Student Attendance System
+  projectStatus: IN_PROGRESS
+  note: Independent project
+  summaryClaim: lab-attendance
+  published: false
+
+- id: gesture-lab
+  title: Gesture Lab
+  projectStatus: PROTOTYPE
+  note: Personal experiment
+  summaryClaim: lab-gesture
+  published: false
