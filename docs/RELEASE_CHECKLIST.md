@@ -73,7 +73,9 @@ Measured on 31 October 2026:
 - Local final check: 66 files, zero errors, warnings or hints. All 18 unit tests passed; seven-page production build, claims gate and release gate passed.
 - Current measured budgets: own JS 4.8 KB gzip; desktop motion 48.2 KB; CSS 12.9 KB; fonts 90.2 KB; one preload; initial homepage 124.2 KB. Each configured size budget passed.
 - The inline scheduler is 285 raw bytes / 207 gzip bytes and is included in the own-JS budget. The new trace gate measures **external requests before observed LCP**, not literal zero executable JavaScript. The original wording “JS before LCP 0KB” is therefore not recorded as literally met; this distinction must remain visible at final plan review.
-- The new trace gate rejects the previous reports and requires three unique measured runs on each configured route. Final browser and Lighthouse evidence for the changed code is pending CI.
+- The new trace gate rejects the previous reports and requires three unique measured runs on each configured route. GitHub Actions run 41215333010 on application commit fd35220e07045edf9a2bdc5bcfe4c2ff57c775b0 passed: 113 browser tests (three expected skips), 18 unit tests, all 12 Lighthouse assertions, the new pre-LCP external-request gate and Gitleaks 8.30.1 (zero findings across the four PR commits).
+- Current median Lighthouse results: home Performance 95, LCP 2257 ms, CLS 0.0746, TBT 0 ms; work 98 / 1806 ms / 0 / 0 ms; prototype 98 / 1807 ms / 0 / 0 ms; about 99 / 1654 ms / 0 / 0 ms. Accessibility was 100 on all four routes. Every one of the 12 traces had zero external Script requests before observed LCP.
+- The release artifact SHA-256 is dd00aa4d61e90912f5d62f852c24cf839d3bb6a7fe4710dfd522b22d42922418. Local full-object history check: zero blocked-term matches and zero personal Gmail addresses; sanitized publishable files also had zero Gitleaks findings.
 - The clean source history excludes the uploaded historical Git database, private evidence, local denylists and personal email addresses. Run the final history scan before launch.
 
 ## Account and domain preparation observed

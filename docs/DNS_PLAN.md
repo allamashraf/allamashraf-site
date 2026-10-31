@@ -1,6 +1,6 @@
 # DNS plan: Name.com only, nameservers unchanged
 
-Plan only. **No DNS change happens without Allam's written approval at launch time.**
+The GitHub ownership TXT and Name.com email-forwarding MX/SPF records are configured. The private pre-web baseline contains eight records; no website A/AAAA or www CNAME cutover has happened. Nameservers remain at Name.com. Follow this sequence for the remaining public launch; never overwrite mail or verification records.
 
 1. **Snapshot** every existing record in Name.com (screenshot plus a text copy, kept in `evidence/`, never committed).
 2. **Confirm** the nameservers are Name.com's defaults. Required for email forwarding and for these records.
@@ -23,6 +23,6 @@ Plan only. **No DNS change happens without Allam's written approval at launch ti
    - **Never enable Name.com URL forwarding.** It overwrites the A records and cannot serve HTTPS on `.dev`.
 6. **CAA**: if any CAA record exists, it must allow `letsencrypt.org`.
 7. Wait for the certificate, then tick **Enforce HTTPS**.
-8. **Email**: Name.com → Email Forwarding → `allam@allamashraf.dev` → Allam's work Gmail.
+8. **Email**: Name.com → Email Forwarding → `allam@allamashraf.dev` → the destination confirmed privately from Allam's supplied plan. Do not put the destination address in source or public docs.
    - Test from an external, non-Gmail account. Add a Gmail filter "Never send it to Spam".
    - Only after the test arrives: set `EMAIL_PUBLISHED: 'true'` in `.github/workflows/deploy.yml` and redeploy.

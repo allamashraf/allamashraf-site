@@ -1,6 +1,6 @@
 # Deploy (GitHub Pages): only after Allam's written approval
 
-Nothing here has been run. Every step is manual and Allam's call.
+The private repository, draft release PR, owner-only preview, domain ownership verification and email-forwarding configuration exist. The public GitHub Pages launch and website DNS cutover have not been performed. Current evidence and pending gates are in RELEASE_CHECKLIST.md. Deployment stays manual.
 
 ## Before the repo goes public
 1. All local gates green: `npm run check`, `npm run build:prod`, `npm run check:budgets`, `npm test`.
@@ -10,22 +10,13 @@ Nothing here has been run. Every step is manual and Allam's call.
    - `CLAUDE.md` and `docs/MASTER_PLAN.md` are local-only (git-ignored, untracked since 22 Oct 2026). Keep them out of the repo.
    - The custom `personal-gmail-address` rule must report zero findings across the full history.
 5. Confirm `evidence/`, `blocked-figures.txt` and `blocked-terms.txt` were never committed: `git log --all -- evidence blocked-figures.txt blocked-terms.txt` prints nothing.
-6. **REQUIRED: squash and purge the local history.** Early commits (before 22 Oct 2026, `f5c06be`) contain an unannounced project name that is now listed in the local `blocked-terms.txt`. The history must be rewritten before anyone else can see it. This is safe only while the repo has never been pushed.
-   ```bash
-   git reset --soft "$(git rev-list --max-parents=0 HEAD)"
-   git commit --amend -m "feat: allamashraf.dev site"
-   git reflog expire --expire=now --all
-   git gc --prune=now
-   ```
-   After the squash and purge, scan **every** git object in the database (reachable or not) for each term in `blocked-terms.txt` (whole word, any case) and for any Gmail address. It prints counts only, never the values:
-   ```bash
-   npm run check:history
-   ```
-   - **If any count is above 0, or the output does not end with "History check passed.": STOP. Do not make the repo public.** Find and remove the source, repeat the squash and purge, and run the scan again.
-   - Only when it passes, re-run step 4 (gitleaks on the full history).
+6. **Use the clean release history.** The uploaded historical Git database is retained privately for audit and is not the release repository. Do not import it, reset already-pushed branches or run a history purge on the release repository.
+   Run `npm run check:history` with the local-only denylists available. It checks every local object and prints counts without revealing entries. Stop if any count is above zero or the output does not end with `History check passed.` Repeat the full-history Gitleaks scan after the final source commit.
+7. Complete the real-device, screen-reader and five-person comprehension checks recorded in RELEASE_CHECKLIST.md. Record actual results, not emulation or inferred approvals. Name.com account MFA must also be enabled by its owner.
+8. Review the exact performance interpretation: the inline scheduler is included in the own-JS budget; `check:lcp-scripts` checks external requests before observed LCP. It does not demonstrate literal zero executable JavaScript before LCP.
 
 ## Publish
-1. Only if step 6 above passed: GitHub → repo Settings → General → change visibility to **Public** (required for free Pages).
+1. Only after all release gates above pass: GitHub → repo Settings → General → change visibility to **Public** (required for free Pages).
 2. Settings → Pages → Source: **GitHub Actions**.
 3. Actions → "Deploy to GitHub Pages" → **Run workflow** (`workflow_dispatch` only).
 4. Custom domain: follow `docs/DNS_PLAN.md` in order. Set the custom domain in the repo **before** adding DNS records.
