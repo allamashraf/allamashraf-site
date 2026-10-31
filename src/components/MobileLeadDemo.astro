@@ -38,21 +38,7 @@ const initial = scoreLead(leadField.scorer.examples[0]!.text, false, false);
     <ul>{Object.values(RULES).map(rule => <li>{rule.label}: {rule.points > 0 ? '+' : ''}{rule.points}</li>)}</ul>
   </details>
 </div>
-<script>
-  // Wait for first paint. Desktop never imports the mobile controller or canvas code.
-  const mobile = matchMedia('(max-width: 767px)');
-  let loaded = false;
-  const load = () => {
-    if (!mobile.matches || loaded) return;
-    loaded = true;
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      import('../scripts/mobile-experience').then(m => m.initMobileExperience()).catch(() => { /* SSR samples and SVG remain complete. */ });
-    }));
-  };
-  if (document.readyState === 'complete') load();
-  else window.addEventListener('load', load, { once: true });
-  mobile.addEventListener('change', load);
-</script>
+
 <style>
   .mobile-demo { display: none; }
   @media (max-width: 767px) {

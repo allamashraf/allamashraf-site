@@ -8,6 +8,7 @@ const run = (args) => {
   if (r.status !== 0) process.exit(r.status ?? 1);
 };
 
+run(['scripts/build-client.mjs']);
 run(['node_modules/astro/bin/astro.mjs', 'build']);
 run(['scripts/check-claims.mjs']);
 run(['scripts/check-release.mjs']);

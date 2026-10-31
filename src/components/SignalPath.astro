@@ -80,44 +80,7 @@ import MobileLeadDemo from './MobileLeadDemo.astro';
   </div>
 </section>
 
-<script>
-  // Loader only (well under 1KB). GSAP + ScrollTrigger + the scene are fetched with a dynamic
-  // import ONLY when all four hold (§8.2): desktop ≥1024px, no reduced motion, no Save-Data,
-  // and the section within one viewport (IntersectionObserver rootMargin 100%).
-  // If the import fails, nothing changes: the static diagram is already complete.
-  const section = document.querySelector<HTMLElement>('[data-signal]');
-  const desktop = window.matchMedia('(min-width: 1024px)');
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true;
-  let near = false;
-  let started = false;
 
-  const maybeStart = () => {
-    if (started || !section || !near || !desktop.matches || reduced.matches) return;
-    started = true;
-    import('../scripts/signal-path-scene')
-      .then((m) => m.initSignalPath(section))
-      .catch(() => {
-        /* static diagram stays */
-      });
-  };
-
-  if (section && section.dataset['motion'] === 'gsap' && !saveData && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          near = true;
-          io.disconnect();
-          maybeStart();
-        }
-      },
-      { rootMargin: '100% 0px' },
-    );
-    io.observe(section);
-    desktop.addEventListener('change', maybeStart);
-    reduced.addEventListener('change', maybeStart);
-  }
-</script>
 
 <style>
   .signal__desktop-title { display: contents; }

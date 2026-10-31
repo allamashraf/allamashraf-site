@@ -34,9 +34,10 @@ for (const path of ROUTES) {
     }
 
     await expect(page.locator('h1')).toHaveCount(1);
-    // Static site with no runtime fetches: 'load' covers every script, style and CSP check.
-    // ('networkidle' hung intermittently in Firefox under the parallel runner.)
+    // Enhancements deliberately load AFTER load. Check their CSP and runtime too.
     await page.waitForLoadState('load');
+    await expect.poll(() => page.locator('script[src="/client/client.js"]').count()).toBe(1);
+    await page.waitForTimeout(300);
     // Any CSP violation also surfaces as a console error, so this covers both.
     expect(problems).toEqual([]);
   });

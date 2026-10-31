@@ -1,4 +1,5 @@
 // Copy button for the public email. Confirmation goes through an aria-live region.
+export {};
 for (const root of document.querySelectorAll<HTMLElement>('[data-copy-email]')) {
   const button = root.querySelector<HTMLButtonElement>('[data-copy-button]');
   const status = root.querySelector<HTMLElement>('[data-copy-status]');

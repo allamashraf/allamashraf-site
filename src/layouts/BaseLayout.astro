@@ -79,5 +79,19 @@ const personLd = JSON.stringify({
       <slot />
     </main>
     <SiteFooter />
+    <script>
+      // The tiny inline scheduler is counted in the own-JS budget. Enhancement
+      // downloads wait for load, local fonts and two frames; no eager imports.
+      const start = () => document.fonts.ready.then(() => {
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          const script = document.createElement('script');
+          script.type = 'module';
+          script.src = '/client/client.js';
+          document.body.append(script);
+        }));
+      });
+      if (document.readyState === 'complete') start();
+      else window.addEventListener('load', start, { once: true });
+    </script>
   </body>
 </html>

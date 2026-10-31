@@ -64,17 +64,27 @@ Arabic, blog, CMS, analytics, a contact form, hosted automation and optional Lab
 
 ## Current measured results
 
-Measured locally on 31 October 2026:
+Measured on 31 October 2026:
 
-- `npm run check`: 63 files, zero errors, warnings or hints.
-- `npm run test:unit`: 18 passed, zero failures.
-- `npm run build:prod`: passed; seven pages, claims gate and release gate passed.
-- `npm run check:budgets`: own JS 5.1 KB gzip; deferred motion 43.5 KB; CSS 12.9 KB; fonts 90.2 KB; one font preload; homepage first load 125.0 KB. Every configured size budget passed.
-- Clean source history: zero matches for the local blocked-term entry and zero personal Gmail addresses. The original historical database remains untouched and is not used for release.
-- Gitleaks 8.30.1: zero findings in the current clean committed history and zero findings in a separate copy of publishable source files.
-- Chrome inspection: six normal routes rendered their expected heading, social metadata and Apple icon. A settled 375-pixel mobile frame had no horizontal overflow; selecting the English example produced score 40, Warm, consistent with the scorer's unit tests.
-- The multi-page iframe inspection caught active cross-document transitions, so its transient width values are not accepted as final responsive-suite evidence. Re-run the existing cross-browser suite in CI before public launch.
-- The preview daemon serves a generic error for an unknown path; direct `404.html` is present. Actual unknown-path HTTP 404 behavior must be confirmed on GitHub Pages, rather than inferred from that daemon.
-- GitHub repository creation is blocked by a GitHub sign-in page in the available browser. Name.com also requires sign-in. No DNS or domain-account setting has been changed.
+- Release before the scheduling change: GitHub Actions run 41181865650 passed 113 browser tests (three expected skips), 18 unit tests, the claims/release gates and Gitleaks 8.30.1. All 12 Lighthouse runs passed their configured assertions.
+- Median Lighthouse Performance / LCP / CLS / TBT for that release: home 94 / 2411 ms / 0.0746 / 0 ms; work 98 / 1806 ms / 0 / 0 ms; prototype 98 / 1809 ms / 0 / 0 ms; about 99 / 1655 ms / 0 / 0 ms. Accessibility was 100 on all four routes.
+- A stricter trace review found three external script requests (3269 transferred bytes) before observed homepage LCP. Passing the score alone did not satisfy the deferred-loading intent.
+- The current change consolidates progressive enhancements behind load, local-font readiness and two animation frames. Static content, native navigation, design, scoring rules and motion safeguards stay unchanged. No dependency was added.
+- Local final check: 66 files, zero errors, warnings or hints. All 18 unit tests passed; seven-page production build, claims gate and release gate passed.
+- Current measured budgets: own JS 4.8 KB gzip; desktop motion 48.2 KB; CSS 12.9 KB; fonts 90.2 KB; one preload; initial homepage 124.2 KB. Each configured size budget passed.
+- The inline scheduler is 285 raw bytes / 207 gzip bytes and is included in the own-JS budget. The new trace gate measures **external requests before observed LCP**, not literal zero executable JavaScript. The original wording “JS before LCP 0KB” is therefore not recorded as literally met; this distinction must remain visible at final plan review.
+- The new trace gate rejects the previous reports and requires three unique measured runs on each configured route. Final browser and Lighthouse evidence for the changed code is pending CI.
+- The clean source history excludes the uploaded historical Git database, private evidence, local denylists and personal email addresses. Run the final history scan before launch.
 
-Lighthouse, the full current browser suite, real-device checks, assistive-technology checks, comprehension testing, final mobile wording approval and public-domain verification remain pending. An unfinished item remains pending; do not mark human or account-level checks complete from inference.
+## Account and domain preparation observed
+
+- The private GitHub repository allamashraf/allamashraf-site and draft PR #1 exist. The separate automation repository is untouched. GitHub 2FA is configured. Actions paid usage is capped at $0.
+- GitHub has verified ownership of allamashraf.dev using its issued TXT record.
+- Name.com default nameservers are unchanged. The domain expires 21 October 2027; auto-renew is off and a payment profile is present. DNSSEC is unavailable on those default nameservers. No purchase or security-setting change was made.
+- Name.com two-step verification is still pending the owner's secure setup. No new authentication secret is handled by the agent.
+- The eight-record pre-web DNS snapshot is saved privately for rollback. Forwarding for allam@allamashraf.dev is configured, but external delivery has not been tested; EMAIL_PUBLISHED stays false.
+- No website A/AAAA or www CNAME cutover has occurred. Main protection, repository public visibility, GitHub Pages configuration, final HTTPS/redirect/404/header checks and public launch remain unfinished.
+
+## Remaining human checks
+
+Physical Android and iPhone, NVDA or VoiceOver, the five-person comprehension test and final mobile wording approval remain pending. Browser emulation does not substitute for these tests. No human result, approval or live-domain result is inferred.

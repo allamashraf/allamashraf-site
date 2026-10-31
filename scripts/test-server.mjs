@@ -19,6 +19,8 @@ const build = (env, gate) => {
 // :4402 review build (PUBLISH_MODE=dev): the only build that contains /draft/ pages. No gate.
 const review = { ...process.env, PUBLISH_MODE: 'dev', ASTRO_TELEMETRY_DISABLED: '1', ASTRO_OUT_DIR: './.variants/review' };
 
+const clientBuild = spawnSync(process.execPath, ['scripts/build-client.mjs'], { stdio: 'inherit', env: base });
+if (clientBuild.status !== 0) process.exit(clientBuild.status ?? 1);
 build(variant, true);
 build(review, false);
 build(base, true);

@@ -33,16 +33,7 @@ const links = [
 </header>
 <div class="header-sentinel" data-header-sentinel aria-hidden="true"></div>
 
-<script>
-  // Header switches to --surface after 80px of scroll (§5 section 0). Opacity only.
-  const header = document.querySelector<HTMLElement>('[data-site-header]');
-  const sentinel = document.querySelector<HTMLElement>('[data-header-sentinel]');
-  if (header && sentinel && 'IntersectionObserver' in window) {
-    new IntersectionObserver(([entry]) => {
-      header.classList.toggle('is-scrolled', !entry?.isIntersecting);
-    }).observe(sentinel);
-  }
-</script>
+
 
 <style>
   .logo__mobile, .mobile-menu, .mobile-location { display: none; }
