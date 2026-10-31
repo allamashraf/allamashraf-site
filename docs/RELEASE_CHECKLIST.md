@@ -21,9 +21,9 @@ AOG is a former employer. Existing approved claims and project statuses remain u
 
 ## Copy review
 
-The existing mobile copy remains marked PROPOSED in source. Selecting the mobile design does not record a separate approval of new wording.
+Allam explicitly approved the five labels below on 31 October 2026, after they were listed for review. Their source status is APPROVED and the visible proposal marker is removed from their caption. This records wording approval only, not approval of the pre-LCP exception or public launch.
 
-Current UI wording for final review:
+Approved UI wording:
 
 - Menu
 - Fictional samples
@@ -31,7 +31,7 @@ Current UI wording for final review:
 - Fictional leads · rules from the lead-routing prototype
 - Sample result
 
-The preview still identifies the proposal. Remove its editorial marker only after the wording is accepted; do not change scoring rules, sample results or claims to obtain approval.
+The fictional-data disclosure remains visible. Scoring rules, sample messages/results and factual claims are unchanged; this approval does not extend to unrelated draft content.
 
 ## Required verification
 
@@ -90,4 +90,4 @@ Measured on 31 October 2026:
 
 ## Remaining human checks
 
-Physical Android and iPhone, NVDA or VoiceOver, the five-person comprehension test and final mobile wording approval remain pending. Browser emulation does not substitute for these tests. No human result, approval or live-domain result is inferred.
+Physical Android and iPhone, desktop Safari, NVDA or VoiceOver and the five-person comprehension test remain pending. The five mobile UI labels are approved; unrelated proposed draft text keeps its own status. Browser emulation does not substitute for human tests. No device, assistive-technology, comprehension or live-domain result is inferred.

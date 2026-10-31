@@ -1,5 +1,9 @@
 # Mobile mockup implementation review
 
+## Approval update — 31 October 2026
+
+The implementation notes below describe the original review state. Allam has now explicitly approved the five labels in `src/content/mobile.ts`: Menu; Fictional samples; Write your own; Fictional leads · rules from the lead-routing prototype; Sample result. Their status is APPROVED, and only the editorial PROPOSED suffix is removed from that caption. The fictional-data disclosure, sample messages, rules, claims and mobile appearance remain unchanged. Imported draft content is not covered by this five-label approval. Current release evidence and unfinished gates are recorded in RELEASE_CHECKLIST.md.
+
 Local branch: `codex/mobile-plan`. No push, publish, deployment, new dependency, plugin, or browser installation.
 
 Open the complete local comparison at `../.shots/mobile-plan/comparison.html`. It contains a screenshot beside **each of the six supplied references**, followed by the capabilities, contact, and footer screenshots. Comparison PNGs are also saved individually in that directory. Original references are embedded only in the local review artifact, never in the website or production assets.

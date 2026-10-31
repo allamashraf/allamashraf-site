@@ -16,7 +16,7 @@ test('samples use real scorer rules, expose matched rules and never use mockup c
   }
   expect(await page.locator('main').innerText()).not.toMatch(/\+28%|-60%|3\+|100%|HubSpot|WhatsApp follow-ups|\b3D\b|live inventory|Prime location|Responded fast|\+?\d[\d -]{8,}\d/i);
   await expect(page.locator('[data-mobile-result]')).toHaveAttribute('aria-live', 'polite');
-  await expect(page.locator('[data-mobile-demo]')).toHaveAttribute('data-copy-status', 'PROPOSED');
+  await expect(page.locator('[data-mobile-demo]')).toHaveAttribute('data-copy-status', 'APPROVED');
 });
 
 test('Arabic input, flags and score clamp work locally without requests or storage', async ({ page }) => {
