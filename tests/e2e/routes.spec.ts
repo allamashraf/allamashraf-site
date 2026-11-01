@@ -69,6 +69,16 @@ test('sitemap and robots.txt are present', async ({ request }) => {
   expect(body).not.toContain('404');
 });
 
+test('GitHub is discoverable in desktop navigation, mobile menu and footer', async ({ page }) => {
+  await page.goto('/');
+  const github = 'https://github.com/allamashraf';
+  await expect(page.getByRole('navigation', { name: 'Primary' }).getByRole('link', { name: /GitHub/ })).toHaveAttribute('href', github);
+  await expect(page.locator('.site-footer__links').getByRole('link', { name: 'GitHub' })).toHaveAttribute('href', github);
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.locator('.mobile-menu summary').click();
+  await expect(page.getByRole('navigation', { name: 'Mobile' }).getByRole('link', { name: /GitHub/ })).toHaveAttribute('href', github);
+});
+
 test('no broken internal links', async ({ page, request }) => {
   const seen = new Set<string>();
   for (const path of ROUTES) {
