@@ -16,8 +16,8 @@ const [first, ...rest] = cases;
 ---
 
 <BaseLayout
-  title="Allam Ashraf"
-  description="Allam Ashraf builds the systems that move leads from first click to the sales team: lead qualification, routing automation and landing experiences. Based in Cairo."
+  title="GTM Engineering & Lead Automation"
+  description="Allam Ashraf's portfolio: landing pages, a delivered sales showroom and a local lead-routing prototype. CS student in Cairo. View case studies and resume."
 >
   <Hero />
   <SignalPath />
@@ -26,13 +26,21 @@ const [first, ...rest] = cases;
     <div class="container">
       <p class="coord mono">02 / Work</p>
       <div class="grid work__head">
-        <h2 id="work-title" class="h2 work__title"><span class="desktop-work-title">{work.title}</span><span class="mobile-work-title">{work.title.split(' ').slice(0, -1).join(' ')} <span class="mobile-work-accent">{work.title.split(' ').at(-1)}</span></span></h2>
+        <h2 id="work-title" class="h2 work__title">
+          <span class="desktop-work-title">{work.title}</span>
+          <span class="mobile-work-title">
+            {work.title.split(' ').slice(0, -1).join(' ')}{' '}
+            <span class="mobile-work-accent">{work.title.split(' ').at(-1)}</span>
+          </span>
+        </h2>
         <p class="lede work__intro">{work.intro}</p>
       </div>
       <div class="work__list">
         {first && <CaseCard entry={first} layout="feature" />}
         <div class="work__pair">
-          {rest.map((c) => <CaseCard entry={c} />)}
+          {rest.map((c) => (
+            <CaseCard entry={c} />
+          ))}
         </div>
       </div>
     </div>
@@ -41,14 +49,36 @@ const [first, ...rest] = cases;
   <section class="section" id="capabilities" aria-labelledby="cap-title">
     <div class="container">
       <p class="coord mono">03 / Capabilities</p>
-      <h2 id="cap-title" class="h2 caps__title">{capabilities.title}</h2>
+      <h2 id="cap-title" class="h2 caps__title">
+        {capabilities.title}
+      </h2>
       <div class="caps">
-        {capabilities.groups.map((g) => <CapabilityGroup {...g} />)}
+        {capabilities.groups.map((g) => (
+          <CapabilityGroup {...g} />
+        ))}
       </div>
       <div class="mobile-skills">
-        {capabilities.groups.map(g => <details><summary>{g.title}</summary><p>{g.body}</p>{g.toolsClaim && <p class="mono"><Claim id={g.toolsClaim} /></p>}</details>)}
-        {approach.principles.map(p => <details><summary>{p.title}</summary><p>{p.body}</p></details>)}
-        <a class="btn" href="/about/">{approach.aboutLink}<span aria-hidden="true">↗</span></a>
+        {capabilities.groups.map((g) => (
+          <details>
+            <summary>{g.title}</summary>
+            <p>{g.body}</p>
+            {g.toolsClaim && (
+              <p class="mono">
+                <Claim id={g.toolsClaim} />
+              </p>
+            )}
+          </details>
+        ))}
+        {approach.principles.map((p) => (
+          <details>
+            <summary>{p.title}</summary>
+            <p>{p.body}</p>
+          </details>
+        ))}
+        <a class="btn" href="/about/">
+          {approach.aboutLink}
+          <span aria-hidden="true">↗</span>
+        </a>
       </div>
     </div>
   </section>
@@ -57,33 +87,51 @@ const [first, ...rest] = cases;
     <div class="container grid approach__grid">
       <div class="approach__main">
         <p class="coord mono">04 / Approach</p>
-        <h2 id="approach-title" class="h2">{approach.title}</h2>
+        <h2 id="approach-title" class="h2">
+          {approach.title}
+        </h2>
         <ol class="principles">
-          {
-            approach.principles.map((p) => (
-              <li class="principle">
-                <h3 class="principle__title">{p.title}</h3>
-                <p class="muted">{p.body}</p>
-              </li>
-            ))
-          }
+          {approach.principles.map((p) => (
+            <li class="principle">
+              <h3 class="principle__title">{p.title}</h3>
+              <p class="muted">{p.body}</p>
+            </li>
+          ))}
         </ol>
       </div>
       <aside class="approach__about" aria-label="About Allam">
-        <p class="approach__bio"><Claim id="bio-short" /></p>
-        <a class="btn" href="/about/">{approach.aboutLink} <span class="arrow" aria-hidden="true">→</span></a>
+        <p class="approach__bio">
+          <Claim id="bio-short" />
+        </p>
+        <a class="btn" href="/about/">
+          {approach.aboutLink}{' '}
+          <span class="arrow" aria-hidden="true">
+            →
+          </span>
+        </a>
       </aside>
     </div>
   </section>
 
   <ContactBlock />
-  {SITE.linkedinUrl && <a class="mobile-contact btn btn--primary" data-mobile-contact href={SITE.linkedinUrl} rel="me" hidden>LinkedIn<span aria-hidden="true">↗</span></a>}
+  {SITE.linkedinUrl && (
+    <a class="mobile-contact btn btn--primary" data-mobile-contact href={SITE.linkedinUrl} rel="me" hidden>
+      LinkedIn<span aria-hidden="true">↗</span>
+    </a>
+  )}
 </BaseLayout>
 
 <style>
-  .desktop-work-title { display: contents; }
-  .mobile-work-title { display: none; }
-  .mobile-skills, .mobile-contact { display: none; }
+  .desktop-work-title {
+    display: contents;
+  }
+  .mobile-work-title {
+    display: none;
+  }
+  .mobile-skills,
+  .mobile-contact {
+    display: none;
+  }
   .work__head {
     row-gap: var(--s-5);
     margin-bottom: var(--s-8);

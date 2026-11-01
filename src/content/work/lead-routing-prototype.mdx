@@ -11,8 +11,9 @@ yearClaim: proto-year
 toolsClaim: proto-tools
 coverKind: illustrative
 diagram: routing
-description: "Case study of a lead-routing prototype Allam Ashraf designed and built alone for AOG Developments: phone normalization, lead scoring, duplicate detection and round-robin assignment, tested as a local JavaScript demo and never deployed."
+description: "Allam Ashraf's local JavaScript lead-routing prototype: phone normalization, scoring, deduplication and assignment. Tested with fictional data; never deployed."
 ---
+
 import Claim from '../../components/Claim.astro';
 import CaseSection from '../../components/CaseSection.astro';
 import Callout from '../../components/Callout.astro';
@@ -22,42 +23,69 @@ import FlowDiagram from '../../components/FlowDiagram.astro';
 {/* Reviewed by Allam 22 Oct 2026. Never show the test payloads or the real AOG project names they contain. */}
 
 <CaseSection n={1}>
-  <p><Claim id="proto-status" /></p>
+  <p>
+    <Claim id="proto-status" />
+  </p>
 </CaseSection>
 
 <CaseSection n={2}>
-  <p><Claim id="proto-origin" /></p>
-  <p><Claim id="proto-context" /></p>
+  <p>
+    <Claim id="proto-origin" />
+  </p>
+  <p>
+    <Claim id="proto-context" />
+  </p>
 </CaseSection>
 
 <CaseSection n={3}>
-  <p><Claim id="proto-problem" /></p>
+  <p>
+    <Claim id="proto-problem" />
+  </p>
 </CaseSection>
 
 <CaseSection n={4}>
-  <p><Claim id="proto-role-detail" /></p>
-  <p><Claim id="proto-not-done" /></p>
+  <p>
+    <Claim id="proto-role-detail" />
+  </p>
+  <p>
+    <Claim id="proto-not-done" />
+  </p>
 </CaseSection>
 
 <CaseSection n={5}>
-  <p><Claim id="proto-constraints" /></p>
+  <p>
+    <Claim id="proto-constraints" />
+  </p>
 </CaseSection>
 
 <CaseSection n={6}>
-  <p><Claim id="proto-architecture" /></p>
+  <p>
+    <Claim id="proto-architecture" />
+  </p>
   <FlowDiagram
     label="Illustrative routing pipeline"
-    steps={['Lead payload arrives', 'Normalize phone', 'Score Hot / Warm / Cold', 'Catch duplicates', 'Assign by round-robin', 'Hot-lead SLA alert']}
+    steps={[
+      'Lead payload arrives',
+      'Normalize phone',
+      'Score Hot / Warm / Cold',
+      'Catch duplicates',
+      'Assign by round-robin',
+      'Hot-lead SLA alert',
+    ]}
   />
 </CaseSection>
 
 <CaseSection n={7}>
-  <p><Claim id="proto-built" /></p>
+  <p>
+    <Claim id="proto-built" />
+  </p>
 </CaseSection>
 
 <CaseSection n={8}>
   <Callout kind="note" label="Local test-fixture output — not a business KPI">
-    <p><Claim id="proto-tests" /></p>
+    <p>
+      <Claim id="proto-tests" />
+    </p>
   </Callout>
 </CaseSection>
 
@@ -70,14 +98,24 @@ import FlowDiagram from '../../components/FlowDiagram.astro';
 <CaseSection n={10}>
   <Callout kind="limitations">
     <ul>
-      <li><Claim id="proto-limit-race" /></li>
-      <li><Claim id="proto-limit-mocks" /></li>
-      <li><Claim id="proto-limit-leads" /></li>
-      <li><Claim id="proto-limit-broken" /></li>
+      <li>
+        <Claim id="proto-limit-race" />
+      </li>
+      <li>
+        <Claim id="proto-limit-mocks" />
+      </li>
+      <li>
+        <Claim id="proto-limit-leads" />
+      </li>
+      <li>
+        <Claim id="proto-limit-broken" />
+      </li>
     </ul>
   </Callout>
 </CaseSection>
 
 <CaseSection n={11}>
-  <p><Claim id="proto-next" /></p>
+  <p>
+    <Claim id="proto-next" />
+  </p>
 </CaseSection>

@@ -10,28 +10,39 @@ import Claim from './Claim.astro';
       <p class="muted">{SITE.location.split(',')[0]}</p>
     </div>
     <ul class="site-footer__links" aria-label="Contact links">
-      {
-        emailPublished && (
-          <li>
-            <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
-          </li>
-        )
-      }
       <li>
-        {SITE.linkedinUrl ? <a href={SITE.linkedinUrl} rel="me">LinkedIn</a> : <Claim id="linkedin-url" />}
+        <a href={SITE.resumeUrl} download>
+          Resume (PDF)
+        </a>
       </li>
-      {
-        SITE.githubUrl && (
-          <li>
-            <a href={SITE.githubUrl} rel="me">GitHub</a>
-          </li>
-        )
-      }
+      {emailPublished && (
+        <li>
+          <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        </li>
+      )}
+      <li>
+        {SITE.linkedinUrl ? (
+          <a href={SITE.linkedinUrl} rel="me">
+            LinkedIn
+          </a>
+        ) : (
+          <Claim id="linkedin-url" />
+        )}
+      </li>
+      {SITE.githubUrl && (
+        <li>
+          <a href={SITE.githubUrl} rel="me">
+            GitHub
+          </a>
+        </li>
+      )}
     </ul>
     <div class="site-footer__meta mono muted">
       <p>© 2026 Allam Ashraf</p>
       <p>Built with Astro · Hosted on GitHub Pages</p>
-      <p class="site-footer__privacy">No cookies or analytics. Hosted on GitHub Pages, which logs IP addresses for security.</p>
+      <p class="site-footer__privacy">
+        No cookies or analytics. Hosted on GitHub Pages, which logs IP addresses for security.
+      </p>
     </div>
   </div>
 </footer>

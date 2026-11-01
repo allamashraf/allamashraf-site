@@ -23,13 +23,48 @@ const socialAlt = `${fullTitle} — GTM engineering, lead operations and automat
 
 // sameAs lists only links Allam has confirmed.
 const sameAs = [SITE.linkedinUrl, SITE.githubUrl].filter((u): u is string => typeof u === 'string');
-const personLd = JSON.stringify({
+const personId = `${SITE.url}/#person`;
+const websiteId = `${SITE.url}/#website`;
+const pageType =
+  Astro.url.pathname === '/about/' ? 'ProfilePage' : Astro.url.pathname === '/work/' ? 'CollectionPage' : 'WebPage';
+// Describe only published facts. Do not turn project outcomes or former employment into credentials.
+const structuredData = JSON.stringify({
   '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: SITE.name,
-  url: `${SITE.url}/`,
-  ...(sameAs.length ? { sameAs } : {}),
-});
+  '@graph': [
+    {
+      '@type': 'Person',
+      '@id': personId,
+      name: SITE.name,
+      url: `${SITE.url}/`,
+      sameAs,
+      subjectOf: {
+        '@type': 'DigitalDocument',
+        name: 'Allam Ashraf - Resume',
+        url: new URL(SITE.resumeUrl, SITE.url).href,
+        encodingFormat: 'application/pdf',
+      },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': websiteId,
+      name: SITE.name,
+      url: `${SITE.url}/`,
+      inLanguage: SITE.locale,
+      publisher: { '@id': personId },
+    },
+    {
+      '@type': pageType,
+      '@id': `${canonical}#webpage`,
+      name: fullTitle,
+      description,
+      url: canonical,
+      inLanguage: SITE.locale,
+      isPartOf: { '@id': websiteId },
+      about: { '@id': personId },
+      ...(pageType === 'ProfilePage' ? { mainEntity: { '@id': personId } } : {}),
+    },
+  ],
+}).replaceAll('<', '\\u003c');
 ---
 
 <!doctype html>
@@ -70,7 +105,7 @@ const personLd = JSON.stringify({
     <Font cssVariable="--font-body" />
     <Font cssVariable="--font-mono" />
 
-    <script is:inline type="application/ld+json" set:html={personLd} />
+    {!noindex && <script is:inline type="application/ld+json" set:html={structuredData} />}
   </head>
   <body>
     <SkipLink />
