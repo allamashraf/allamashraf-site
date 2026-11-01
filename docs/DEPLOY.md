@@ -26,7 +26,9 @@ CI independently checks changed-file formatting, secrets, browsers, accessibilit
 
 The enhancement scheduler waits for window load, local fonts, completion or cancellation of the headline's word reveals, and two animation frames before requesting `/client/client.js`. The previous fonts-plus-two-frames schedule could request that file before the final headline paint in a Lighthouse trace. The strict observed-LCP gate and all performance limits are retained. The scheduler is bundled inline and its measured gzip bytes remain part of the own-JS budget; the earlier 285 raw / 207 gzip byte measurement is historical.
 
-Local production build measured the new inline scheduler at 449 raw / 318 gzip bytes, total own JS 4.9 KB gzip against 8 KB, motion 48.6 KB against 55 KB, and homepage first-load 124.5 KB against 350 KB. Remote browser and Lighthouse results are reported by the matching CI run, not inferred from this build.
+The Copy button starts disabled and becomes enabled only after its click handler is registered. A deferred or failed enhancement chunk therefore cannot silently drop a click; the email link always works independently of JavaScript.
+
+Local production build measured the new inline scheduler at 449 raw / 318 gzip bytes, total own JS 5.0 KB gzip against 8 KB, motion 48.6 KB against 55 KB, and homepage first-load 124.5 KB against 350 KB. Remote browser and Lighthouse results are reported by the matching CI run, not inferred from this build.
 
 ## Hosting limits
 
