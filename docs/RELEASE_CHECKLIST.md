@@ -29,7 +29,7 @@ CI run 41221733662 validated f67f00e001f53ce7ae716bca7e7f0c567b2340d2 before mer
 
 - Desktop hero signal transfers to CLICK before the single pinned scene; complete mobile, reduced-motion, Save-Data and failed-chunk fallbacks remain.
 - npm prepare installs repository-local pre-commit checks: staged whitespace, redacted Gitleaks and staged-content formatting. Gitleaks 8.30.1 is required on PATH or through GITLEAKS_BIN. CI independently checks formatting, secrets and quality gates.
-- Requiring one second-person PR approval was selected, but saving reached GitHub's Confirm access screen. This change is pending reauthentication and a saved-state read-back. Once applied, future PRs require another GitHub account with suitable review access; the author cannot approve their own PR. Do not count an unsaved selection as enabled protection.
+- One second-person PR approval is now required. A saved confirmation and a fresh reopening of the protection rule verified this setting. Required CI, an up-to-date branch, conversation resolution and no administrator bypass remain enabled. Future PRs, including documentation, require another GitHub account with suitable review access; the author cannot approve their own PR.
 - LAUNCH_REPORT.md records live PageSpeed and LinkedIn Post Inspector results or their actual service/authentication blockers.
 - Follow-up PR #6 is deployed by GitHub Pages run 41259260695. CI run 41258762918 passed 18 unit and 115 browser tests (three expected skips). Post-deployment PageSpeed mobile measured 99 performance and 100 in the other three categories; no CrUX field data.
 
