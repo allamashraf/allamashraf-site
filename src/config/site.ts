@@ -9,8 +9,8 @@ export const SITE = {
   email: 'allam@allamashraf.dev',
   // Supplied by Allam on 22 Oct 2026; claim "linkedin-url" is VERIFIED. Keep both in sync.
   linkedinUrl: 'https://www.linkedin.com/in/allam-ashraf' as string | null,
-  // null unless Allam agrees to list GitHub.
-  githubUrl: null as string | null,
+  // Public GitHub profile confirmed by the owner of the portfolio repository.
+  githubUrl: 'https://github.com/allamashraf' as string | null,
   // Approved verbatim (decision 2). Do not edit without Allam.
   availability: 'Open to GTM Engineering & RevOps roles — and selective project collaborations.',
 } as const;
