@@ -23,11 +23,12 @@ const links = [
             </li>
           ))
         }
+        {SITE.githubUrl && <li><a class="nav__link mono" href={SITE.githubUrl} rel="me">GitHub <span aria-hidden="true">↗</span></a></li>}
       </ul>
     </nav>
     <details class="mobile-menu" data-copy-status={mobileCopy.status}>
       <summary aria-label={mobileCopy.menu}><span></span><span></span><span></span></summary>
-      <nav aria-label="Mobile"><ul>{links.map(l => <li><a href={l.href}>{l.label}</a></li>)}</ul></nav>
+      <nav aria-label="Mobile"><ul>{links.map(l => <li><a href={l.href}>{l.label}</a></li>)}{SITE.githubUrl && <li><a href={SITE.githubUrl} rel="me">GitHub <span aria-hidden="true">↗</span></a></li>}</ul></nav>
     </details>
   </div>
 </header>
