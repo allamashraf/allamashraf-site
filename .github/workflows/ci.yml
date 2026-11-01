@@ -1,16 +1,19 @@
 name: CI
 
-# Runs on pull requests only. Keep it short: the private-repo phase spends GitHub Free minutes.
+# The same quality gate checks PRs, merged main, and a manually requested release.
 on:
   pull_request:
+  push:
+    branches: [main]
   workflow_dispatch:
+  workflow_call:
 
 permissions:
   contents: read
   pull-requests: read
 
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -29,7 +32,9 @@ jobs:
 
       - run: npm ci
       - name: Check formatting of changed files
-        run: node scripts/check-staged-format.mjs --base "${{ github.event.pull_request.base.sha || github.sha }}"
+        env:
+          FORMAT_BASE: ${{ github.event.pull_request.base.sha || github.event.before || 'HEAD^' }}
+        run: node scripts/check-staged-format.mjs --base "$FORMAT_BASE"
       - run: npx astro check
       - run: npm run test:unit
 

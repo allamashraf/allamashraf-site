@@ -4,12 +4,14 @@ import { contact } from '../content/copy';
 ---
 
 <div class="copy-email" data-copy-email data-email={SITE.email} data-copied={contact.copied}>
-  <a class="copy-email__address" href={`mailto:${SITE.email}`}>{SITE.email}</a>
-  <button type="button" class="btn copy-email__btn" data-copy-button>{contact.copy}</button>
+  <a class="copy-email__address" href={`mailto:${SITE.email}`}>
+    {SITE.email}
+  </a>
+  <button type="button" class="btn copy-email__btn" data-copy-button disabled>
+    {contact.copy}
+  </button>
   <p class="copy-email__status mono" role="status" aria-live="polite" data-copy-status></p>
 </div>
-
-
 
 <style>
   .copy-email {

@@ -14,4 +14,7 @@ for (const root of document.querySelectorAll<HTMLElement>('[data-copy-email]')) 
       status.textContent = `Copy failed. The address is ${email}.`;
     }
   });
+  // A deferred or failed chunk must never expose an enabled, unbound control.
+  // The mailto address remains usable even when JavaScript never loads.
+  button.disabled = false;
 }

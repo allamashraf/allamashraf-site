@@ -80,18 +80,9 @@ const personLd = JSON.stringify({
     </main>
     <SiteFooter />
     <script>
-      // The tiny inline scheduler is counted in the own-JS budget. Enhancement
-      // downloads wait for load, local fonts and two frames; no eager imports.
-      const start = () => document.fonts.ready.then(() => {
-        requestAnimationFrame(() => requestAnimationFrame(() => {
-          const script = document.createElement('script');
-          script.type = 'module';
-          script.src = '/client/client.js';
-          document.body.append(script);
-        }));
-      });
-      if (document.readyState === 'complete') start();
-      else window.addEventListener('load', start, { once: true });
+      // Astro bundles this small scheduler inline; check:budgets counts its bytes.
+      import { scheduleEnhancements } from '../scripts/enhancement-loader';
+      scheduleEnhancements();
     </script>
   </body>
 </html>
