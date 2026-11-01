@@ -10,6 +10,7 @@ export default defineConfig({
   site: 'https://allamashraf.dev',
   output: 'static',
   trailingSlash: 'always',
+  server: { allowedHosts: ['terminal.local'] },
   // Lets the test suite build an EMAIL_PUBLISHED=true variant next to dist/.
   outDir: process.env.ASTRO_OUT_DIR ?? './dist',
   build: {

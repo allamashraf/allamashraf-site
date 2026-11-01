@@ -1,93 +1,46 @@
 # Portfolio release checklist
 
-Release candidate: starter-v2, with the mobile upgrade retained.
-Review date: 31 October 2026.
+Live release: https://allamashraf.dev/ on 1 November 2026 (Cairo).
+The approved upgraded mobile design remains the governing mobile implementation.
 
-## Governing decisions
+## Completed launch
 
-The original master plan governs scope, content integrity, performance, testing and GitHub Pages deployment. The mobile implementation documented in MOBILE_PLAN_REVIEW.md and Allam's 31 October instruction supersede the original mobile appearance. Keep its colors, typography, particle treatment, menu, cards and interactive scoring scene. Do not restore the earlier Proof Rail or heading dot on phones merely to match the original desktop specification.
+- Seven production HTML pages, including custom 404; project statuses and limitations retained.
+- Clean public repository, protected main, required verify check, current base branch and resolved conversations. Force-push, deletion and administrator bypass blocked.
+- Manual workflow_dispatch deployment only; no automatic production deployment on push.
+- Name.com remains registrar and DNS provider: four A, four AAAA, www CNAME, retained ownership TXT and six mail MX plus SPF (17 records). Nameservers unchanged; no wildcard.
+- DNS validation successful, TLS active and Enforce HTTPS enabled. Observed apex 200, HTTP-to-HTTPS 301, www-to-apex 301 and missing-path 404. See LAUNCH_REPORT.md for headers.
+- External email delivery was confirmed by Allam with inbox evidence before enabling the production address. The existing private forwarding destination is unchanged.
+- GitHub and Name.com MFA were observed enabled. Private recovery information and evidence remain unpublished.
 
-AOG is a former employer. Existing approved claims and project statuses remain unchanged. The static portfolio does not turn its local routing prototype into a hosted automation service.
+## Approved decisions
 
-## Implemented release work
+- Allam approved the five mobile UI labels on 31 October 2026. src/content/mobile.ts records APPROVED; pending-copy references in MOBILE_PLAN_REVIEW.md are historical.
+- Fictional samples and disclosure retained. No live customers or production integrations.
+- AOG is a former employer, 2025–2026. No unevidenced outcome numbers added.
+- Performance exception: existing inline scheduler, 285 raw / 207 gzip bytes, counted in own JS; zero external Script requests before observed LCP. This does not mean literally zero executable JavaScript. All other budgets remain unchanged.
+- Allam explicitly authorized launch before the human checks below were complete. Their status is not a pass.
 
-- Seven production HTML pages, including the custom 404 page.
-- Per-page social PNG cards at 1200 by 630, using the existing project fonts and approved titles.
-- Open Graph and large Twitter cards with absolute canonical-domain URLs and descriptive alternative text.
-- Apple touch icon derived from the existing favicon.
-- Production build runs the claims gate and a separate release gate for social assets, icons, internal references, sitemap and draft exclusion.
-- CI can be run manually as well as on pull requests. Deployment remains manual only.
-- The release uses the clean source repository created for the preview; the uploaded historical Git database is not imported.
+## Validated launch baseline
 
-## Copy review
+CI run 41221733662 validated f67f00e001f53ce7ae716bca7e7f0c567b2340d2 before merge 91b376af290c15004149ac6a46627edd12e7a556: 18 unit tests, 113 browser tests (three expected skips), type checking, claims/release gates, budgets, 12 Lighthouse assertions and the observed-LCP external-script gate passed. Gitleaks scanned all eight fetched commits with zero findings. These counts describe that release, not later changes.
 
-Allam explicitly approved the five labels below on 31 October 2026, after they were listed for review. Their source status is APPROVED and the visible proposal marker is removed from their caption. This records wording approval only, not approval of the pre-LCP exception or public launch.
+## Follow-up implementation
 
-Approved UI wording:
+- Desktop hero signal transfers to CLICK before the single pinned scene; complete mobile, reduced-motion, Save-Data and failed-chunk fallbacks remain.
+- npm prepare installs repository-local pre-commit checks: staged whitespace, redacted Gitleaks and staged-content formatting. Gitleaks 8.30.1 is required on PATH or through GITLEAKS_BIN. CI independently checks formatting, secrets and quality gates.
+- A required second-person PR approval is applied after this follow-up merges. Future PRs require another GitHub account with suitable review access; the author cannot approve their own PR.
+- LAUNCH_REPORT.md records live PageSpeed and LinkedIn Post Inspector results or their actual service/authentication blockers.
 
-- Menu
-- Fictional samples
-- Write your own
-- Fictional leads · rules from the lead-routing prototype
-- Sample result
+## Unfinished human verification
 
-The fictional-data disclosure remains visible. Scoring rules, sample messages/results and factual claims are unchanged; this approval does not extend to unrelated draft content.
+- Five independent participants, ten seconds each; at least four identify the work, evidence and contact method.
+- Actual NVDA or VoiceOver spoken-output pass of the homepage and one case study.
+- Full physical mid-range Android, iPhone Safari and desktop-browser matrix. Allam's success report on one unspecified phone is retained as user-reported evidence, not the whole matrix.
+- Privately verify recovery details and forwarded-mail spam-filter behavior. Do not publish recovery contacts or change credentials through an agent.
 
-## Required verification
+## Operations and later scope
 
-| Requirement | Current evidence |
-| --- | --- |
-| Type checking | Run on the final release commit and record the result below |
-| Unit tests and claims gate | Run on the final release commit and record the result below |
-| Asset-size budgets | Measure the final production output |
-| All routes, internal links, SEO and no drafts | Automated static release gate plus browser/HTTP checks |
-| Chromium, Firefox, WebKit, axe, keyboard, no-JS, reduced motion and Save-Data | Re-run the repository's existing browser suite; the earlier report is not a substitute |
-| Lighthouse | Record three mobile runs per configured route; Performance >=90, LCP <=2500 ms, CLS <=0.1, TBT <=150 ms |
-| Secret and history checks | Scan the final clean history and publishable files; no local denylist content may be printed or committed |
-| Physical Android and iPhone | Pending real hardware; browser emulation does not complete this requirement |
-| NVDA or VoiceOver | Pending a full homepage and one case-study pass |
-| Comprehension | Pending five independent people, ten seconds each; at least four explain the work, evidence and contact method |
+Domain expiry observed: 21 October 2027; automatic renewal off. A reminder is scheduled for 22 August 2027 in Africa/Cairo, sixty days before expiry. No purchase is automatic. The private pre-web DNS snapshot remains available for rollback.
 
-## Domain and launch
-
-1. Review Name.com expiry, auto-renew, saved-card state, DNSSEC, unchanged default nameservers and account MFA. Do not purchase or alter security settings as part of a read-only review.
-2. Save the existing DNS records privately before changes.
-3. Verify domain ownership in GitHub with its issued TXT record; retain that record.
-4. Set allamashraf.dev as the repository's custom domain before changing DNS. Use the existing DNS_PLAN.md; re-check official GitHub values before applying.
-5. Publish only after release gates pass. Check valid HTTPS, www-to-apex redirect, normal pages, missing-path HTTP 404 and canonical/social URLs.
-6. Record the launch headers and rollback reference. No launch result is recorded until observed.
-7. Keep the email hidden until forwarding has been tested externally. LinkedIn remains the available contact channel meanwhile.
-
-## Out of scope for this release
-
-Arabic, blog, CMS, analytics, a contact form, hosted automation and optional Lab projects remain deferred. Original customer assets, private evidence, local denylists and the old Git database remain outside the public repository.
-
-## Current measured results
-
-Measured on 31 October 2026:
-
-- Release before the scheduling change: GitHub Actions run 41181865650 passed 113 browser tests (three expected skips), 18 unit tests, the claims/release gates and Gitleaks 8.30.1. All 12 Lighthouse runs passed their configured assertions.
-- Median Lighthouse Performance / LCP / CLS / TBT for that release: home 94 / 2411 ms / 0.0746 / 0 ms; work 98 / 1806 ms / 0 / 0 ms; prototype 98 / 1809 ms / 0 / 0 ms; about 99 / 1655 ms / 0 / 0 ms. Accessibility was 100 on all four routes.
-- A stricter trace review found three external script requests (3269 transferred bytes) before observed homepage LCP. Passing the score alone did not satisfy the deferred-loading intent.
-- The current change consolidates progressive enhancements behind load, local-font readiness and two animation frames. Static content, native navigation, design, scoring rules and motion safeguards stay unchanged. No dependency was added.
-- Local final check: 66 files, zero errors, warnings or hints. All 18 unit tests passed; seven-page production build, claims gate and release gate passed.
-- Current measured budgets: own JS 4.8 KB gzip; desktop motion 48.2 KB; CSS 12.9 KB; fonts 90.2 KB; one preload; initial homepage 124.2 KB. Each configured size budget passed.
-- The inline scheduler is 285 raw bytes / 207 gzip bytes and is included in the own-JS budget. The new trace gate measures **external requests before observed LCP**, not literal zero executable JavaScript. The original wording “JS before LCP 0KB” is therefore not recorded as literally met; this distinction must remain visible at final plan review.
-- The new trace gate rejects the previous reports and requires three unique measured runs on each configured route. GitHub Actions run 41215333010 on application commit fd35220e07045edf9a2bdc5bcfe4c2ff57c775b0 passed: 113 browser tests (three expected skips), 18 unit tests, all 12 Lighthouse assertions, the new pre-LCP external-request gate and Gitleaks 8.30.1 (zero findings across the four PR commits).
-- Current median Lighthouse results: home Performance 95, LCP 2257 ms, CLS 0.0746, TBT 0 ms; work 98 / 1806 ms / 0 / 0 ms; prototype 98 / 1807 ms / 0 / 0 ms; about 99 / 1654 ms / 0 / 0 ms. Accessibility was 100 on all four routes. Every one of the 12 traces had zero external Script requests before observed LCP.
-- The release artifact SHA-256 is dd00aa4d61e90912f5d62f852c24cf839d3bb6a7fe4710dfd522b22d42922418. Local full-object history check: zero blocked-term matches and zero personal Gmail addresses; sanitized publishable files also had zero Gitleaks findings.
-- The clean source history excludes the uploaded historical Git database, private evidence, local denylists and personal email addresses. Run the final history scan before launch.
-
-## Account and domain preparation observed
-
-- The private GitHub repository allamashraf/allamashraf-site and draft PR #1 exist. The separate automation repository is untouched. GitHub 2FA is configured. Actions paid usage is capped at $0.
-- GitHub has verified ownership of allamashraf.dev using its issued TXT record.
-- Name.com default nameservers are unchanged. The domain expires 21 October 2027; auto-renew is off and a payment profile is present. DNSSEC is unavailable on those default nameservers. No purchase or security-setting change was made.
-- Name.com two-step verification was enabled by Allam and its active credential-management state verified on 31 October 2026. Authentication secrets and recovery codes remain with Allam.
-- The eight-record pre-web DNS snapshot is saved privately for rollback. Allam confirmed external delivery for allam@allamashraf.dev on 31 October 2026 and supplied inbox evidence: a university-domain sender, the public address as recipient and the forwarding service shown in the message details. The existing destination is retained at Allam's explicit request. No private destination address or inbox screenshot is added to public source.
-- The email release gate is now passed. The manual Pages deployment uses EMAIL_PUBLISHED=true. The updated owner-only preview is packaged with that same flag; the local default stays false so both email states remain testable.
-- No website A/AAAA or www CNAME cutover has occurred. Main protection, repository public visibility, GitHub Pages configuration, final HTTPS/redirect/404/header checks and public launch remain unfinished.
-
-## Remaining human checks
-
-Physical Android and iPhone, desktop Safari, NVDA or VoiceOver and the five-person comprehension test remain pending. The five mobile UI labels are approved; unrelated proposed draft text keeps its own status. Browser emulation does not substitute for human tests. No device, assistive-technology, comprehension or live-domain result is inferred.
+Arabic, blog, CMS, analytics, contact forms, a fourth project and hosted automation are deferred. Fix the prototype's disclosed concurrency and broken-payload limits before connecting real services. No field INP/CrUX pass is claimed without real-user data.
