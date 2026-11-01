@@ -12,7 +12,9 @@ const words = hero.h1.split(' ');
 <section class="hero" aria-labelledby="hero-title">
   <div class="hero__grid container" aria-hidden="true">
     <div class="grid hero__grid-cols">
-      {Array.from({ length: 12 }, () => <span />)}
+      {Array.from({ length: 12 }, () => (
+        <span />
+      ))}
     </div>
   </div>
 
@@ -21,37 +23,69 @@ const words = hero.h1.split(' ');
     <!-- The word spans exist only for the reveal. Firefox drops the space at each wrapped
          inline-block, so the heading's name comes from aria-label, not the rendered words. -->
     <h1 id="hero-title" class="hero__title" aria-label={hero.h1}>
-      <span aria-hidden="true">{words.map((w, i) => (<><span class="w"><span class="w__in">{w}</span></span>{i < words.length - 1 ? ' ' : ''}</>))}</span><span class="hero__dot" aria-hidden="true"></span>
+      <span aria-hidden="true">
+        {words.map((w, i) => (
+          <>
+            <span class="w">
+              <span class="w__in">{w}</span>
+            </span>
+            {i < words.length - 1 ? ' ' : ''}
+          </>
+        ))}
+      </span>
+      <span class="hero__dot" aria-hidden="true"></span>
     </h1>
     <div class="grid hero__foot">
       <p class="hero__subhead lede">
-        <span class="hero__subhead-full"><Claim id={hero.subheadClaim} /></span><span class="hero__subhead-short"><Claim id={hero.subheadMobileClaim} /></span>
+        <span class="hero__subhead-full">
+          <Claim id={hero.subheadClaim} />
+        </span>
+        <span class="hero__subhead-short">
+          <Claim id={hero.subheadMobileClaim} />
+        </span>
       </p>
       <div class="hero__ctas">
-        <a class="btn btn--primary" href="#work">{hero.primaryCta}</a>
-        {SITE.linkedinUrl && <a class="btn mobile-linkedin" href={SITE.linkedinUrl} rel="me">{contact.linkedin}<span aria-hidden="true">↗</span></a>}
-        {
-          emailPublished ? (
-            <a class="btn" href={`mailto:${SITE.email}`}>
-              {hero.emailCta}
-            </a>
-          ) : (
-            <a class="btn" href="#contact">
-              {hero.contactCta}
-            </a>
-          )
-        }
+        <a class="btn btn--primary" href="#work">
+          {hero.primaryCta}
+        </a>
+        <a class="btn hero__resume" href={SITE.resumeUrl} download>
+          Resume <span class="mono">PDF ↓</span>
+        </a>
+        {SITE.linkedinUrl && (
+          <a class="btn mobile-linkedin" href={SITE.linkedinUrl} rel="me">
+            {contact.linkedin}
+            <span aria-hidden="true">↗</span>
+          </a>
+        )}
+        {emailPublished ? (
+          <a class="btn" href={`mailto:${SITE.email}`}>
+            {hero.emailCta}
+          </a>
+        ) : (
+          <a class="btn" href="#contact">
+            {hero.contactCta}
+          </a>
+        )}
       </div>
     </div>
     <ProofRail />
-    <div class="mobile-credentials" aria-hidden="true">{capabilities.groups.map(group => <span>{group.title}</span>)}</div>
+    <div class="mobile-credentials" aria-hidden="true">
+      {capabilities.groups.map((group) => (
+        <span>{group.title}</span>
+      ))}
+    </div>
     <MobileParticles kind="wave" />
   </div>
 </section>
-<a class="skip-anim mono" href="#work">Skip the animation <span aria-hidden="true">→</span> Work</a>
+<a class="skip-anim mono" href="#work">
+  Skip the animation <span aria-hidden="true">→</span> Work
+</a>
 
 <style>
-  .mobile-linkedin, .mobile-credentials { display: none; }
+  .mobile-linkedin,
+  .mobile-credentials {
+    display: none;
+  }
   .hero {
     position: relative;
     min-height: 100svh;
@@ -136,19 +170,45 @@ const words = hero.h1.split(' ');
       animation: word-rise 650ms var(--ease) both;
     }
 
-    .hero__title .w:nth-child(2) .w__in { animation-delay: 30ms; }
-    .hero__title .w:nth-child(3) .w__in { animation-delay: 60ms; }
-    .hero__title .w:nth-child(4) .w__in { animation-delay: 90ms; }
-    .hero__title .w:nth-child(5) .w__in { animation-delay: 120ms; }
-    .hero__title .w:nth-child(6) .w__in { animation-delay: 150ms; }
-    .hero__title .w:nth-child(7) .w__in { animation-delay: 180ms; }
-    .hero__title .w:nth-child(8) .w__in { animation-delay: 210ms; }
-    .hero__title .w:nth-child(9) .w__in { animation-delay: 240ms; }
-    .hero__title .w:nth-child(10) .w__in { animation-delay: 270ms; }
-    .hero__title .w:nth-child(11) .w__in { animation-delay: 300ms; }
-    .hero__title .w:nth-child(12) .w__in { animation-delay: 330ms; }
-    .hero__title .w:nth-child(13) .w__in { animation-delay: 360ms; }
-    .hero__title .w:nth-child(n + 14) .w__in { animation-delay: 390ms; }
+    .hero__title .w:nth-child(2) .w__in {
+      animation-delay: 30ms;
+    }
+    .hero__title .w:nth-child(3) .w__in {
+      animation-delay: 60ms;
+    }
+    .hero__title .w:nth-child(4) .w__in {
+      animation-delay: 90ms;
+    }
+    .hero__title .w:nth-child(5) .w__in {
+      animation-delay: 120ms;
+    }
+    .hero__title .w:nth-child(6) .w__in {
+      animation-delay: 150ms;
+    }
+    .hero__title .w:nth-child(7) .w__in {
+      animation-delay: 180ms;
+    }
+    .hero__title .w:nth-child(8) .w__in {
+      animation-delay: 210ms;
+    }
+    .hero__title .w:nth-child(9) .w__in {
+      animation-delay: 240ms;
+    }
+    .hero__title .w:nth-child(10) .w__in {
+      animation-delay: 270ms;
+    }
+    .hero__title .w:nth-child(11) .w__in {
+      animation-delay: 300ms;
+    }
+    .hero__title .w:nth-child(12) .w__in {
+      animation-delay: 330ms;
+    }
+    .hero__title .w:nth-child(13) .w__in {
+      animation-delay: 360ms;
+    }
+    .hero__title .w:nth-child(n + 14) .w__in {
+      animation-delay: 390ms;
+    }
   }
 
   @keyframes word-rise {
@@ -301,28 +361,116 @@ const words = hero.h1.split(' ');
   }
 
   @media (max-width: 767px) {
-    .hero { padding-top: 148px; background: #050606; }
-    .hero__grid { display: none; }
-    .hero__inner { gap: 22px; }
-    .hero__eyebrow { display: flex; align-items: center; gap: 9px; font-size: 10px; letter-spacing: .015em; }
-    .hero__eyebrow::before { content: ''; width: 18px; height: 1px; flex-shrink: 0; background: var(--accent); }
-    .hero__title { font-family: var(--ff-body); font-weight: 500; line-height: 1.06; letter-spacing: -.03em; max-width: none; text-wrap: initial; }
-    .hero__dot { display: none; }
-    .hero__subhead { font-family: var(--ff-mono); font-size: 12px; line-height: 1.7; }
-    .hero__foot { row-gap: 28px; }
-    .hero__ctas { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .hero__ctas > .btn { border-radius: 999px; justify-content: space-between; min-height: 44px; font-family: var(--ff-body); font-size: 13px; text-transform: none; letter-spacing: .02em; padding: 10px 22px; }
-    .hero__ctas > .btn:first-child::after { content: '→'; }
-    .hero__ctas > .btn--primary { box-shadow: 0 0 32px #c4ff002b; }
-    .hero__ctas > .btn:not(:first-child):not(.mobile-linkedin) { display: none; }
-    .hero__ctas > .mobile-linkedin { display: inline-flex; border-color: #c0c0ba; }
-    .hero__inner > :global(.rail) { display: none; }
-    .mobile-credentials { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); margin-top: 12px; }
-    .mobile-credentials span { position: relative; border-right: 1px solid #303030; padding: 5px 5px 5px 12px; font: 500 7px/1.7 var(--ff-mono); text-transform: uppercase; }
-    .mobile-credentials span::before { content: ''; position: absolute; width: 5px; height: 5px; border-radius: 50%; left: 0; top: 10px; background: var(--accent); }
-    .mobile-credentials span:last-child { border: 0; }
+    .hero {
+      padding-top: 148px;
+      background: #050606;
+    }
+    .hero__grid {
+      display: none;
+    }
+    .hero__inner {
+      gap: 22px;
+    }
+    .hero__eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 10px;
+      letter-spacing: 0.015em;
+    }
+    .hero__eyebrow::before {
+      content: '';
+      width: 18px;
+      height: 1px;
+      flex-shrink: 0;
+      background: var(--accent);
+    }
+    .hero__title {
+      font-family: var(--ff-body);
+      font-weight: 500;
+      line-height: 1.06;
+      letter-spacing: -0.03em;
+      max-width: none;
+      text-wrap: initial;
+    }
+    .hero__dot {
+      display: none;
+    }
+    .hero__subhead {
+      font-family: var(--ff-mono);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+    .hero__foot {
+      row-gap: 28px;
+    }
+    .hero__ctas {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .hero__ctas > .btn {
+      border-radius: 999px;
+      justify-content: space-between;
+      min-height: 44px;
+      font-family: var(--ff-body);
+      font-size: 13px;
+      text-transform: none;
+      letter-spacing: 0.02em;
+      padding: 10px 22px;
+    }
+    .hero__ctas > .btn:first-child::after {
+      content: '→';
+    }
+    .hero__ctas > .btn--primary {
+      box-shadow: 0 0 32px #c4ff002b;
+    }
+    .hero__ctas > .btn:not(:first-child):not(.mobile-linkedin):not(.hero__resume) {
+      display: none;
+    }
+    .hero__ctas > .hero__resume {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+    .hero__ctas > .mobile-linkedin {
+      display: inline-flex;
+      border-color: #c0c0ba;
+    }
+    .hero__inner > :global(.rail) {
+      display: none;
+    }
+    .mobile-credentials {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 12px;
+    }
+    .mobile-credentials span {
+      position: relative;
+      border-right: 1px solid #303030;
+      padding: 5px 5px 5px 12px;
+      font: 500 7px/1.7 var(--ff-mono);
+      text-transform: uppercase;
+    }
+    .mobile-credentials span::before {
+      content: '';
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      left: 0;
+      top: 10px;
+      background: var(--accent);
+    }
+    .mobile-credentials span:last-child {
+      border: 0;
+    }
   }
   @media (max-width: 359px) {
-    .hero__ctas > .btn { padding-inline: 14px; font-size: 12px; gap: 8px; white-space: nowrap; }
+    .hero__ctas > .btn {
+      padding-inline: 14px;
+      font-size: 12px;
+      gap: 8px;
+      white-space: nowrap;
+    }
   }
 </style>

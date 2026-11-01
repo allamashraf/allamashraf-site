@@ -13,18 +13,22 @@ for (const g of capabilities.groups) {
 
 <BaseLayout
   title="About"
-  description="About Allam Ashraf: Computer Science student at Egypt University of Informatics in Cairo, working on lead operations, CRM and workflow automation."
+  description="Meet Allam Ashraf, a Computer Science student at Egypt University of Informatics in Cairo. Background in real-estate sales, marketing and GTM engineering."
 >
   <header class="page-head container grid">
     <div class="page-head__text">
       <h1 class="page-head__title">About</h1>
-      <p class="lede"><Claim id="bio-short" /></p>
+      <p class="lede">
+        <Claim id="bio-short" />
+      </p>
     </div>
   </header>
 
   <section class="container section about-section" aria-labelledby="path-title">
     <div class="grid">
-      <h2 id="path-title" class="h3 about-section__title">Path so far</h2>
+      <h2 id="path-title" class="h3 about-section__title">
+        Path so far
+      </h2>
       <div class="about-section__body">
         <Timeline />
       </div>
@@ -33,34 +37,34 @@ for (const g of capabilities.groups) {
 
   <section class="container section about-section" aria-labelledby="tools-title">
     <div class="grid">
-      <h2 id="tools-title" class="h3 about-section__title">Tools I have used</h2>
+      <h2 id="tools-title" class="h3 about-section__title">
+        Tools I have used
+      </h2>
       <dl class="about-section__body tools">
-        {
-          toolRows.map((g) => (
-            <div class="tools__row">
-              <dt class="mono muted">{g.title}</dt>
-              <dd>
-                <Claim id={g.toolsClaim} />
-              </dd>
-            </div>
-          ))
-        }
+        {toolRows.map((g) => (
+          <div class="tools__row">
+            <dt class="mono muted">{g.title}</dt>
+            <dd>
+              <Claim id={g.toolsClaim} />
+            </dd>
+          </div>
+        ))}
       </dl>
     </div>
   </section>
 
   <section class="container section about-section" aria-labelledby="way-title">
     <div class="grid">
-      <h2 id="way-title" class="h3 about-section__title">{approach.title}</h2>
+      <h2 id="way-title" class="h3 about-section__title">
+        {approach.title}
+      </h2>
       <ul class="about-section__body way">
-        {
-          approach.principles.map((p) => (
-            <li>
-              <h3 class="way__title">{p.title}</h3>
-              <p class="muted">{p.body}</p>
-            </li>
-          ))
-        }
+        {approach.principles.map((p) => (
+          <li>
+            <h3 class="way__title">{p.title}</h3>
+            <p class="muted">{p.body}</p>
+          </li>
+        ))}
       </ul>
     </div>
   </section>

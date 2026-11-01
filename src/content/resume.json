@@ -1,0 +1,50 @@
+{
+  "name": "Allam Ashraf",
+  "headline": "GTM Engineering | Frontend Development & Lead Automation",
+  "location": "Cairo, Egypt",
+  "email": "allam@allamashraf.dev",
+  "website": "https://allamashraf.dev/",
+  "github": "https://github.com/allamashraf",
+  "linkedin": "https://www.linkedin.com/in/allam-ashraf",
+  "summary": "Computer Science student with experience in real-estate sales and digital marketing. Built an offline sales showroom and a bilingual lead-capture page for AOG Developments, and designed a local lead-routing prototype. Focused on the handoff from first click to the sales team.",
+  "experience": [
+    {
+      "org": "AOG Developments",
+      "period": "2025 - 2026",
+      "role": "Digital Marketing Intern > Digital Marketing Specialist > GTM Engineer",
+      "bullets": [
+        "Ran the company's website, media buying and marketing automation alone after progressing from a digital marketing internship.",
+        "Designed and built an offline touch-screen sales showroom used in production, plus a bilingual hotel lead-capture page that was completed but never launched."
+      ]
+    },
+    {
+      "org": "Gold Star",
+      "period": "2024 - 2025",
+      "role": "Sales Agent, later Social Media Consultant",
+      "bullets": ["Handled inbound real-estate leads, then generated leads through social media for the sales team."]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Interactive Sales Showroom",
+      "status": "Delivered | AOG Developments",
+      "url": "https://allamashraf.dev/work/interactive-showroom/",
+      "text": "Built end-to-end with HTML, CSS, JavaScript and a local Node.js maps server: touch navigation, full-screen video, master-plan viewing, QR directions and idle behaviour. No usage or sales-impact data was collected."
+    },
+    {
+      "name": "Bilingual Hotel Lead-Capture Page",
+      "status": "Unreleased | AOG Developments",
+      "url": "https://allamashraf.dev/work/hotel-lead-capture/",
+      "text": "Built Arabic/English layouts, language switching, interest-based forms, validation and dataLayer events. Never launched; no CRM connection or conversion results."
+    },
+    {
+      "name": "Lead-Routing Automation Prototype",
+      "status": "Local JavaScript prototype | Designed for AOG Developments",
+      "url": "https://allamashraf.dev/work/lead-routing-prototype/",
+      "text": "Designed phone normalization, rule-based scoring, deduplication and round-robin assignment. Tested with fictional scenarios; n8n, Airtable and Telegram remained templates or mocks. Never deployed or used by AOG."
+    }
+  ],
+  "skills": "HTML, CSS, JavaScript, Node.js, Arabic/English and RTL/LTR interfaces, form validation, lead scoring and routing, n8n workflow templates, webhooks, Meta Ads Manager.",
+  "education": "Computer Science undergraduate | Egypt University of Informatics (EUI), Cairo | Currently enrolled",
+  "availability": "Open to GTM Engineering & RevOps roles - and selective project collaborations."
+}

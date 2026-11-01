@@ -10,41 +10,42 @@ const lab = (await getCollection('lab')).filter((l) => l.data.published);
 ---
 
 <BaseLayout
-  title="Work"
-  description="Case studies by Allam Ashraf: an offline touch-screen sales showroom, a bilingual hotel lead-capture page, and a lead-routing prototype."
+  title="Projects & Case Studies"
+  description="Explore Allam Ashraf's delivered sales showroom, unreleased bilingual hotel page and local lead-routing prototype, with roles, evidence and limitations."
 >
   <header class="page-head container">
     <h1 class="page-head__title">Work</h1>
     <p class="lede page-head__intro">
-      Three projects along the path from first click to the sales team. Each case says what I did, what I did not do, and what was not measured.
+      Three projects along the path from first click to the sales team. Each case says what I did, what I did not do,
+      and what was not measured.
     </p>
   </header>
 
   <section class="container work-list" aria-label="Case studies">
-    {cases.map((c) => <CaseCard entry={c} layout="row" headingLevel="h2" />)}
+    {cases.map((c) => (
+      <CaseCard entry={c} layout="row" headingLevel="h2" />
+    ))}
   </section>
 
-  {
-    lab.length > 0 && (
-      <section class="container lab" aria-labelledby="lab-title">
-        <h2 id="lab-title" class="h3">
-          Lab
-        </h2>
-        <ul class="lab__list">
-          {lab.map((l) => (
-            <li class="lab__item">
-              <h3 class="lab__title">{l.data.title}</h3>
-              <StatusBadge status={l.data.projectStatus} />
-              <p class="mono muted">{l.data.note}</p>
-              <p class="muted">
-                <Claim id={l.data.summaryClaim} />
-              </p>
-            </li>
-          ))}
-        </ul>
-      </section>
-    )
-  }
+  {lab.length > 0 && (
+    <section class="container lab" aria-labelledby="lab-title">
+      <h2 id="lab-title" class="h3">
+        Lab
+      </h2>
+      <ul class="lab__list">
+        {lab.map((l) => (
+          <li class="lab__item">
+            <h3 class="lab__title">{l.data.title}</h3>
+            <StatusBadge status={l.data.projectStatus} />
+            <p class="mono muted">{l.data.note}</p>
+            <p class="muted">
+              <Claim id={l.data.summaryClaim} />
+            </p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
 </BaseLayout>
 
 <style>

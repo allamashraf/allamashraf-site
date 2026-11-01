@@ -5,6 +5,7 @@ import Claim from '../../components/Claim.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
 import CaseCover from '../../components/CaseCover.astro';
 import { claimRenders } from '../../lib/claims';
+import { SITE } from '../../config/site';
 
 export async function getStaticPaths() {
   const cases = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
@@ -37,7 +38,9 @@ for (const f of candidates) if (await claimRenders(f.id)) facts.push(f);
 <BaseLayout title={data.title} description={data.description} ogType="article">
   <header class="case-hero">
     <div class="container">
-      <p class="case-hero__back mono"><a href="/work/">Work</a> <span aria-hidden="true">/</span> {String(data.order).padStart(2, '0')}</p>
+      <p class="case-hero__back mono">
+        <a href="/work/">Work</a> <span aria-hidden="true">/</span> {String(data.order).padStart(2, '0')}
+      </p>
       <h1 class="case-hero__title">{data.title}</h1>
       <div class="grid case-hero__grid">
         <dl class="facts">
@@ -48,16 +51,14 @@ for (const f of candidates) if (await claimRenders(f.id)) facts.push(f);
               <span class="mono muted">{data.statusLine}</span>
             </dd>
           </div>
-          {
-            facts.map((f) => (
-              <div class="facts__row">
-                <dt class="mono">{f.label}</dt>
-                <dd>
-                  <Claim id={f.id} />
-                </dd>
-              </div>
-            ))
-          }
+          {facts.map((f) => (
+            <div class="facts__row">
+              <dt class="mono">{f.label}</dt>
+              <dd>
+                <Claim id={f.id} />
+              </dd>
+            </div>
+          ))}
         </dl>
         <div class="case-hero__cover">
           <CaseCover kind={data.diagram} size="hero" />
@@ -67,22 +68,52 @@ for (const f of candidates) if (await claimRenders(f.id)) facts.push(f);
   </header>
 
   <div class="container case-layout">
-    <div class="case-rail" aria-hidden="true"><span></span></div>
+    <div class="case-rail" aria-hidden="true">
+      <span></span>
+    </div>
     <article class="case-body" data-case-body>
       <Content />
     </article>
   </div>
 
+  <nav class="container case-profile" aria-label="More from Allam">
+    <a class="btn" href={SITE.githubUrl} rel="me">
+      GitHub profile <span aria-hidden="true">↗</span>
+    </a>
+    <a class="btn" href={SITE.resumeUrl} download>
+      Resume (PDF)
+    </a>
+    <p class="muted">Project source is kept privately. Browse my public work on GitHub.</p>
+  </nav>
+
   <nav class="container case-next" aria-label="Next">
     <a class="case-next__link" href={`/work/${next.id}/`}>
       <span class="mono muted">Next case</span>
-      <span class="case-next__title">{next.data.title} <span class="arrow" aria-hidden="true">→</span></span>
+      <span class="case-next__title">
+        {next.data.title}{' '}
+        <span class="arrow" aria-hidden="true">
+          →
+        </span>
+      </span>
     </a>
-    <a class="btn" href="/#contact">Contact</a>
+    <a class="btn" href="/#contact">
+      Contact
+    </a>
   </nav>
 </BaseLayout>
 
 <style>
+  .case-profile {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    align-items: center;
+    padding-bottom: var(--s-7);
+  }
+  .case-profile p {
+    flex-basis: 100%;
+    font-size: var(--fs-small);
+  }
   .case-hero {
     padding-top: calc(var(--header-h) + var(--s-8));
     padding-bottom: var(--s-8);

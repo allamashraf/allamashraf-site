@@ -11,49 +11,67 @@ yearClaim: hotel-year
 toolsClaim: hotel-tools
 coverKind: illustrative
 diagram: hotel
-description: "Case study of a bilingual Arabic/English lead-capture site Allam Ashraf built end-to-end for a boutique hotel project at AOG Developments, with interest-based lead forms and analytics event tracking. It was completed but never launched."
+description: 'An Arabic/English hotel lead-capture page built by Allam Ashraf for AOG Developments. Completed but never launched; forms were not connected to a CRM.'
 ---
+
 import Claim from '../../components/Claim.astro';
 import CaseSection from '../../components/CaseSection.astro';
 import Callout from '../../components/Callout.astro';
 import FlowDiagram from '../../components/FlowDiagram.astro';
 
-{/* Every factual sentence goes through <Claim>. Copy outside it must contain no digits.
-    Reviewed by Allam 22 Oct 2026. The project's own name is unannounced: never use it anywhere on the site. */}
-
 <CaseSection n={1}>
-  <p><Claim id="hotel-status" /></p>
+  <p>
+    <Claim id="hotel-status" />
+  </p>
 </CaseSection>
 
 <CaseSection n={2}>
-  <p><Claim id="hotel-context" /></p>
+  <p>
+    <Claim id="hotel-context" />
+  </p>
 </CaseSection>
 
 <CaseSection n={3}>
-  <p><Claim id="hotel-problem" /></p>
+  <p>
+    <Claim id="hotel-problem" />
+  </p>
 </CaseSection>
 
 <CaseSection n={4}>
-  <p><Claim id="hotel-role-detail" /></p>
+  <p>
+    <Claim id="hotel-role-detail" />
+  </p>
 </CaseSection>
 
 <CaseSection n={5}>
-  <p><Claim id="hotel-constraints" /></p>
+  <p>
+    <Claim id="hotel-constraints" />
+  </p>
 </CaseSection>
 
 <CaseSection n={6}>
   <FlowDiagram
     label="Illustrative lead-capture flow"
-    steps={['Visitor lands', 'Chooses Arabic or English', 'Picks an interest', 'Form is validated', 'Tracking event fires (no CRM connected)']}
+    steps={[
+      'Visitor lands',
+      'Chooses Arabic or English',
+      'Picks an interest',
+      'Form is validated',
+      'Tracking event fires (no CRM connected)',
+    ]}
   />
 </CaseSection>
 
 <CaseSection n={7}>
-  <p><Claim id="hotel-built" /></p>
+  <p>
+    <Claim id="hotel-built" />
+  </p>
 </CaseSection>
 
 <CaseSection n={8}>
-  <p><Claim id="hotel-evidence" /></p>
+  <p>
+    <Claim id="hotel-evidence" />
+  </p>
 </CaseSection>
 
 <CaseSection n={9}>
@@ -65,12 +83,18 @@ import FlowDiagram from '../../components/FlowDiagram.astro';
 <CaseSection n={10}>
   <Callout kind="limitations">
     <ul>
-      <li><Claim id="hotel-limit-crm" /></li>
-      <li><Claim id="hotel-limit-whatsapp" /></li>
+      <li>
+        <Claim id="hotel-limit-crm" />
+      </li>
+      <li>
+        <Claim id="hotel-limit-whatsapp" />
+      </li>
     </ul>
   </Callout>
 </CaseSection>
 
 <CaseSection n={11}>
-  <p><Claim id="hotel-next" /></p>
+  <p>
+    <Claim id="hotel-next" />
+  </p>
 </CaseSection>
