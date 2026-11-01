@@ -31,6 +31,13 @@ export function initSignalPath(section: HTMLElement): void {
   const mm = gsap.matchMedia();
   mm.add('(min-width: 1024px) and (prefers-reduced-motion: no-preference)', () => {
     section.classList.add('is-scene');
+    const heroDot = document.querySelector<HTMLElement>('.hero__dot');
+    const clickNode = stations[0]?.querySelector<HTMLElement>('.station__node');
+    const transfer = document.createElement('span');
+    transfer.className = 'signal-transfer';
+    transfer.setAttribute('aria-hidden', 'true');
+    document.body.append(transfer);
+    const heroOpacity = heroDot?.style.opacity ?? '';
 
     const tl = gsap.timeline({
       defaults: { ease: 'power2.out' },
@@ -44,8 +51,48 @@ export function initSignalPath(section: HTMLElement): void {
       },
     });
 
-    // 0%: the dot drops onto the start of the path.
-    tl.fromTo(dot, { x: () => -span(), y: -80, opacity: 0 }, { x: () => -span(), y: 0, opacity: 1, duration: AT[0] }, 0);
+    // The hero signal arrives at CLICK as the section pins, then follows the wire.
+    gsap.set(dot, { x: () => -span(), y: 0, opacity: heroDot && clickNode ? 0 : 1 });
+    if (heroDot && clickNode) {
+      const source = () => {
+        const r = heroDot.getBoundingClientRect();
+        return { x: r.left + r.width / 2 - 5, y: r.top + scrollY + r.height / 2 - 5, scale: r.width / 10 };
+      };
+      const target = () => {
+        const r = clickNode.getBoundingClientRect();
+        const s = section.getBoundingClientRect();
+        return { x: r.left + r.width / 2 - 5, y: (tl.scrollTrigger?.start ?? 0) + r.top - s.top + r.height / 2 - 5 };
+      };
+      gsap.fromTo(
+        transfer,
+        {
+          x: () => source().x,
+          y: () => source().y,
+          scale: () => source().scale,
+        },
+        {
+          x: () => target().x,
+          y: () => target().y,
+          scale: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: document.querySelector('.hero'),
+            start: 'top top',
+            end: () => Math.max(1, tl.scrollTrigger?.start ?? 1),
+            scrub: 0.6,
+            invalidateOnRefresh: true,
+          },
+          onUpdate() {
+            const progress = this.progress();
+            heroDot.style.opacity = progress === 0 ? heroOpacity : '0';
+            transfer.style.opacity = progress > 0 && progress < 1 ? '1' : '0';
+            dot.style.opacity = progress === 1 ? '1' : '0';
+          },
+        },
+      );
+    } else {
+      transfer.remove();
+    }
 
     // The line draws and the dot travels from CLICK to RESPOND (through lane 2 at ROUTE).
     tl.fromTo(wireHot, { scaleX: 0 }, { scaleX: 1, ease: 'none', duration: TRAVEL }, AT[0]);
@@ -94,6 +141,9 @@ export function initSignalPath(section: HTMLElement): void {
     }
 
     return () => {
+      transfer.remove();
+      if (heroDot) heroDot.style.opacity = heroOpacity;
+      dot.style.opacity = '';
       section.classList.remove('is-scene');
     };
   });

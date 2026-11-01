@@ -25,6 +25,51 @@ async function scrollThroughSignal(page: Page) {
 test.describe('desktop scene', () => {
   test.use({ viewport: { width: 1440, height: 900 } });
 
+  test('hero signal transfers continuously to CLICK and cleans up on mobile', async ({ page }, testInfo) => {
+    await page.goto('/');
+    await expect(page.locator('[data-signal]')).toHaveClass(/is-scene/);
+    const hero = page.locator('.hero__dot');
+    const transfer = page.locator('.signal-transfer');
+    await expect(transfer).toHaveCount(1);
+    await expect(hero).toHaveCSS('opacity', '1');
+    const top = await page.locator('.pin-spacer').evaluate((el) => el.getBoundingClientRect().top + scrollY);
+    await page.evaluate((y) => window.scrollTo(0, y / 2), top);
+    await page.waitForTimeout(1200);
+    await expect(hero).toHaveCSS('opacity', '0');
+    await expect(transfer).toHaveCSS('opacity', '1');
+    const flight = await transfer.boundingBox();
+    expect(flight).not.toBeNull();
+    expect(flight!.y + flight!.height).toBeGreaterThan(0);
+    expect(flight!.y).toBeLessThan(900);
+    await testInfo.attach('desktop-signal-transfer', { body: await page.screenshot(), contentType: 'image/png' });
+    await page.evaluate((y) => window.scrollTo(0, y), top);
+    await page.waitForTimeout(1200);
+    await expect(transfer).toHaveCSS('opacity', '0');
+    await expect(page.locator('[data-signal-dot]')).toHaveCSS('opacity', '1');
+    const landed = await page.locator('[data-signal-dot]').boundingBox();
+    const node = await page.locator('[data-station="click"] .station__node').boundingBox();
+    expect(Math.abs(landed!.x + landed!.width / 2 - node!.x - node!.width / 2)).toBeLessThan(2);
+    expect(Math.abs(landed!.y + landed!.height / 2 - node!.y - node!.height / 2)).toBeLessThan(2);
+    await page.setViewportSize({ width: 375, height: 812 });
+    await expect(transfer).toHaveCount(0);
+    await expect(hero).toHaveCSS('opacity', '1');
+    await expect(page.locator('.pin-spacer')).toHaveCount(0);
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await expect(page.locator('.signal-transfer')).toHaveCount(1);
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await expect(page.locator('.signal-transfer')).toHaveCount(0);
+    await expect(hero).toHaveCSS('opacity', '1');
+    for (const width of [320, 375, 768, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto('/');
+      await testInfo.attach(`layout-${width}-viewport`, { body: await page.screenshot(), contentType: 'image/png' });
+      await testInfo.attach(`layout-${width}-full`, {
+        body: await page.screenshot({ fullPage: true }),
+        contentType: 'image/png',
+      });
+    }
+  });
+
   test('GSAP chunk loads lazily, pins exactly one section, and ends complete', async ({ page }) => {
     const motion: string[] = [];
     page.on('request', (r) => {
@@ -40,7 +85,9 @@ test.describe('desktop scene', () => {
     const lit = await page.$$eval('#signal [data-station-lit]', (els) => els.map((e) => getComputedStyle(e).opacity));
     expect(lit).toEqual(['1', '1', '1', '1', '1']);
     // No horizontal overflow while the pin is active (incl. fractional scaling).
-    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(0);
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth),
+    ).toBeLessThanOrEqual(0);
   });
 
   test('page stays complete and error-free if the motion chunk fails to load', async ({ page }) => {
@@ -120,7 +167,9 @@ test('scroll-driven CSS motions really run where supported (minifier regression 
 
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto('/');
-  const stations = await page.$$eval('#signal .station', (els) => els.map((e) => getComputedStyle(e).animationTimeline));
+  const stations = await page.$$eval('#signal .station', (els) =>
+    els.map((e) => getComputedStyle(e).animationTimeline),
+  );
   expect(new Set(stations)).toEqual(new Set(['view()']));
 });
 

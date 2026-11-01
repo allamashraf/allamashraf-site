@@ -1,36 +1,33 @@
-# Deploy (GitHub Pages): only after Allam's written approval
+# Deployment and maintenance
 
-The private repository, draft release PR, owner-only preview, domain ownership verification and email-forwarding configuration exist. The public GitHub Pages launch and website DNS cutover have not been performed. Current evidence and pending gates are in RELEASE_CHECKLIST.md. Deployment stays manual.
+Production: https://allamashraf.dev/ — GitHub Pages, manual deployment only.
+RELEASE_CHECKLIST.md records approvals, exceptions and unfinished human validation; LAUNCH_REPORT.md records production HTTP evidence.
 
-## Before the repo goes public
-1. All local gates green: `npm run check`, `npm run build:prod`, `npm run check:budgets`, `npm test`.
-2. Review every `USER_REPORTED` claim in `src/content/claims.yaml` and set `approvedBy`.
-3. Approve or edit all `PROPOSED` copy (`src/content/copy.ts`, `copy: PROPOSED` claims).
-4. Full-history secret scan: `gitleaks git --redact --config .gitleaks.toml` (gitleaks 8.30.1). Zero findings.
-   - `CLAUDE.md` and `docs/MASTER_PLAN.md` are local-only (git-ignored, untracked since 22 Oct 2026). Keep them out of the repo.
-   - The custom `personal-gmail-address` rule must report zero findings across the full history.
-5. Confirm `evidence/`, `blocked-figures.txt` and `blocked-terms.txt` were never committed: `git log --all -- evidence blocked-figures.txt blocked-terms.txt` prints nothing.
-6. **Use the clean release history.** The uploaded historical Git database is retained privately for audit and is not the release repository. Do not import it, reset already-pushed branches or run a history purge on the release repository.
-   Run `npm run check:history` with the local-only denylists available. It checks every local object and prints counts without revealing entries. Stop if any count is above zero or the output does not end with `History check passed.` Repeat the full-history Gitleaks scan after the final source commit.
-7. Complete the real-device, screen-reader and five-person comprehension checks recorded in RELEASE_CHECKLIST.md. Record actual results, not emulation or inferred approvals. Name.com account MFA must also be enabled by its owner.
-8. Review the exact performance interpretation: the inline scheduler is included in the own-JS budget; `check:lcp-scripts` checks external requests before observed LCP. It does not demonstrate literal zero executable JavaScript before LCP.
+## Prepare a change
+
+1. Create a work branch; never push directly to protected main.
+2. Run npm ci. prepare sets core.hooksPath=.githooks for this checkout only. Install Gitleaks 8.30.1 from https://github.com/gitleaks/gitleaks/releases/tag/v8.30.1 or set GITLEAKS_BIN to that executable.
+3. Format changed files with npm run format -- <paths>, then stage them. The hook reads the Git index, checks whitespace, scans staged content with redacted Gitleaks output and verifies formatting. Partially staged content is checked as committed.
+4. Run npm run check, npm run build:prod, npm run check:budgets and npm test. Keep local evidence and denylists private; never import the original uploaded Git database.
+5. Open a PR and pass verify, update with main and resolve conversations. Required second-person approval needs someone other than the author; an AI report or self-review is not a GitHub approval.
+
+CI independently checks changed-file formatting, secrets, browsers, accessibility, Lighthouse, claims and budgets. GitHub API writes do not execute a developer's local hook.
 
 ## Publish
-1. Only after all release gates above pass: GitHub → repo Settings → General → change visibility to **Public** (required for free Pages).
-2. Settings → Pages → Source: **GitHub Actions**.
-3. Actions → "Deploy to GitHub Pages" → **Run workflow** (`workflow_dispatch` only).
-4. Custom domain: follow `docs/DNS_PLAN.md` in order. Set the custom domain in the repo **before** adding DNS records.
 
-## Post-launch checks
-```bash
-curl -I https://allamashraf.dev/
-curl -I https://www.allamashraf.dev/
-curl -I https://allamashraf.dev/does-not-exist/
-```
-Expect: `200`, a redirect from www to the apex, and `404` serving `404.html`. Record the headers in this file.
+1. Merge the reviewed PR after verify passes.
+2. Actions → Deploy to GitHub Pages → Run workflow, selecting main.
+3. Keep EMAIL_PUBLISHED=true only while external forwarding works. Never put the private destination in public source.
+4. Verify HTTPS, HTTP/www redirects, page URLs, missing-path 404, social metadata and contact behavior. Record headers in LAUNCH_REPORT.md.
+5. Use ROLLBACK.md for a failed release. Never force-push, remove domain verification or overwrite MX/SPF records.
 
-## Accepted residual risks (GitHub Pages cannot set custom headers)
-- `frame-ancestors` is ignored in a meta CSP, so clickjacking protection is not available.
-- `X-Content-Type-Options`, `Permissions-Policy` and `Referrer-Policy` headers cannot be set; referrer is set by meta tag.
-- HSTS is covered by the `.dev` TLD preload list.
-- Mitigation: static site, no forms, no logins, no third-party scripts, meta CSP with hashes.
+## Hosting limits
+
+GitHub Pages cannot set custom response security headers. Meta CSP uses hashes; a meta referrer policy is present. frame-ancestors is ignored in meta CSP. The .dev TLD provides HSTS preload. The site stays static, without logins, backend forms, analytics or third-party scripts.
+
+## Maintenance
+
+- Review Dependabot PRs manually.
+- Keep GitHub and Name.com MFA and private recovery information current; never expose authentication secrets.
+- Confirm forwarded messages reach the inbox and privately configure a suitable spam filter if needed.
+- Domain expiry: 21 October 2027, automatic renewal observed off. A reminder is scheduled sixty days earlier; no purchase occurs automatically.

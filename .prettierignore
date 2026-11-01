@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.astro/
+public/client/
+package-lock.json
+evidence/
+docs/MASTER_PLAN.md
+CLAUDE.md
+blocked-*.txt

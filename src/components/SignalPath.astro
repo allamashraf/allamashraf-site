@@ -12,19 +12,24 @@ import MobileLeadDemo from './MobileLeadDemo.astro';
   <div class="container signal__inner">
     <p class="coord mono">01 / Signal</p>
     <div class="grid signal__head">
-      <h2 id="signal-title" class="h2 signal__title"><span class="signal__desktop-title">{signal.title}</span><span class="signal__mobile-title">{signal.title.split(' ').slice(0,-1).join(' ')} <span class="signal__accent">{signal.title.split(' ').at(-1)}</span></span></h2>
+      <h2 id="signal-title" class="h2 signal__title">
+        <span class="signal__desktop-title">{signal.title}</span>
+        <span class="signal__mobile-title">
+          {signal.title.split(' ').slice(0, -1).join(' ')}{' '}
+          <span class="signal__accent">{signal.title.split(' ').at(-1)}</span>
+        </span>
+      </h2>
       <p class="lede signal__intro">{signal.intro}</p>
     </div>
 
     <MobileLeadDemo />
     <div class="track-wrap">
-    <div class="signal__wire" aria-hidden="true" data-signal-wire>
-      <span class="signal__wire-base"></span>
-      <span class="signal__wire-hot" data-signal-wire-hot></span>
-    </div>
-    <ol class="track" data-signal-track>
-      {
-        signal.stations.map((s, i) => (
+      <div class="signal__wire" aria-hidden="true" data-signal-wire>
+        <span class="signal__wire-base"></span>
+        <span class="signal__wire-hot" data-signal-wire-hot></span>
+      </div>
+      <ol class="track" data-signal-track>
+        {signal.stations.map((s, i) => (
           <li class:list={['station', `station--${s.id}`]} data-station={s.id}>
             <span class="station__node" aria-hidden="true">
               <span class="station__lit" data-station-lit />
@@ -73,34 +78,98 @@ import MobileLeadDemo from './MobileLeadDemo.astro';
               </>
             )}
           </li>
-        ))
-      }
-    </ol>
+        ))}
+      </ol>
     </div>
   </div>
 </section>
 
-
-
 <style>
-  .signal__desktop-title { display: contents; }
-  .signal__mobile-title { display: none; }
+  :global(.signal-transfer) {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 3;
+  }
+  .signal__desktop-title {
+    display: contents;
+  }
+  .signal__mobile-title {
+    display: none;
+  }
   @media (max-width: 767px) {
-    .signal__desktop-title { display: none; }
-    .signal__mobile-title { display: contents; }
-    .signal__head { margin-bottom: 0 !important; }
-    .signal__title { font-family: var(--ff-body); font-size: 36px; font-weight: 500; line-height: 1.08; max-width: 9ch; }
-    .signal__intro { font: 12px/1.7 var(--ff-mono); }
-    .signal__accent { color: var(--accent); }
-    .signal__inner .track-wrap { margin-top: 24px; }
-    .signal__inner .track { display: grid; gap: 0; padding-left: 16px; }
-    .signal__inner .station { padding: 12px 0 12px 20px; min-height: 0; display: grid; grid-template-columns: 75px 1fr; gap: 8px; }
-    .signal__inner .station__label { font-size: 9px; gap: 4px; margin: 0; }
-    .signal__inner .station__sentence { font: 11px/1.6 var(--ff-mono); }
-    .signal__inner .gate, .signal__inner .lanes, .signal__inner .lanes-svg, .signal__inner .station__drop, .signal__inner .signal__dot { display: none; }
-    .signal__inner .station__note { font-size: 9px; margin-top: 8px; }
-    .signal__inner .station__node { top: 14px; width: 10px; height: 10px; left: 3px; }
-    .signal__inner .station.is-mobile-active .station__lit { background: var(--accent); box-shadow: 0 0 16px #c4ff0080; }
+    .signal__desktop-title {
+      display: none;
+    }
+    .signal__mobile-title {
+      display: contents;
+    }
+    .signal__head {
+      margin-bottom: 0 !important;
+    }
+    .signal__title {
+      font-family: var(--ff-body);
+      font-size: 36px;
+      font-weight: 500;
+      line-height: 1.08;
+      max-width: 9ch;
+    }
+    .signal__intro {
+      font: 12px/1.7 var(--ff-mono);
+    }
+    .signal__accent {
+      color: var(--accent);
+    }
+    .signal__inner .track-wrap {
+      margin-top: 24px;
+    }
+    .signal__inner .track {
+      display: grid;
+      gap: 0;
+      padding-left: 16px;
+    }
+    .signal__inner .station {
+      padding: 12px 0 12px 20px;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 75px 1fr;
+      gap: 8px;
+    }
+    .signal__inner .station__label {
+      font-size: 9px;
+      gap: 4px;
+      margin: 0;
+    }
+    .signal__inner .station__sentence {
+      font: 11px/1.6 var(--ff-mono);
+    }
+    .signal__inner .gate,
+    .signal__inner .lanes,
+    .signal__inner .lanes-svg,
+    .signal__inner .station__drop,
+    .signal__inner .signal__dot {
+      display: none;
+    }
+    .signal__inner .station__note {
+      font-size: 9px;
+      margin-top: 8px;
+    }
+    .signal__inner .station__node {
+      top: 14px;
+      width: 10px;
+      height: 10px;
+      left: 3px;
+    }
+    .signal__inner .station.is-mobile-active .station__lit {
+      background: var(--accent);
+      box-shadow: 0 0 16px #c4ff0080;
+    }
   }
   .signal__head {
     row-gap: var(--s-5);

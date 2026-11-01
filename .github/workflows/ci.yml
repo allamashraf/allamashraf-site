@@ -28,6 +28,8 @@ jobs:
           cache: npm
 
       - run: npm ci
+      - name: Check formatting of changed files
+        run: node scripts/check-staged-format.mjs --base "${{ github.event.pull_request.base.sha || github.sha }}"
       - run: npx astro check
       - run: npm run test:unit
 
