@@ -123,13 +123,31 @@ https://pagespeed.web.dev/analysis/https-allamashraf-dev/23fz7a07z5?form_factor=
 
 Performance 100; accessibility 100; best practices 100; SEO 100. Displayed LCP/FCP/Speed Index 0.9 s, TBT 0 ms, CLS 0. This is one lab run (Lighthouse 13.6.0, emulated Moto G Power, slow 4G), not a physical-device or real-user result, and not a guarantee for later releases. CrUX reports no field data. The unauthenticated PageSpeed API returned HTTP 429; the official web UI completed successfully.
 
+## Follow-up release verification
+
+PR #6 merged as `3f207b6c052541f4af153fc0150b1b5964a9f5e5` and GitHub Pages deployment run [41259260695](https://github.com/allamashraf/allamashraf-site/actions/runs/41259260695) completed successfully. CI run [41258762918](https://github.com/allamashraf/allamashraf-site/actions/runs/41258762918) passed 18 unit tests and 115 browser tests, with three expected skips, plus type, formatting, secret, budget and performance gates. A fresh public-page inspection found the new desktop transfer element after lazy initialization and observed its active state during scrolling. The approved mobile design is retained.
+
+### PageSpeed after the follow-up deployment
+
+Official mobile report captured 1 November 2026 at 03:13 Cairo:
+https://pagespeed.web.dev/analysis/https-allamashraf-dev/vmxacc725c?form_factor=mobile
+
+Performance **99**, accessibility **100**, best practices **100**, SEO **100**. Displayed FCP/LCP **1.0 s**, TBT **0 ms**, CLS **0**, Speed Index **3.7 s**. Lighthouse 13.6.0 used an emulated Moto G Power and slow 4G. CrUX still has no field data. This is the post-deployment lab result; the earlier 100/100/100/100 report above is historical. One run does not establish the cause of the one-point difference or replace physical-device verification.
+
+### Remaining administrative checks
+
+- The existing main protection is enabled. Requiring one reviewer approval was selected, but saving reached GitHub's Confirm access screen. It is **pending reauthentication**, not confirmed applied. Existing CI, up-to-date-branch, conversation-resolution and no-bypass controls remain the last verified saved configuration. Do not disable protection to finish a release.
+- The approved forwarding mailbox contained the existing external test message addressed to the portfolio contact address. It had no SPAM label. A separate seven-day spam search for that address returned no messages. This verifies the observed sample, not guaranteed future delivery or the mailbox's filter configuration. No test email was sent during this audit.
+- Recovery options were reviewed where accessible without opening recovery codes. Owner verification and private backup of recovery details remain open. The registrar session expired before a fresh account-level read-back. No password, MFA method, forwarding destination or spam setting was changed.
+- LinkedIn Post Inspector remains unverified. Browser access was denied because the earlier sign-in was cancelled; fresh explicit authorization is required before another sign-in attempt. Connected LinkedIn profile search does not provide Post Inspector functionality.
+
 ## Social preview
 
 Per-page 1200×630 Open Graph images, title, description, Twitter large-image metadata and absolute HTTPS URLs pass the release checks. LinkedIn Post Inspector accepted the public site URL but requires sign-in at https://www.linkedin.com/post-inspector/login before displaying its crawler preview. A successful LinkedIn inspection is not yet recorded. No social post was created.
 
 ## Operations
 
-External forwarding delivery was confirmed by Allam before the contact address was published. GitHub and Name.com MFA were observed enabled. Private recovery contacts and spam-filter configuration still need a private read-back; never publish those values.
+External forwarding delivery was confirmed by Allam before the contact address was published. The follow-up mailbox audit above confirms the existing test was outside Spam. GitHub and Name.com MFA were observed enabled at launch. Private recovery backups and spam-filter configuration still need owner verification; never publish those values.
 
 Domain expiry: 21 October 2027; auto-renew observed off. Renewal reminder created for 22 August 2027, Africa/Cairo, sixty days before expiry. No purchase or automatic renewal setting was changed.
 
