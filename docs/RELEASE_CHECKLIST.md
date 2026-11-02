@@ -29,15 +29,16 @@ CI run 41221733662 validated f67f00e001f53ce7ae716bca7e7f0c567b2340d2 before mer
 
 - Desktop hero signal transfers to CLICK before the single pinned scene; complete mobile, reduced-motion, Save-Data and failed-chunk fallbacks remain.
 - npm prepare installs repository-local pre-commit checks: staged whitespace, redacted Gitleaks and staged-content formatting. Gitleaks 8.30.1 is required on PATH or through GITLEAKS_BIN. CI independently checks formatting, secrets and quality gates.
-- A required second-person PR approval is applied after this follow-up merges. Future PRs require another GitHub account with suitable review access; the author cannot approve their own PR.
+- One second-person PR approval is now required. A saved confirmation and a fresh reopening of the protection rule verified this setting. Required CI, an up-to-date branch, conversation resolution and no administrator bypass remain enabled. Future PRs, including documentation, require another GitHub account with suitable review access; the author cannot approve their own PR.
 - LAUNCH_REPORT.md records live PageSpeed and LinkedIn Post Inspector results or their actual service/authentication blockers.
+- Follow-up PR #6 is deployed by GitHub Pages run 41259260695. CI run 41258762918 passed 18 unit and 115 browser tests (three expected skips). Post-deployment PageSpeed mobile measured 99 performance and 100 in the other three categories; no CrUX field data.
 
 ## Unfinished human verification
 
 - Five independent participants, ten seconds each; at least four identify the work, evidence and contact method.
 - Actual NVDA or VoiceOver spoken-output pass of the homepage and one case study.
 - Full physical mid-range Android, iPhone Safari and desktop-browser matrix. Allam's success report on one unspecified phone is retained as user-reported evidence, not the whole matrix.
-- Privately verify recovery details and forwarded-mail spam-filter behavior. Do not publish recovery contacts or change credentials through an agent.
+- The existing forwarded test message was observed outside Spam, and a separate seven-day Spam search returned no messages for the portfolio address. Filter configuration and private recovery backups remain unverified; registrar account access requires a new login. Do not publish recovery contacts or change credentials through an agent.
 
 ## Operations and later scope
 
